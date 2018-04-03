@@ -72,6 +72,22 @@ WHERE  tags in ('<pascal>', '<fortran>', '<perl>', '<rust>')
             and posttypeid = 1
 group by cast(creationdate as date), tags
 
+SELECT
+    cast(creationdate as date) post_date,
+    tags,
+    sum(score) score_sum,
+    sum(viewcount) views,
+    sum(answercount) answers,
+    sum(favoritecount) favorites,
+    sum(commentcount) comments,
+    count(1) usage_cnt
+FROM posts
+WHERE  tags in ('<d3.js>', '<tensorflow>')
+			and cast(creationdate as date)
+              between '2006-01-01' and '2017-12-31'
+            and posttypeid = 1
+group by cast(creationdate as date), tags
+
 -- Stats for posts gathered throughout first 90 days since posts being published
 
 
