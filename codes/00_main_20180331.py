@@ -27,10 +27,19 @@ stack_data = pd.concat([stack_data1, stack_data2, stack_data3, stack_data4])
 
 stack_data['tags'] = stack_data['tags'].str.replace('<', '').str.replace('>', '')
 stack_data['post_date'] = pd.to_datetime(stack_data['post_date'])
-del stack_data1, stack_data2, stack_data3
+stack_data.loc[stack_data['tags'] == 'd3js'].describe()
 
-stack_data.tags.replace('apache-spark', 'spark', inplace = True)                      
-stack_data.columns.values[2:] = 'so_' + stack_data.columns.values[2:] # so = STackOverflow       
+
+del stack_data1, stack_data2, stack_data3, stack_data4
+
+stack_data.tags.replace('apache-spark', 'spark', inplace = True)
+stack_data.tags.replace('d3.js', 'd3js', inplace = True)
+stack_data = stack_data.rename(columns = {'score_sum': 'so_score_sum',
+                                          'views': 'so_views',
+                                          'answers': 'so_answers',
+                                          'favorites': 'so_favorites',
+                                          'comments': 'so_comments',
+                                          'usage_cnt': 'so_usage_cnt'})
 #%matplotlib inline      
 #          
 #for i in stack_data['tags'].unique():
@@ -42,7 +51,7 @@ stack_data.columns.values[2:] = 'so_' + stack_data.columns.values[2:] # so = STa
     
 ### Kaggle data
 
-kaggle_data_raw = pd.read_csv('.\\kaggle_data\\kaggle_data_20180403.csv')
+kaggle_data_raw = pd.read_csv('.\\kaggle_data\\kaggle_data_20180405_2145.csv')
 kaggle_data_raw = kaggle_data_raw[
         (kaggle_data_raw.title_match.isnull() == False) |
         (kaggle_data_raw.text_match.isnull() == False)]
@@ -131,67 +140,118 @@ data.drop(data[(data['tech'] == 'swift') & (data['date'] < '2014-06-02')].index 
         # 2007-02-19 - launch of StackOverflow
                 inplace = True)
 
-data.tail(100)
-
 # Group by weekly frequency
 data.date = pd.to_datetime(data.date)
 data_week = (data.groupby(['tech',
                                     pd.Grouper(key = 'date', freq = 'W-MON')])
                 .sum()
                 .reset_index())
-data.columns
-alpha = 0.7
+    
+data.loc[data['tech'] == 'javascript'].describe()
+
+
 #%matplotlib inline
 
-for i in ['d3.js', 'javascript', 'tensorflow']:#data.tech.unique():
-    
-    plt.figure()
-    ax1 = plt.subplot(221)
-    ax2 = ax1.twinx()
-    ax3 = plt.subplot(222)
-    ax4 = ax3.twinx()
-    ax5 = plt.subplot(223)
-    ax6 = ax5.twinx()
-    ax7 = plt.subplot(224)
-    ax8 = ax7.twinx()
-    
-    # First plot:
-    data_plot = data.loc[(data['tech'] == i) & (data['date'] >= '2017-01-01')]
-    ax1.plot(data_plot['date'], data_plot['hn_all_match_score'], 'g-', alpha = alpha)
-    ax2.plot(data_plot['date'], np.log(data_plot['so_usage_cnt']), 'b-', alpha = alpha)
-#    ax1.set_xlabel('Date')
-    ax1.set_ylabel('Score HN', color = 'g')
-    ax2.set_ylabel('Usage', color = 'b')
-    ax2.set_title('Usage of tag on SO vs score for topics on HN for ' + i)
-    
-    # Second plot: 
-    ax3.plot(data_plot['date'], data_plot['hn_all_match_score'], 'g-', alpha = alpha)
-    ax4.plot(data_plot['date'], np.log(data_plot['so_score_sum']), 'b-', alpha = alpha)
-#    ax3.set_xlabel('Date')
-#    ax3.set_ylabel('Score HN', color = 'g')
-    ax3.tick_params(left='off', labelleft='off')
-    ax4.set_ylabel('Score SO', color = 'b')
-    ax4.set_title('Score of a tag on SO vs score for topics on HN for ' + i)
 
-    # Third plot: 
-    ax5.plot(data_plot['date'], data_plot['hn_all_match_score'], 'g-', alpha = alpha)
-    ax6.plot(data_plot['date'], np.log(data_plot['so_answers']), 'b-', alpha = alpha)
-    ax5.set_xlabel('Date')
-    ax5.set_ylabel('Score HN', color = 'g')
-    ax6.set_ylabel('Answers SO', color = 'b')
-    ax6.set_title('Number of answers on SO vs score for topics on HN for ' + i)
+def hn_plots(data = data,
+             freq = 'd',
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             alpha = 0.7,
+             output_date = '20180405',
+             common_var = 'hn_all_match_score',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_answers',
+             var4 = 'so_views'):
+    if(freq == 'w'):
+        data = (data.groupby(['tech',
+                       pd.Grouper(key = 'date', freq = 'W-MON')])
+                .sum()
+                .reset_index())
     
-    # Fourth plot: 
-    ax7.plot(data_plot['date'], data_plot['hn_all_match_score'], 'g-', alpha = alpha)
-    ax8.plot(data_plot['date'], np.log(data_plot['so_favorites']), 'b-', alpha = alpha)
-#    ax7.set_xlabel('Date')
-#    ax7.set_ylabel('Score HN', color = 'g')
-    ax7.tick_params(left='off', labelleft='off')
-    ax8.set_ylabel('Favourites SO', color = 'b')
-    ax8.set_title('Number of favourites on SO vs score for topics on HN for ' + i)
-    plt.show()
+    for i in select_tech:#data.tech.unique():
+        
+        fig_daily = plt.figure(figsize = (16,9))
+        ax1 = plt.subplot(221)
+        ax2 = ax1.twinx()
+        ax3 = plt.subplot(222)
+        ax4 = ax3.twinx()
+        ax5 = plt.subplot(223)
+        ax6 = ax5.twinx()
+        ax7 = plt.subplot(224)
+        ax8 = ax7.twinx()
+        
+        # First plot:
+        data_plot = data.loc[(data['tech'] == i) & (data['date'] >= '2017-01-01')]
+        ax1.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
+        ax2.plot(data_plot['date'], data_plot[var1], 'b-', alpha = alpha)
+    #    ax1.set_xlabel('Date')
+        ax1.set_ylabel('Score HN', color = 'g')
+        ax2.set_ylabel('Usage', color = 'b')
+        ax2.set_title(var1 + ' vs ' + common_var + ' for ' + i)
+        
+        # Second plot: 
+        ax3.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
+        ax4.plot(data_plot['date'], data_plot[var2], 'b-', alpha = alpha)
+    #    ax3.set_xlabel('Date')
+    #    ax3.set_ylabel('Score HN', color = 'g')
+        ax3.tick_params(left='off', labelleft='off')
+        ax4.set_ylabel('Score SO', color = 'b')
+        ax4.set_title(var2 + ' vs ' + common_var + ' for ' + i)
+    
+        # Third plot: 
+        ax5.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
+        ax6.plot(data_plot['date'], data_plot[var3], 'b-', alpha = alpha)
+        ax5.set_xlabel('Date')
+        ax5.set_ylabel('Score HN', color = 'g')
+        ax6.set_ylabel('Answers SO', color = 'b')
+        ax6.set_title(var3 + ' vs ' + common_var + ' for ' + i)
+        
+        # Fourth plot: 
+        ax7.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
+        ax8.plot(data_plot['date'], data_plot[var4], 'b-', alpha = alpha)
+    #    ax7.set_xlabel('Date')
+    #    ax7.set_ylabel('Score HN', color = 'g')
+        ax7.tick_params(left='off', labelleft='off')
+        ax8.set_ylabel('Views SO', color = 'b')
+        ax8.set_title(var4 + ' vs ' + common_var + ' for ' + i)
+        fig_daily.savefig(output_date + '_' + i + '_' + common_var +
+                          '_'+ freq + '.png')
 
+hn_plots(data = data, freq = 'd',
+         output_date = '20180405',
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_score',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_answers',
+             var4 = 'so_views')
+hn_plots(data = data, freq = 'w',
+         output_date = '20180405',
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_score',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_answers',
+             var4 = 'so_views')
+hn_plots(data = data, freq = 'd',
+         output_date = '20180405',
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_cnt',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_answers',
+             var4 = 'so_views') 
+hn_plots(data = data, freq = 'w',
+         output_date = '20180405',
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_cnt',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_answers',
+             var4 = 'so_views') 
 
+    
 # Correlations
 corr_day = data.groupby('tech').corr().reset_index()
 corr_week = data_week.groupby('tech').corr().reset_index()
