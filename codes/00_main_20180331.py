@@ -13,6 +13,7 @@ import gc
 import timeit
 from functools import reduce
 from itertools import chain
+from datetime import datetime
 
 os.chdir('F:\Damian\github\kaggle_hacker_news')
 
@@ -152,12 +153,27 @@ data.loc[data['tech'] == 'javascript'].describe()
 
 #%matplotlib inline
 
+        
+todays_date = datetime.now()
+if todays_date.month <10:
+    month = '0'+str(todays_date.month)
+else:
+    month = str(todays_date.month)
+
+if todays_date.day <10:
+    day = '0'+str(todays_date.day)
+else:
+    day = str(todays_date.day)
+    
+TODAY = str(todays_date.year) + month + day
+
 
 def hn_plots(data = data,
              freq = 'd',
              select_tech = ['d3js', 'javascript', 'tensorflow'],
              alpha = 0.7,
-             output_date = '20180405',
+             after_date = '2017-01-01',
+             output_date = TODAY,
              common_var = 'hn_all_match_score',
              var1 = 'so_usage_cnt',
              var2 = 'so_score_sum',
@@ -182,13 +198,13 @@ def hn_plots(data = data,
         ax8 = ax7.twinx()
         
         # First plot:
-        data_plot = data.loc[(data['tech'] == i) & (data['date'] >= '2017-01-01')]
+        data_plot = data.loc[(data['tech'] == i) & (data['date'] >= after_date)]
         ax1.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
         ax2.plot(data_plot['date'], data_plot[var1], 'b-', alpha = alpha)
     #    ax1.set_xlabel('Date')
         ax1.set_ylabel('Score HN', color = 'g')
         ax2.set_ylabel('Usage', color = 'b')
-        ax2.set_title(var1 + ' vs ' + common_var + ' for ' + i)
+        ax2.set_title(var1 + ' vs ' + common_var + ' for ' + i + ' since ' + after_date)
         
         # Second plot: 
         ax3.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
@@ -197,7 +213,7 @@ def hn_plots(data = data,
     #    ax3.set_ylabel('Score HN', color = 'g')
         ax3.tick_params(left='off', labelleft='off')
         ax4.set_ylabel('Score SO', color = 'b')
-        ax4.set_title(var2 + ' vs ' + common_var + ' for ' + i)
+        ax4.set_title(var2 + ' vs ' + common_var + ' for ' + i + ' since ' + after_date)
     
         # Third plot: 
         ax5.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
@@ -205,7 +221,7 @@ def hn_plots(data = data,
         ax5.set_xlabel('Date')
         ax5.set_ylabel('Score HN', color = 'g')
         ax6.set_ylabel('Answers SO', color = 'b')
-        ax6.set_title(var3 + ' vs ' + common_var + ' for ' + i)
+        ax6.set_title(var3 + ' vs ' + common_var + ' for ' + i + ' since ' + after_date)
         
         # Fourth plot: 
         ax7.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
@@ -214,38 +230,62 @@ def hn_plots(data = data,
     #    ax7.set_ylabel('Score HN', color = 'g')
         ax7.tick_params(left='off', labelleft='off')
         ax8.set_ylabel('Views SO', color = 'b')
-        ax8.set_title(var4 + ' vs ' + common_var + ' for ' + i)
+        ax8.set_title(var4 + ' vs ' + common_var + ' for ' + i + ' since ' + after_date)
         fig_daily.savefig(output_date + '_' + i + '_' + common_var +
-                          '_'+ freq + '.png')
+                          '_'+ freq + '_since' + after_date.replace('_', '')
+                          + '.png')
 
 hn_plots(data = data, freq = 'd',
-         output_date = '20180405',
+         output_date = TODAY,
              select_tech = ['d3js', 'javascript', 'tensorflow'],
              common_var = 'hn_all_match_score',
+             after_date = '2010-01-01',
              var1 = 'so_usage_cnt',
              var2 = 'so_score_sum',
              var3 = 'so_answers',
              var4 = 'so_views')
 hn_plots(data = data, freq = 'w',
-         output_date = '20180405',
+         output_date = TODAY,
              select_tech = ['d3js', 'javascript', 'tensorflow'],
              common_var = 'hn_all_match_score',
+             after_date = '2010-01-01',
              var1 = 'so_usage_cnt',
              var2 = 'so_score_sum',
              var3 = 'so_answers',
              var4 = 'so_views')
 hn_plots(data = data, freq = 'd',
-         output_date = '20180405',
+         output_date = TODAY,
              select_tech = ['d3js', 'javascript', 'tensorflow'],
              common_var = 'hn_all_match_cnt',
+             after_date = '2017-01-01',
              var1 = 'so_usage_cnt',
              var2 = 'so_score_sum',
              var3 = 'so_answers',
              var4 = 'so_views') 
 hn_plots(data = data, freq = 'w',
-         output_date = '20180405',
+         output_date = TODAY,
              select_tech = ['d3js', 'javascript', 'tensorflow'],
              common_var = 'hn_all_match_cnt',
+             after_date = '2017-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_answers',
+             var4 = 'so_views')
+# December 2017
+hn_plots(data = data, freq = 'd',
+         output_date = TODAY,
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_score',
+             after_date = '2017-12-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_answers',
+             var4 = 'so_views')
+hn_plots(data = data, freq = 'd',
+         output_date = TODAY,
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_cnt',
+             after_date = '2017-12-01',
              var1 = 'so_usage_cnt',
              var2 = 'so_score_sum',
              var3 = 'so_answers',
