@@ -89,41 +89,71 @@ kaggle_data_raw['all_match'] = (kaggle_data_raw['text_match']
     +','+ kaggle_data_raw['title_match'])
 kaggle_list = []
 
-
+cutoffs = [None, 10, 25]
+#kaggle_data_raw.columns
+#type(kaggle_data_raw)
+#kaggle_data_loop = kaggle_data_raw.loc[kaggle_data_raw['score']>=10]
+#type(kaggle_data_loop)
+#kaggle_data_raw.info()
+#kaggle_data_loop.info()
 from sklearn.preprocessing import MultiLabelBinarizer
-for i in ['text_match', 'title_match', 'all_match']:
-#    i  = 'text_match'
-    # Removal of duplicates
-    kaggle_data_raw.loc[:, i] = [list(set(x))
-                                for x in kaggle_data_raw[i].str.split(',')]
-    
-    # Summing the scores per date and text/title match
-    s = kaggle_data_raw[i].str.len()
-    df = pd.DataFrame({'date': kaggle_data_raw.date.repeat(s),
-                          'score': kaggle_data_raw.score.repeat(s),
-            i: np.concatenate(kaggle_data_raw[i].values)})
-    df = df.loc[df[i] != '']
-    kaggle_data_score = pd.pivot_table(df,
-                index = 'date', columns = i, values = 'score',
-               aggfunc = 'sum', fill_value = 0)
-    kaggle_data_score.index = pd.DatetimeIndex(
-    kaggle_data_score.index)
-    
-    kaggle_data_score = kaggle_data_score.reindex(
-            idx, fill_value = 0).stack().reset_index()
-    colnames = ['date', 'tech', 'hn_' + i] # hn = Hacker News
-    kaggle_data_score.columns = list(chain.from_iterable([colnames[0:2], [colnames[2] + '_score']]))
-    kaggle_list.append(kaggle_data_score)
+#for i in ['text_match', 'title_match', 'all_match']:
+#    print(i)
+
+#kaggle_data_raw = kaggle_data_raw.iloc[169460:169479]
+
+#kaggle_data_loop['text_match'].str.split(',')
+#kaggle_data_loop.loc[:, i] = [list(set(x))
+#cutoff = None
+for cutoff in cutoffs:
+    if cutoff == None:
+        kaggle_data_loop = kaggle_data_raw.copy()
+        cutoff_lbl = ''
+    else:
+        kaggle_data_loop = kaggle_data_raw.loc[kaggle_data_raw['score']>=cutoff]
+        cutoff_lbl = '_' + str(cutoff)
+#    print(cutoff)
+#    print(cutoff == None)
+#    print(kaggle_data_loop.describe())
+    for i in ['text_match', 'title_match', 'all_match']:
+        
+    #kaggle_data_raw['text_match'].str.split(',')    
+    #    i  = 'text_match'
+        # Removal of duplicates
+        before = kaggle_data_loop[i]
+        kaggle_data_loop.loc[:, i] = [list(set(x))
+                                    for x in kaggle_data_loop[i].str.split(',')]
+    #    kaggle_data_raw[i].str.split(',')
+    #    [list(set(x)) for x in kaggle_data_raw['title_match'].str.split(',')]
+    #    [list(set(x)) for x in kaggle_data_loop['title_match'].str.split(',')]
+        
+        # Summing the scores per date and text/title match
+        s = kaggle_data_loop[i].str.len()
+        df = pd.DataFrame({'date': kaggle_data_loop.date.repeat(s),
+                           'score': kaggle_data_loop.score.repeat(s),
+                           i: np.concatenate(kaggle_data_loop[i].values) })
+        df = df.loc[df[i] != '']
+        kaggle_data_score = pd.pivot_table(df,
+                    index = 'date', columns = i, values = 'score',
+                   aggfunc = 'sum', fill_value = 0)
+        kaggle_data_score.index = pd.DatetimeIndex(
+        kaggle_data_score.index)
+        
+        kaggle_data_score = kaggle_data_score.reindex(
+                idx, fill_value = 0).stack().reset_index()
+        colnames = ['date', 'tech', 'hn_' + i] # hn = Hacker News
+        kaggle_data_score.columns = list(chain.from_iterable([colnames[0:2], [colnames[2] + '_score' + cutoff_lbl]]))
+        kaggle_list.append(kaggle_data_score)
     
     # Filling the lacking dates with zeroes for counts
 
     mlb = MultiLabelBinarizer()
     kaggle_data_cnt = pd.DataFrame(
-            mlb.fit_transform(kaggle_data_raw[i]),
-            kaggle_data_raw.date, mlb.classes_).sum(level = 0)
+            mlb.fit_transform(kaggle_data_loop[i]),
+            kaggle_data_loop.date, mlb.classes_).sum(level = 0)
     kaggle_data_cnt.index = pd.DatetimeIndex(kaggle_data_cnt.index)
     kaggle_data_cnt = kaggle_data_cnt.reindex(idx, fill_value = 0).stack().reset_index()
-    kaggle_data_cnt.columns = list(chain.from_iterable([colnames[0:2], [colnames[2] + '_cnt']]))
+    kaggle_data_cnt.columns = list(chain.from_iterable([colnames[0:2], [colnames[2] + '_cnt' + cutoff_lbl]]))
     kaggle_data_cnt = kaggle_data_cnt.groupby(['date', 'tech']).sum().reset_index()
     kaggle_data_cnt = kaggle_data_cnt[kaggle_data_cnt.tech != '']
     kaggle_list.append(kaggle_data_cnt)
@@ -194,7 +224,7 @@ data.drop(data[(data['tech'] == 'swift') & (data['date'] < '2014-06-02')].index 
 
 hn_plots(data = data, freq = 'M',
          output_date = todays_date(),
-             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             select_tech = ['d3js', 'tensorflow', 'javascript'],
              common_var = 'hn_all_match_cnt',
              common_var3 = 'hn_all_match_score',
              common_var4 = 'hn_all_match_score',
@@ -204,6 +234,34 @@ hn_plots(data = data, freq = 'M',
              var3 = 'so_usage_cnt',
              var4 = 'so_score_sum',
              subfolder = 'plots')
+
+hn_plots(data = data, freq = 'M',
+         output_date = todays_date(),
+             select_tech = ['d3js', 'tensorflow', 'javascript'],
+             common_var = 'hn_all_match_cnt_10',
+             common_var3 = 'hn_all_match_score_10',
+             common_var4 = 'hn_all_match_score_10',
+             after_date = '2010-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_usage_cnt',
+             var4 = 'so_score_sum',
+             subfolder = 'plots')
+
+hn_plots(data = data, freq = 'M',
+         output_date = todays_date(),
+             select_tech = ['d3js', 'tensorflow', 'javascript'],
+             common_var = 'hn_all_match_cnt_25',
+             common_var3 = 'hn_all_match_score_25',
+             common_var4 = 'hn_all_match_score_25',
+             after_date = '2010-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_usage_cnt',
+             var4 = 'so_score_sum',
+             subfolder = 'plots')
+
+data.tech.unique()
 
 #hn_plots(data = data, freq = 'M',
 #         output_date = todays_date(),
