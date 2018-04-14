@@ -89,9 +89,10 @@ kaggle_data_raw['all_match'] = (kaggle_data_raw['text_match']
     +','+ kaggle_data_raw['title_match'])
 kaggle_list = []
 
-from sklearn.preprocessing import MultiLabelBinarizer
 
+from sklearn.preprocessing import MultiLabelBinarizer
 for i in ['text_match', 'title_match', 'all_match']:
+#    i  = 'text_match'
     # Removal of duplicates
     kaggle_data_raw.loc[:, i] = [list(set(x))
                                 for x in kaggle_data_raw[i].str.split(',')]
@@ -138,13 +139,6 @@ data = (pd.merge(kaggle_data, stack_data, how = 'left',
         .fillna(0))
 
 del kaggle_list, kaggle_data_raw, kaggle_data
-
-cutoff = 25
-cutoff_str = str(cutoff)
-data['hn_all_match_score' + cutoff_str] = np.where(
-        data['hn_all_match_score']<cutoff, 0, data['hn_all_match_score'])
-data['hn_all_match_cnt' + cutoff_str] = np.where(
-        data['hn_all_match_score']<cutoff, 0, data['hn_all_match_cnt'])
 
 ### 4. Data exclusions
 
@@ -202,40 +196,42 @@ hn_plots(data = data, freq = 'M',
          output_date = todays_date(),
              select_tech = ['d3js', 'javascript', 'tensorflow'],
              common_var = 'hn_all_match_cnt',
+             common_var3 = 'hn_all_match_score',
+             common_var4 = 'hn_all_match_score',
              after_date = '2010-01-01',
              var1 = 'so_usage_cnt',
              var2 = 'so_score_sum',
-             var3 = 'so_favorites',
-             var4 = 'so_views',
-             subfolder = 'plots')
-
-hn_plots(data = data, freq = 'M',
-         output_date = todays_date(),
-             select_tech = ['d3js', 'javascript', 'tensorflow'],
-             common_var = 'hn_all_match_score',
-             common_var2 = 'hn_all_match_score' + cutoff_str,
-             common_var3 = 'hn_all_match_score',
-             common_var4 = 'hn_all_match_score' + cutoff_str,
-             after_date = '2010-01-01',
-             var1 = 'so_usage_cnt',
-             var2 = 'so_usage_cnt',
-             var3 = 'so_score_sum',
+             var3 = 'so_usage_cnt',
              var4 = 'so_score_sum',
              subfolder = 'plots')
 
-hn_plots(data = data, freq = 'M',
-         output_date = todays_date(),
-             select_tech = ['d3js', 'javascript', 'tensorflow'],
-             common_var = 'hn_all_match_cnt',
-             common_var2 = 'hn_all_match_cnt' + cutoff_str,
-             common_var3 = 'hn_all_match_cnt',
-             common_var4 = 'hn_all_match_cnt' + cutoff_str,
-             after_date = '2010-01-01',
-             var1 = 'so_usage_cnt',
-             var2 = 'so_usage_cnt',
-             var3 = 'so_score_sum',
-             var4 = 'so_score_sum',
-             subfolder = 'plots')
+#hn_plots(data = data, freq = 'M',
+#         output_date = todays_date(),
+#             select_tech = ['d3js', 'javascript', 'tensorflow'],
+#             common_var = 'hn_all_match_score',
+#             common_var2 = 'hn_all_match_score' + cutoff_str,
+#             common_var3 = 'hn_all_match_score',
+#             common_var4 = 'hn_all_match_score' + cutoff_str,
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_usage_cnt',
+#             var3 = 'so_score_sum',
+#             var4 = 'so_score_sum',
+#             subfolder = 'plots')
+#
+#hn_plots(data = data, freq = 'M',
+#         output_date = todays_date(),
+#             select_tech = ['d3js', 'javascript', 'tensorflow'],
+#             common_var = 'hn_all_match_cnt',
+#             common_var2 = 'hn_all_match_cnt' + cutoff_str,
+#             common_var3 = 'hn_all_match_cnt',
+#             common_var4 = 'hn_all_match_cnt' + cutoff_str,
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_usage_cnt',
+#             var3 = 'so_score_sum',
+#             var4 = 'so_score_sum',
+#             subfolder = 'plots')
 
 ### End of code----
 
