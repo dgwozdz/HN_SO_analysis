@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Mar  6 22:03:26 2018
-
-@author: kaksat
 """
+
+#### 0. Loading libraries, setting working directory
 
 import pandas as pd
 import numpy as np
@@ -11,25 +11,39 @@ import matplotlib.pyplot as plt
 import os
 import gc
 import timeit
+from functools import reduce
+from itertools import chain
+from datetime import datetime
 
-os.chdir('F:\Damian\github\kaggle_hacker_news')
+os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis\codes')
+from hn_plots import hn_plots, todays_date
 
-### Stack data
+os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis')
 
+### 1. Stack Overflow data
+ 
 stack_data1 = pd.read_csv('.\\stack_data\\tags_per_day_1_20180325.csv')
 stack_data2 = pd.read_csv('.\\stack_data\\tags_per_day_2_20180306.csv')
 stack_data3 = pd.read_csv('.\\stack_data\\tags_per_day_3_20180306.csv')
+stack_data4 = pd.read_csv('.\\stack_data\\tags_per_day_4_d3js_tensorflow_20180403.csv')
 
-stack_data = pd.concat([stack_data1, stack_data2, stack_data3])
+stack_data = pd.concat([stack_data1, stack_data2, stack_data3, stack_data4])
 
 stack_data['tags'] = stack_data['tags'].str.replace('<', '').str.replace('>', '')
 stack_data['post_date'] = pd.to_datetime(stack_data['post_date'])
-del stack_data1, stack_data2, stack_data3
+stack_data.loc[stack_data['tags'] == 'd3js'].describe()
+
+
+del stack_data1, stack_data2, stack_data3, stack_data4
 
 stack_data.tags.replace('apache-spark', 'spark', inplace = True)
-
-stack_data.head(10)                         
-                             
+stack_data.tags.replace('d3.js', 'd3js', inplace = True)
+stack_data = stack_data.rename(columns = {'score_sum': 'so_score_sum',
+                                          'views': 'so_views',
+                                          'answers': 'so_answers',
+                                          'favorites': 'so_favorites',
+                                          'comments': 'so_comments',
+                                          'usage_cnt': 'so_usage_cnt'})
 #%matplotlib inline      
 #          
 #for i in stack_data['tags'].unique():
@@ -39,12 +53,19 @@ stack_data.head(10)
 #    plt.title(i)
 #    plt.show()
     
-### Kaggle data
+### 2. Kaggle data
 
-kaggle_data_raw = pd.read_csv('.\\kaggle_data\\kaggle_data_20180319.csv')
+kaggle_data_raw = pd.read_csv('.\\kaggle_data\\kaggle_data_20180414_1358.csv')
 kaggle_data_raw = kaggle_data_raw[
         (kaggle_data_raw.title_match.isnull() == False) |
         (kaggle_data_raw.text_match.isnull() == False)]
+
+# combine ttle and text
+
+#kaggle_data_raw
+#kaggle_data_raw.columns
+#kaggle_data_raw.loc[:, i] = [list(set(x))
+#                                for x in kaggle_data_raw[i].str.split(',')]
 
 idx = pd.date_range('01-01-2006', '31-12-2017')
 
@@ -57,112 +78,187 @@ for i in ['text_match', 'title_match']:
     .str.replace("\\\\t", "")
     .str.replace(".", "")
     .str.replace("?", "")
-    .str.replace("!", ""))
+    .str.replace("!", "")
+    .str.replace("d3js", "d3") # Simplification: d3 and d3js to d3js
+    .str.replace("d3", "d3js"))
+    
+check = list(kaggle_data_raw.loc[:, 'text_match'].unique())
+    
+
+kaggle_data_raw['all_match'] = (kaggle_data_raw['text_match']
+    +','+ kaggle_data_raw['title_match'])
+kaggle_list = []
+
+from sklearn.preprocessing import MultiLabelBinarizer
+
+for i in ['text_match', 'title_match', 'all_match']:
     # Removal of duplicates
     kaggle_data_raw.loc[:, i] = [list(set(x))
                                 for x in kaggle_data_raw[i].str.split(',')]
+    
     # Summing the scores per date and text/title match
     s = kaggle_data_raw[i].str.len()
     df = pd.DataFrame({'date': kaggle_data_raw.date.repeat(s),
                           'score': kaggle_data_raw.score.repeat(s),
             i: np.concatenate(kaggle_data_raw[i].values)})
     df = df.loc[df[i] != '']
-    if i == 'text_match':
-        kaggle_data_txt_score = pd.pivot_table(df,
-                    index = 'date', columns = i, values = 'score',
-                   aggfunc = 'sum', fill_value = 0)
-        kaggle_data_txt_score.index = pd.DatetimeIndex(
-        kaggle_data_txt_score.index)
-        
-        kaggle_data_txt_score = kaggle_data_txt_score.reindex(
-                idx, fill_value = 0).stack().reset_index()
-        kaggle_data_txt_score.columns = ['date', 'tech', 'txt_score_sum']
-        
-    else:
-        kaggle_data_title_score = pd.pivot_table(df,
-                    index = 'date', columns = i, values = 'score',
-                   aggfunc = 'sum', fill_value = 0)
-        kaggle_data_title_score.index = pd.DatetimeIndex(
-        kaggle_data_title_score.index)
-        
-        kaggle_data_title_score = kaggle_data_title_score.reindex(
-                idx, fill_value = 0).stack().reset_index()
-        kaggle_data_title_score.columns = ['date', 'tech', 'title_score_sum']
+    kaggle_data_score = pd.pivot_table(df,
+                index = 'date', columns = i, values = 'score',
+               aggfunc = 'sum', fill_value = 0)
+    kaggle_data_score.index = pd.DatetimeIndex(
+    kaggle_data_score.index)
+    
+    kaggle_data_score = kaggle_data_score.reindex(
+            idx, fill_value = 0).stack().reset_index()
+    colnames = ['date', 'tech', 'hn_' + i] # hn = Hacker News
+    kaggle_data_score.columns = list(chain.from_iterable([colnames[0:2], [colnames[2] + '_score']]))
+    kaggle_list.append(kaggle_data_score)
+    
+    # Filling the lacking dates with zeroes for counts
 
-# Filling the lacking dates with zeroes
+    mlb = MultiLabelBinarizer()
+    kaggle_data_cnt = pd.DataFrame(
+            mlb.fit_transform(kaggle_data_raw[i]),
+            kaggle_data_raw.date, mlb.classes_).sum(level = 0)
+    kaggle_data_cnt.index = pd.DatetimeIndex(kaggle_data_cnt.index)
+    kaggle_data_cnt = kaggle_data_cnt.reindex(idx, fill_value = 0).stack().reset_index()
+    kaggle_data_cnt.columns = list(chain.from_iterable([colnames[0:2], [colnames[2] + '_cnt']]))
+    kaggle_data_cnt = kaggle_data_cnt.groupby(['date', 'tech']).sum().reset_index()
+    kaggle_data_cnt = kaggle_data_cnt[kaggle_data_cnt.tech != '']
+    kaggle_list.append(kaggle_data_cnt)
 
-from sklearn.preprocessing import MultiLabelBinarizer
-
-mlb = MultiLabelBinarizer()
-kaggle_data_txt = pd.DataFrame(
-        mlb.fit_transform(kaggle_data_raw.text_match),
-        kaggle_data_raw.date, mlb.classes_).sum(level = 0)
-kaggle_data_txt.index = pd.DatetimeIndex(kaggle_data_txt.index)
-kaggle_data_txt = kaggle_data_txt.reindex(idx, fill_value = 0).stack().reset_index()
-kaggle_data_txt.columns = ['date', 'tech', 'txt_cnt']
-kaggle_data_txt = kaggle_data_txt.groupby(['date', 'tech']).sum().reset_index()
-kaggle_data_txt = kaggle_data_txt[kaggle_data_txt.tech != '']
-
-mlb = MultiLabelBinarizer()
-kaggle_data_title = pd.DataFrame(
-        mlb.fit_transform(kaggle_data_raw.title_match),
-        kaggle_data_raw.date, mlb.classes_).sum(level = 0)
-kaggle_data_title.index = pd.DatetimeIndex(kaggle_data_title.index)
-kaggle_data_title = kaggle_data_title.reindex(idx, fill_value = 0).stack().reset_index()
-kaggle_data_title.columns = ['date', 'tech', 'title_cnt']
-kaggle_data_title = kaggle_data_title.groupby(['date', 'tech']).sum().reset_index()
-kaggle_data_title = kaggle_data_title[kaggle_data_title.tech != '']
-
-# Merging data into one kaggle data frame
-
-kaggle_data = (pd.merge(kaggle_data_txt, kaggle_data_title, how = 'outer',
-                                on = ['date', 'tech'])
-                .merge(kaggle_data_txt_score, how = 'outer',
-                       on = ['date', 'tech'])
-                .merge(kaggle_data_title_score, how = 'outer',
-                       on = ['date', 'tech']))
+### 3. Merging data from stack overflow and kaggle into one data frame
+    
+kaggle_data = reduce(lambda df1, df2:
+    df1.merge(df2, how = 'outer', on = ['date', 'tech']), kaggle_list)
 kaggle_data.date = pd.to_datetime(kaggle_data.date)
 data = (pd.merge(kaggle_data, stack_data, how = 'left',
                 left_on = ['date', 'tech'], right_on = ['post_date', 'tags'])
         .drop(['post_date', 'tags'], axis = 1)
         .fillna(0))
 
-del kaggle_data_txt, kaggle_data_title, kaggle_data_txt_score, kaggle_data_title_score, kaggle_data_raw
+del kaggle_list, kaggle_data_raw, kaggle_data
+
+cutoff = 25
+cutoff_str = str(cutoff)
+data['hn_all_match_score' + cutoff_str] = np.where(
+        data['hn_all_match_score']<cutoff, 0, data['hn_all_match_score'])
+data['hn_all_match_cnt' + cutoff_str] = np.where(
+        data['hn_all_match_score']<cutoff, 0, data['hn_all_match_cnt'])
+
+### 4. Data exclusions
 
 # Swift appeared 2nd June 2014: all the data befor this date from Hacker News
 # should be dropped
 
 data.drop(data[(data['tech'] == 'swift') & (data['date'] < '2014-06-02')].index |
-        data[(data['tech'] == 'spark') & (data['date'] < '2014-05-30')].index,
+        data[(data['tech'] == 'spark') & (data['date'] < '2014-05-30')].index |
+        data[data['date'] < '2008-09-13'].index, # two days for differences of differences
+        # 2007-02-19 - launch of StackOverflow
                 inplace = True)
 
-# Group by weekly frequency
-#kaggle_data.date = pd.to_datetime(kaggle_data.date)
-#kaggle_weekly = (kaggle_data.groupby(['tech',
-#                                    pd.Grouper(key = 'date', freq = 'W-MON')])
-#                .sum()
-#                .reset_index())
-    
-alpha = 0.7
-%matplotlib inline
-for i in data.tech.unique():
-    fig, ax1 = plt.subplots()
-    ax2 = ax1.twinx()
-    data_plot = data.loc[data['tech'] == i]
-    ax1.plot(data_plot['date'], data_plot['txt_cnt'], 'g-', alpha = alpha)
-    ax2.plot(data_plot['date'], np.log(data_plot['views']), 'b-', alpha = alpha)
-    ax1.set_xlabel('Date')
-    ax1.set_ylabel('Text counts', color = 'g')
-    ax2.set_ylabel('Score text sum', color = 'b')
-    plt.title(i)
-    plt.show()
+### 5. Plotting time series
+
+## Weekly freqency
+
+#hn_plots(data = data, freq = 'w',
+#         output_date = TODAY,
+#             select_tech = ['d3js', 'javascript', 'tensorflow'],
+#             common_var = 'hn_all_match_score',
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_score_sum',
+#             var3 = 'so_answers',
+#             var4 = 'so_views')
+#
+#hn_plots(data = data, freq = 'w',
+#         output_date = TODAY,
+#             select_tech = ['d3js', 'javascript', 'tensorflow'],
+#             common_var = 'hn_all_match_score',
+#             common_var3 = 'hn_all_match_cnt',
+#             common_var4 = 'hn_all_match_cnt',
+#             after_date = '2010-01-01',
+#             var1 = 'so_favorites',
+#             var2 = 'so_comments',
+#             var3 = 'so_favorites',
+#             var4 = 'so_comments')
+#
+#hn_plots(data = data, freq = 'w',
+#         output_date = TODAY,
+#             select_tech = ['d3js', 'javascript', 'tensorflow'],
+#             common_var = 'hn_all_match_cnt',
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_score_sum',
+#             var3 = 'so_answers',
+#             var4 = 'so_views')
 
 
 
+## Monthly frequency
 
 
+hn_plots(data = data, freq = 'M',
+         output_date = todays_date(),
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_cnt',
+             after_date = '2010-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_favorites',
+             var4 = 'so_views',
+             subfolder = 'plots')
 
+hn_plots(data = data, freq = 'M',
+         output_date = todays_date(),
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_score',
+             common_var2 = 'hn_all_match_score' + cutoff_str,
+             common_var3 = 'hn_all_match_score',
+             common_var4 = 'hn_all_match_score' + cutoff_str,
+             after_date = '2010-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_usage_cnt',
+             var3 = 'so_score_sum',
+             var4 = 'so_score_sum',
+             subfolder = 'plots')
 
+hn_plots(data = data, freq = 'M',
+         output_date = todays_date(),
+             select_tech = ['d3js', 'javascript', 'tensorflow'],
+             common_var = 'hn_all_match_cnt',
+             common_var2 = 'hn_all_match_cnt' + cutoff_str,
+             common_var3 = 'hn_all_match_cnt',
+             common_var4 = 'hn_all_match_cnt' + cutoff_str,
+             after_date = '2010-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_usage_cnt',
+             var3 = 'so_score_sum',
+             var4 = 'so_score_sum',
+             subfolder = 'plots')
 
+### End of code----
 
-gc.collect()
+#data.columns
+#data.loc[(data['tech'] == 'tensorflow') &
+#         ((data['hn_text_match_score'] > 0) | (data['so_views']>0))].date.min()
+#
+#after_date = '2010-01-01'
+#max(pd.to_datetime(after_date),
+#                        data.loc[(data['tech'] == 'tensorflow') &
+#         ((data['hn_text_match_score'] > 0) |
+#                 (data['so_views']>0))].date.min()).date().strftime('%Y-%m-%d')
+
+# Correlations
+#corr_day = data.groupby('tech').corr().reset_index()
+#corr_week = data_week.groupby('tech').corr().reset_index()
+#data.columns
+#data.sort_values(by = ['tech', 'date'], inplace = True)
+#for i in (<columns>)
+#data['diff_' + i] = data.groupby(['tech'])[i].transform(lambda x: x.diff())
+
+#'hn_all_match_cnt' == None
+#
+#max(pd.to_datetime('2010-01-01'),
+#                        data.loc[(data['tech'] == 'd3js') &
+#         ((data['hn_all_match_score'] > 0) | (data['so_views']>0))].date.min()).strftime('%Y-%m-%d')
