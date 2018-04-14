@@ -167,6 +167,9 @@ else:
     
 TODAY = str(todays_date.year) + month + day
 
+for counter, value in enumerate(['a', 'b', 'c']):
+    print(counter)
+
 
 def hn_plots(data = data,
              freq = 'd',
@@ -273,7 +276,8 @@ def hn_plots(data = data,
 #        fig_daily.autofmt_xdate()
         plt.xticks(rotation=90)
 #        plt.setp(ax5.get_xticklabels(), visible=True)
-        fig_daily.savefig(output_date + '_' + i + '_' + common_var +
+        fig_daily.savefig(output_date + '_' + i + '_' + common_var + '_' +
+                          common_var2 + '_' + common_var3 + '_' + common_var4 +
                           '_'+ freq + '_since' + after_date.replace('_', '')
                           + '.png'#, bbox_inches = 'tight'
                           )
@@ -320,7 +324,7 @@ max(pd.to_datetime(after_date),
                         data.loc[(data['tech'] == 'tensorflow') &
          ((data['hn_text_match_score'] > 0) |
                  (data['so_views']>0))].date.min()).date().strftime('%Y-%m-%d')
-    
+
 # Correlations
 #corr_day = data.groupby('tech').corr().reset_index()
 #corr_week = data_week.groupby('tech').corr().reset_index()
