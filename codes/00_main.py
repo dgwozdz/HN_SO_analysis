@@ -44,14 +44,6 @@ stack_data = stack_data.rename(columns = {'score_sum': 'so_score_sum',
                                           'favorites': 'so_favorites',
                                           'comments': 'so_comments',
                                           'usage_cnt': 'so_usage_cnt'})
-#%matplotlib inline      
-#          
-#for i in stack_data['tags'].unique():
-#    plt.plot()
-#    stack_plot = stack_data.loc[stack_data['tags'] == i]
-#    plt.plot(stack_plot['post_date'], stack_plot['usage_cnt'])
-#    plt.title(i)
-#    plt.show()
     
 ### 2. Kaggle data
 
@@ -59,13 +51,6 @@ kaggle_data_raw = pd.read_csv('.\\kaggle_data\\kaggle_data_20180414_1358.csv')
 kaggle_data_raw = kaggle_data_raw[
         (kaggle_data_raw.title_match.isnull() == False) |
         (kaggle_data_raw.text_match.isnull() == False)]
-
-# combine ttle and text
-
-#kaggle_data_raw
-#kaggle_data_raw.columns
-#kaggle_data_raw.loc[:, i] = [list(set(x))
-#                                for x in kaggle_data_raw[i].str.split(',')]
 
 idx = pd.date_range('01-01-2006', '31-12-2017')
 
@@ -83,49 +68,33 @@ for i in ['text_match', 'title_match']:
     .str.replace("d3", "d3js"))
     
 check = list(kaggle_data_raw.loc[:, 'text_match'].unique())
-    
+
+# Combining title and text matches
 
 kaggle_data_raw['all_match'] = (kaggle_data_raw['text_match']
     +','+ kaggle_data_raw['title_match'])
 kaggle_list = []
 
+## Cutoffs for scores of topics on HN:
+# if the score of a given topic
+# was smaller than the declared number, it won't be taken into calculation;
+# `None` means lack of such restriction
 cutoffs = [None, 10, 25]
-#kaggle_data_raw.columns
-#type(kaggle_data_raw)
-#kaggle_data_loop = kaggle_data_raw.loc[kaggle_data_raw['score']>=10]
-#type(kaggle_data_loop)
-#kaggle_data_raw.info()
-#kaggle_data_loop.info()
+
+
 from sklearn.preprocessing import MultiLabelBinarizer
-#for i in ['text_match', 'title_match', 'all_match']:
-#    print(i)
-
-#kaggle_data_raw = kaggle_data_raw.iloc[169460:169479]
-
-#kaggle_data_loop['text_match'].str.split(',')
-#kaggle_data_loop.loc[:, i] = [list(set(x))
-#cutoff = None
 for cutoff in cutoffs:
     if cutoff == None:
         kaggle_data_loop = kaggle_data_raw.copy()
         cutoff_lbl = ''
     else:
         kaggle_data_loop = kaggle_data_raw.loc[kaggle_data_raw['score']>=cutoff]
-        cutoff_lbl = '_' + str(cutoff)
-#    print(cutoff)
-#    print(cutoff == None)
-#    print(kaggle_data_loop.describe())
     for i in ['text_match', 'title_match', 'all_match']:
         
-    #kaggle_data_raw['text_match'].str.split(',')    
-    #    i  = 'text_match'
         # Removal of duplicates
         before = kaggle_data_loop[i]
         kaggle_data_loop.loc[:, i] = [list(set(x))
                                     for x in kaggle_data_loop[i].str.split(',')]
-    #    kaggle_data_raw[i].str.split(',')
-    #    [list(set(x)) for x in kaggle_data_raw['title_match'].str.split(',')]
-    #    [list(set(x)) for x in kaggle_data_loop['title_match'].str.split(',')]
         
         # Summing the scores per date and text/title match
         s = kaggle_data_loop[i].str.len()
@@ -261,7 +230,6 @@ hn_plots(data = data, freq = 'M',
              var4 = 'so_score_sum',
              subfolder = 'plots')
 
-data.tech.unique()
 
 #hn_plots(data = data, freq = 'M',
 #         output_date = todays_date(),
