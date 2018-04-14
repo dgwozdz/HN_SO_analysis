@@ -207,7 +207,7 @@ def hn_plots(data = data,
         
         fig_daily = plt.figure(figsize = (16,10))
         fig_daily.subplots_adjust(hspace = 0.3)
-#        fig_daily.tight_layout()
+        fig_daily.tight_layout()
         ax1 = plt.subplot(221)
         ax2 = ax1.twinx()
         ax3 = plt.subplot(222)
@@ -216,14 +216,14 @@ def hn_plots(data = data,
         ax6 = ax5.twinx()
         ax7 = plt.subplot(224)
         ax8 = ax7.twinx()
-        ax1.tick_params(axis='x', labelrotation =45)
-        ax2.tick_params(axis='x', labelrotation =45)
-        ax3.tick_params(axis='x', labelrotation =45)
-        ax4.tick_params(axis='x', labelrotation =45)
-        ax5.tick_params(axis='x', labelrotation =45)
-        ax6.tick_params(axis='x', labelrotation =45)
-        ax7.tick_params(axis='x', labelrotation =45)
-        ax8.tick_params(axis='x', labelrotation =45)
+        ax1.tick_params(axis='x', labelrotation =30)
+        ax2.tick_params(axis='x', labelrotation =30)
+        ax3.tick_params(axis='x', labelrotation =30)
+        ax4.tick_params(axis='x', labelrotation =30)
+        ax5.tick_params(axis='x', labelrotation =30)
+        ax6.tick_params(axis='x', labelrotation =30)
+        ax7.tick_params(axis='x', labelrotation =30)
+        ax8.tick_params(axis='x', labelrotation =30)
         
         # First plot:
         after_date = max(pd.to_datetime(after_date_declared),
