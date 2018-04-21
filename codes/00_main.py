@@ -15,6 +15,9 @@ from functools import reduce
 from itertools import chain
 from datetime import datetime
 
+from statsmodels.tsa.stattools import adfuller
+
+
 os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis\codes')
 from hn_plots import hn_plots, todays_date
 
@@ -25,7 +28,8 @@ os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis')
 stack_data1 = pd.read_csv('.\\stack_data\\tags_per_day_1_20180325.csv')
 stack_data2 = pd.read_csv('.\\stack_data\\tags_per_day_2_20180306.csv')
 stack_data3 = pd.read_csv('.\\stack_data\\tags_per_day_3_20180306.csv')
-stack_data4 = pd.read_csv('.\\stack_data\\tags_per_day_4_d3js_tensorflow_20180403.csv')
+stack_data4 = pd.read_csv(
+        '.\\stack_data\\tags_per_day_4_d3js_tensorflow_20180403.csv')
 
 stack_data = pd.concat([stack_data1, stack_data2, stack_data3, stack_data4])
 
@@ -151,46 +155,50 @@ data.drop(data[(data['tech'] == 'swift') & (data['date'] < '2014-06-02')].index 
                 inplace = True)
 
 ### 5. Plotting time series
-
-## Weekly freqency
-
-#hn_plots(data = data, freq = 'w',
-#         output_date = TODAY,
-#             select_tech = ['d3js', 'javascript', 'tensorflow'],
-#             common_var = 'hn_all_match_score',
-#             after_date = '2010-01-01',
-#             var1 = 'so_usage_cnt',
-#             var2 = 'so_score_sum',
-#             var3 = 'so_answers',
-#             var4 = 'so_views')
-#
-#hn_plots(data = data, freq = 'w',
-#         output_date = TODAY,
-#             select_tech = ['d3js', 'javascript', 'tensorflow'],
-#             common_var = 'hn_all_match_score',
-#             common_var3 = 'hn_all_match_cnt',
-#             common_var4 = 'hn_all_match_cnt',
-#             after_date = '2010-01-01',
-#             var1 = 'so_favorites',
-#             var2 = 'so_comments',
-#             var3 = 'so_favorites',
-#             var4 = 'so_comments')
-#
-#hn_plots(data = data, freq = 'w',
-#         output_date = TODAY,
-#             select_tech = ['d3js', 'javascript', 'tensorflow'],
-#             common_var = 'hn_all_match_cnt',
-#             after_date = '2010-01-01',
-#             var1 = 'so_usage_cnt',
-#             var2 = 'so_score_sum',
-#             var3 = 'so_answers',
-#             var4 = 'so_views')
-
-
-
 ## Monthly frequency
 
+#hn_plots(data = data, freq = 'M',
+#         output_date = todays_date(),
+#             select_tech = ['d3js', 'tensorflow', 'javascript'],
+#             common_var = 'hn_all_match_cnt',
+#             common_var3 = 'hn_all_match_score',
+#             common_var4 = 'hn_all_match_score',
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_score_sum',
+#             var3 = 'so_usage_cnt',
+#             var4 = 'so_score_sum',
+#             subfolder = 'plots')
+#
+#hn_plots(data = data, freq = 'M',
+#         output_date = todays_date(),
+#             select_tech = ['d3js', 'tensorflow', 'javascript'],
+#             common_var = 'hn_all_match_cnt_10',
+#             common_var3 = 'hn_all_match_score_10',
+#             common_var4 = 'hn_all_match_score_10',
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_score_sum',
+#             var3 = 'so_usage_cnt',
+#             var4 = 'so_score_sum',
+#             subfolder = 'plots')
+#
+#hn_plots(data = data, freq = 'M',
+#         output_date = todays_date(),
+#             select_tech = ['d3js', 'tensorflow', 'javascript'],
+#             common_var = 'hn_all_match_cnt_25',
+#             common_var3 = 'hn_all_match_score_25',
+#             common_var4 = 'hn_all_match_score_25',
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_score_sum',
+#             var3 = 'so_usage_cnt',
+#             var4 = 'so_score_sum',
+#             subfolder = 'plots')
 
+### 6. Testing for nonstationarity
+
+# 6.1 Plotting data to visually identify a trend
 hn_plots(data = data, freq = 'M',
          output_date = todays_date(),
              select_tech = ['d3js', 'tensorflow', 'javascript'],
@@ -204,83 +212,51 @@ hn_plots(data = data, freq = 'M',
              var4 = 'so_score_sum',
              subfolder = 'plots')
 
+# Manually limiting the analysis for d3js since the number of observations
+# for analyzed variables is too small
 hn_plots(data = data, freq = 'M',
          output_date = todays_date(),
-             select_tech = ['d3js', 'tensorflow', 'javascript'],
-             common_var = 'hn_all_match_cnt_10',
-             common_var3 = 'hn_all_match_score_10',
-             common_var4 = 'hn_all_match_score_10',
-             after_date = '2010-01-01',
+             select_tech = ['d3js'],
+             common_var = 'hn_all_match_cnt',
+             common_var3 = 'hn_all_match_score',
+             common_var4 = 'hn_all_match_score',
+             after_date = '2011-06-01',
              var1 = 'so_usage_cnt',
              var2 = 'so_score_sum',
              var3 = 'so_usage_cnt',
              var4 = 'so_score_sum',
              subfolder = 'plots')
 
-hn_plots(data = data, freq = 'M',
-         output_date = todays_date(),
-             select_tech = ['d3js', 'tensorflow', 'javascript'],
-             common_var = 'hn_all_match_cnt_25',
-             common_var3 = 'hn_all_match_score_25',
-             common_var4 = 'hn_all_match_score_25',
-             after_date = '2010-01-01',
-             var1 = 'so_usage_cnt',
-             var2 = 'so_score_sum',
-             var3 = 'so_usage_cnt',
-             var4 = 'so_score_sum',
-             subfolder = 'plots')
+data_3tech = data.loc[data['tech'].isin(['javascript', 'd3js', 'tensorflow'])]
+data_3tech.drop(data_3tech[(data_3tech['tech'] == 'd3js') &
+                           (data_3tech['date'] <  '2011-06-01')].index, 
+    inplace = True)
+data_3tech = (data_3tech.groupby(['tech',
+                       pd.Grouper(key = 'date', freq = 'M')])
+                .sum()
+                .reset_index())
 
+# Idea - doing linear regression and checking whether the time coefficient
+# is statistically significant
 
-#hn_plots(data = data, freq = 'M',
-#         output_date = todays_date(),
-#             select_tech = ['d3js', 'javascript', 'tensorflow'],
-#             common_var = 'hn_all_match_score',
-#             common_var2 = 'hn_all_match_score' + cutoff_str,
-#             common_var3 = 'hn_all_match_score',
-#             common_var4 = 'hn_all_match_score' + cutoff_str,
-#             after_date = '2010-01-01',
-#             var1 = 'so_usage_cnt',
-#             var2 = 'so_usage_cnt',
-#             var3 = 'so_score_sum',
-#             var4 = 'so_score_sum',
-#             subfolder = 'plots')
-#
-#hn_plots(data = data, freq = 'M',
-#         output_date = todays_date(),
-#             select_tech = ['d3js', 'javascript', 'tensorflow'],
-#             common_var = 'hn_all_match_cnt',
-#             common_var2 = 'hn_all_match_cnt' + cutoff_str,
-#             common_var3 = 'hn_all_match_cnt',
-#             common_var4 = 'hn_all_match_cnt' + cutoff_str,
-#             after_date = '2010-01-01',
-#             var1 = 'so_usage_cnt',
-#             var2 = 'so_usage_cnt',
-#             var3 = 'so_score_sum',
-#             var4 = 'so_score_sum',
-#             subfolder = 'plots')
+# 6.2 Differentiate time series
+data_3tech['diff_so_usage_cnt_1'] = (data_3tech.groupby(['tech']).
+          so_usage_cnt.diff())
+data_3tech['diff_so_score_sum_1'] = (data_3tech.groupby(['tech']).
+          so_score_sum.diff())
+data_3tech['diff_hn_all_match_score_1'] = (data_3tech.groupby(['tech']).
+          hn_all_match_score.diff())
+data_3tech['diff_hn_all_match_cnt_1'] = (data_3tech.groupby(['tech']).
+          hn_all_match_cnt.diff())
 
-### End of code----
+adf_tests = (data_3tech.groupby(['tech'])['so_usage_cnt', 'so_score_sum',
+             'hn_all_match_cnt', 'hn_all_match_score']
+            .agg([lambda x: adfuller(x, regression = 'ct')[1]]).reset_index())
+adf_tests.loc[adf_tests['tech'] == 'd3js']['so_score_sum'] = adfuller(
+        data_3tech[data_3tech['tech'] == 'd3js']['so_score_sum'],
+        regression = 'c')[1] # for d3js and so_score_sum linear trend
+# seems to be not suitable
 
-#data.columns
-#data.loc[(data['tech'] == 'tensorflow') &
-#         ((data['hn_text_match_score'] > 0) | (data['so_views']>0))].date.min()
-#
-#after_date = '2010-01-01'
-#max(pd.to_datetime(after_date),
-#                        data.loc[(data['tech'] == 'tensorflow') &
-#         ((data['hn_text_match_score'] > 0) |
-#                 (data['so_views']>0))].date.min()).date().strftime('%Y-%m-%d')
-
-# Correlations
-#corr_day = data.groupby('tech').corr().reset_index()
-#corr_week = data_week.groupby('tech').corr().reset_index()
-#data.columns
-#data.sort_values(by = ['tech', 'date'], inplace = True)
-#for i in (<columns>)
-#data['diff_' + i] = data.groupby(['tech'])[i].transform(lambda x: x.diff())
-
-#'hn_all_match_cnt' == None
-#
-#max(pd.to_datetime('2010-01-01'),
-#                        data.loc[(data['tech'] == 'd3js') &
-#         ((data['hn_all_match_score'] > 0) | (data['so_views']>0))].date.min()).strftime('%Y-%m-%d')
+# Conclusion: no need to diffentiate d3js for HN and javascript in 
+# case of ; the rest of the variable
+# have to be differentiated
