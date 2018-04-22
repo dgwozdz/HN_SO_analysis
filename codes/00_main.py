@@ -15,11 +15,15 @@ from functools import reduce
 from itertools import chain
 from datetime import datetime
 
-from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.stattools import adfuller, grangercausalitytests
+from sklearn import linear_model
+from scipy import stats
 
 
 os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis\codes')
 from hn_plots import hn_plots, todays_date
+from diff_nonstationary import diff_nonstationary
+from useful import repeated # Useful function from the Web
 
 os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis')
 
@@ -240,14 +244,15 @@ data_3tech = (data_3tech.groupby(['tech',
 # is statistically significant
 
 # 6.2 Differentiate time series
-data_3tech['diff_so_usage_cnt_1'] = (data_3tech.groupby(['tech']).
-          so_usage_cnt.diff())
-data_3tech['diff_so_score_sum_1'] = (data_3tech.groupby(['tech']).
-          so_score_sum.diff())
-data_3tech['diff_hn_all_match_score_1'] = (data_3tech.groupby(['tech']).
-          hn_all_match_score.diff())
-data_3tech['diff_hn_all_match_cnt_1'] = (data_3tech.groupby(['tech']).
-          hn_all_match_cnt.diff())
+
+#data_3tech['diff_so_usage_cnt_1'] = (data_3tech.groupby(['tech']).
+#          so_usage_cnt.diff())
+#data_3tech['diff_so_score_sum_1'] = (data_3tech.groupby(['tech']).
+#          so_score_sum.diff())
+#data_3tech['diff_hn_all_match_score_1'] = (data_3tech.groupby(['tech']).
+#          hn_all_match_score.diff())
+#data_3tech['diff_hn_all_match_cnt_1'] = (data_3tech.groupby(['tech']).
+#          hn_all_match_cnt.diff())
 
 adf_tests = (data_3tech.groupby(['tech'])['so_usage_cnt', 'so_score_sum',
              'hn_all_match_cnt', 'hn_all_match_score']
@@ -260,3 +265,42 @@ adf_tests.loc[adf_tests['tech'] == 'd3js']['so_score_sum'] = adfuller(
 # Conclusion: no need to diffentiate d3js for HN and javascript in 
 # case of ; the rest of the variable
 # have to be differentiated
+
+# Linear models for each variable
+PVALUE = .05
+VARS = ['so_usage_cnt', 'so_score_sum',
+        'hn_all_match_cnt', 'hn_all_match_score']
+
+diff_req = (data_3tech.groupby(['tech'])[VARS]
+    .agg([lambda x: diff_nonstationary(x, PVALUE)]))
+diff_req.columns = diff_req.columns.droplevel(1)
+
+# parameters: granger_list, tech, maxlag
+GRANGER_LIST = [('hn_all_match_score', 'so_usage_cnt'), 
+ ('hn_all_match_cnt', 'so_usage_cnt'),
+ ('hn_all_match_score', 'so_score_sum'),
+ ('hn_all_match_score', 'so_usage_cnt')]
+
+GRANGER_LIST[0][1]
+def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag):
+    for g in groups:
+        for gl in granger_list:
+            print(gl)
+#            print(diff_x.at[g, gl[0]])
+            yvar = repeated(pd.DataFrame.diff,
+                            int(diff_x.at[g, gl[0]]))(x[x[group_var] == g][gl[0]])
+#            print(diff_x.at[g, gl[1]])
+            xvar = repeated(pd.DataFrame.diff,
+                            int(diff_x.at[g, gl[1]]))(x[x[group_var] == g][gl[1]])
+            results = grangercausalitytests((pd.concat([yvar, xvar], axis=1)
+                                            .dropna()),
+                                            maxlag = maxlag)
+            print(results)
+            return(results)
+
+a = calc_granger_causality(x = data_3tech,
+                      diff_x = diff_req,
+                      granger_list = GRANGER_LIST,
+                      group_var = 'tech',
+                      groups = ['tensorflow'],
+                      maxlag = 1)
