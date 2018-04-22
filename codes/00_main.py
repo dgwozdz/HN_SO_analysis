@@ -281,22 +281,20 @@ GRANGER_LIST = [('hn_all_match_score', 'so_usage_cnt'),
  ('hn_all_match_score', 'so_score_sum'),
  ('hn_all_match_score', 'so_usage_cnt')]
 
-GRANGER_LIST[0][1]
+
 def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag):
+    results = []
     for g in groups:
         for gl in granger_list:
-            print(gl)
-#            print(diff_x.at[g, gl[0]])
             yvar = repeated(pd.DataFrame.diff,
                             int(diff_x.at[g, gl[0]]))(x[x[group_var] == g][gl[0]])
-#            print(diff_x.at[g, gl[1]])
             xvar = repeated(pd.DataFrame.diff,
                             int(diff_x.at[g, gl[1]]))(x[x[group_var] == g][gl[1]])
-            results = grangercausalitytests((pd.concat([yvar, xvar], axis=1)
+            result = grangercausalitytests((pd.concat([yvar, xvar], axis=1)
                                             .dropna()),
-                                            maxlag = maxlag)
-            print(results)
-            return(results)
+                                            maxlag = maxlag, verbose = False)[1]
+            results.append(result)
+    return(results)
 
 a = calc_granger_causality(x = data_3tech,
                       diff_x = diff_req,
@@ -304,3 +302,5 @@ a = calc_granger_causality(x = data_3tech,
                       group_var = 'tech',
                       groups = ['tensorflow'],
                       maxlag = 1)
+a[0]
+a[1]
