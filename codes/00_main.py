@@ -25,6 +25,9 @@ from hn_plots import hn_plots, todays_date
 from diff_nonstationary import diff_nonstationary
 from useful import repeated # Useful function from the Web
 
+from grangercausalitytests_mod import grangercausalitytests_mod
+from calc_granger_causality import calc_granger_causality
+
 os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis')
 
 ### 1. Stack Overflow data
@@ -203,33 +206,33 @@ data.drop(data[(data['tech'] == 'swift') & (data['date'] < '2014-06-02')].index 
 ### 6. Testing for nonstationarity
 
 # 6.1 Plotting data to visually identify a trend
-hn_plots(data = data, freq = 'M',
-         output_date = todays_date(),
-             select_tech = ['d3js', 'tensorflow', 'javascript'],
-             common_var = 'hn_all_match_cnt',
-             common_var3 = 'hn_all_match_score',
-             common_var4 = 'hn_all_match_score',
-             after_date = '2010-01-01',
-             var1 = 'so_usage_cnt',
-             var2 = 'so_score_sum',
-             var3 = 'so_usage_cnt',
-             var4 = 'so_score_sum',
-             subfolder = 'plots')
+#hn_plots(data = data, freq = 'M',
+#         output_date = todays_date(),
+#             select_tech = ['d3js', 'tensorflow', 'javascript'],
+#             common_var = 'hn_all_match_cnt',
+#             common_var3 = 'hn_all_match_score',
+#             common_var4 = 'hn_all_match_score',
+#             after_date = '2010-01-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_score_sum',
+#             var3 = 'so_usage_cnt',
+#             var4 = 'so_score_sum',
+#             subfolder = 'plots')
 
 # Manually limiting the analysis for d3js since the number of observations
 # for analyzed variables is too small
-hn_plots(data = data, freq = 'M',
-         output_date = todays_date(),
-             select_tech = ['d3js'],
-             common_var = 'hn_all_match_cnt',
-             common_var3 = 'hn_all_match_score',
-             common_var4 = 'hn_all_match_score',
-             after_date = '2011-06-01',
-             var1 = 'so_usage_cnt',
-             var2 = 'so_score_sum',
-             var3 = 'so_usage_cnt',
-             var4 = 'so_score_sum',
-             subfolder = 'plots')
+#hn_plots(data = data, freq = 'M',
+#         output_date = todays_date(),
+#             select_tech = ['d3js'],
+#             common_var = 'hn_all_match_cnt',
+#             common_var3 = 'hn_all_match_score',
+#             common_var4 = 'hn_all_match_score',
+#             after_date = '2011-06-01',
+#             var1 = 'so_usage_cnt',
+#             var2 = 'so_score_sum',
+#             var3 = 'so_usage_cnt',
+#             var4 = 'so_score_sum',
+#             subfolder = 'plots')
 
 data_3tech = data.loc[data['tech'].isin(['javascript', 'd3js', 'tensorflow'])]
 data_3tech.drop(data_3tech[(data_3tech['tech'] == 'd3js') &
@@ -275,32 +278,31 @@ diff_req = (data_3tech.groupby(['tech'])[VARS]
     .agg([lambda x: diff_nonstationary(x, PVALUE)]))
 diff_req.columns = diff_req.columns.droplevel(1)
 
+
+data_3tech[data_3tech['tech'] == 'javascript'][['hn_all_match_score', 'so_usage_cnt']]
+
 # parameters: granger_list, tech, maxlag
 GRANGER_LIST = [('hn_all_match_score', 'so_usage_cnt'), 
- ('hn_all_match_cnt', 'so_usage_cnt'),
- ('hn_all_match_score', 'so_score_sum'),
- ('hn_all_match_score', 'so_usage_cnt')]
+                 ('hn_all_match_cnt', 'so_usage_cnt'),
+                 ('hn_all_match_score', 'so_score_sum'),
+                 ('hn_all_match_score', 'so_usage_cnt')]
 
-
-def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag):
-    results = []
-    for g in groups:
-        for gl in granger_list:
-            yvar = repeated(pd.DataFrame.diff,
-                            int(diff_x.at[g, gl[0]]))(x[x[group_var] == g][gl[0]])
-            xvar = repeated(pd.DataFrame.diff,
-                            int(diff_x.at[g, gl[1]]))(x[x[group_var] == g][gl[1]])
-            result = grangercausalitytests((pd.concat([yvar, xvar], axis=1)
-                                            .dropna()),
-                                            maxlag = maxlag, verbose = False)[1]
-            results.append(result)
-    return(results)
-
-a = calc_granger_causality(x = data_3tech,
+granger_results_js = calc_granger_causality(x = data_3tech,
+                      diff_x = diff_req,
+                      granger_list = GRANGER_LIST,
+                      group_var = 'tech',
+                      groups = ['javascript'],
+                      maxlag = 35)
+granger_results_js = calc_granger_causality(x = data_3tech,
                       diff_x = diff_req,
                       granger_list = GRANGER_LIST,
                       group_var = 'tech',
                       groups = ['tensorflow'],
-                      maxlag = 1)
-a[0]
-a[1]
+                      maxlag = 35)
+granger_results_js = calc_granger_causality(x = data_3tech,
+                      diff_x = diff_req,
+                      granger_list = GRANGER_LIST,
+                      group_var = 'tech',
+                      groups = ['d3js'],
+                      maxlag = 35)
+
