@@ -4,7 +4,8 @@ Created on Wed May  9 19:14:49 2018
 """
 
 
-def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag):
+def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag,
+                           both_sides = False, only_min_crit = False):
     
     """Computes Granger Cauusality test for two given time series.
     Takes into consideration time series differencing on the basis of
@@ -14,16 +15,25 @@ def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag):
     1) x - input time series
     2) alpha - significance level
     """
-    
+ 
     import pandas as pd
     import numpy as np
-    from warnings import warn
     from useful import repeated
     from grangercausalitytests_mod import grangercausalitytests_mod
     from statsmodels.regression.linear_model import OLSResults
     
-    results = pd.DataFrame(columns=['group', 'y', 'y_diff', 'x', 'x_diff',
-                                    'lag', 'p_value', 'AIC', 'BIC'])
+    if both_sides == True:
+        granger_list_reversed = [x[::-1] for x in granger_list]
+        granger_list = granger_list.copy()
+        granger_list.extend(granger_list_reversed)
+    
+    if only_min_crit:
+        results = pd.DataFrame(columns=['group', 'y', 'y_diff', 'x', 'x_diff',
+                                    'lag', 'p_value', 'AIC', 'BIC',
+                                    'min_AIC', 'min_BIC'])
+    else:
+        results = pd.DataFrame(columns=['group', 'y', 'y_diff', 'x', 'x_diff',
+                                        'lag', 'p_value', 'AIC', 'BIC'])
     
     for g in groups:
         for gl in granger_list:
@@ -56,6 +66,19 @@ def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag):
                                      for x in range(1, maxlag+1)],
                      }
                  )
+            if only_min_crit:
+                min_AIC = df.loc[df.AIC == min(df.AIC)]
+                min_BIC = df.loc[df.BIC == min(df.BIC)]
+                if min_AIC.equals(min_BIC):
+                    min_AIC = min_AIC.assign(min_AIC = True)
+                    min_AIC = min_AIC.assign(min_BIC = True)
+                    df = min_AIC
+                else: 
+                    min_AIC = min_AIC.assign(min_AIC = True)
+                    min_AIC = min_AIC.assign(min_BIC = False)
+                    min_BIC = min_BIC.assign(min_AIC = False)
+                    min_BIC = min_BIC.assign(min_BIC = True)
+                    df = pd.concat([min_AIC, min_BIC], axis = 0)
             results = pd.concat([results, df], axis = 0)
     return(results.reset_index(drop=True))
     

@@ -42,7 +42,6 @@ def grangercausalitytests_mod(x, maxlag, addconst=True, verbose=True):
             raise NotImplementedError('Not Implemented')
             #dtaown = dta[:, 1:mxlg]
             #dtajoint = dta[:, 1:]
-        print(dtajoint.shape)
 
         # Run ols on both models without and with lags of second variable
         res2down = OLS(dta[:, 0], dtaown).fit()
@@ -84,7 +83,6 @@ def grangercausalitytests_mod(x, maxlag, addconst=True, verbose=True):
         rconstr = np.column_stack((np.zeros((mxlg, mxlg)),
                                    np.eye(mxlg, mxlg),
                                    np.zeros((mxlg, 1))))
-        print(rconstr)
         ftres = res2djoint.f_test(rconstr)
         if verbose:
             print('parameter F test:         F=%-8.4f, p=%-8.4f, df_denom=%d,'
@@ -95,5 +93,4 @@ def grangercausalitytests_mod(x, maxlag, addconst=True, verbose=True):
                                   ftres.df_denom, ftres.df_num)
 
         resli[mxlg] = (result, [res2down, res2djoint, rconstr])
-
     return resli

@@ -27,6 +27,7 @@ from useful import repeated # Useful function from the Web
 
 from grangercausalitytests_mod import grangercausalitytests_mod
 from calc_granger_causality import calc_granger_causality
+from sel_data_min_date import sel_data_min_date
 
 os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis')
 
@@ -269,7 +270,7 @@ adf_tests.loc[adf_tests['tech'] == 'd3js']['so_score_sum'] = adfuller(
 # case of ; the rest of the variable
 # have to be differentiated
 
-# Linear models for each variable
+# Linear moels for each variable
 PVALUE = .05
 VARS = ['so_usage_cnt', 'so_score_sum',
         'hn_all_match_cnt', 'hn_all_match_score']
@@ -281,28 +282,38 @@ diff_req.columns = diff_req.columns.droplevel(1)
 
 data_3tech[data_3tech['tech'] == 'javascript'][['hn_all_match_score', 'so_usage_cnt']]
 
-# parameters: granger_list, tech, maxlag
+data_3tech_min_date = sel_data_min_date(data_3tech,
+                                      'tech',
+                                      'date',
+                                      'hn_all_match_score',
+                                      'so_views')
+
 GRANGER_LIST = [('hn_all_match_score', 'so_usage_cnt'), 
                  ('hn_all_match_cnt', 'so_usage_cnt'),
                  ('hn_all_match_score', 'so_score_sum'),
-                 ('hn_all_match_score', 'so_usage_cnt')]
+                 ('hn_all_match_score', 'so_score_sum')]
 
-granger_results_js = calc_granger_causality(x = data_3tech,
-                      diff_x = diff_req,
+granger_results_js = calc_granger_causality(x = data_3tech_min_date,
+                                            diff_x = diff_req,
                       granger_list = GRANGER_LIST,
                       group_var = 'tech',
                       groups = ['javascript'],
-                      maxlag = 35)
-granger_results_js = calc_granger_causality(x = data_3tech,
+                      maxlag = 35,
+                      both_sides = True,
+                      only_min_crit = True)
+granger_results_tnsr = calc_granger_causality(x = data_3tech_min_date,
                       diff_x = diff_req,
                       granger_list = GRANGER_LIST,
                       group_var = 'tech',
                       groups = ['tensorflow'],
-                      maxlag = 35)
-granger_results_js = calc_granger_causality(x = data_3tech,
+                      maxlag = 6,
+                      both_sides = True,
+                      only_min_crit = True)
+granger_results_d3js = calc_granger_causality(x = data_3tech_min_date,
                       diff_x = diff_req,
                       granger_list = GRANGER_LIST,
                       group_var = 'tech',
                       groups = ['d3js'],
-                      maxlag = 35)
-
+                      maxlag = 24,
+                      both_sides = True,
+                      only_min_crit = True)
