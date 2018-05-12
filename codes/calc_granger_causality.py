@@ -5,7 +5,8 @@ Created on Wed May  9 19:14:49 2018
 
 
 def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag,
-                           both_sides = False, only_min_crit = False):
+                           both_sides = False, only_min_crit = False,
+                           filter_p_value = None):
     
     """Computes Granger Cauusality test for two given time series.
     Takes into consideration time series differencing on the basis of
@@ -26,17 +27,26 @@ def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag,
         granger_list_reversed = [x[::-1] for x in granger_list]
         granger_list = granger_list.copy()
         granger_list.extend(granger_list_reversed)
+        len_granger_list = len(granger_list)
     
     if only_min_crit:
-        results = pd.DataFrame(columns=['group', 'y', 'y_diff', 'x', 'x_diff',
-                                    'lag', 'p_value', 'AIC', 'BIC',
+        results = pd.DataFrame(columns=['ID', 'group', 'y', 'y_diff', 'x',
+                                     'x_diff', 'lag', 'p_value', 'AIC', 'BIC',
                                     'min_AIC', 'min_BIC'])
     else:
-        results = pd.DataFrame(columns=['group', 'y', 'y_diff', 'x', 'x_diff',
-                                        'lag', 'p_value', 'AIC', 'BIC'])
+        results = pd.DataFrame(columns=['ID', 'group', 'y', 'y_diff', 'x',
+                                         'x_diff','lag', 'p_value', 'AIC',
+                                          'BIC'])
     
     for g in groups:
-        for gl in granger_list:
+        for i, gl in enumerate(granger_list):
+            
+            if both_sides: # reversed pairs
+                if i>=len_granger_list/2:
+                    i = i - len_granger_list/2 # ID of reversed pair equals
+                    # to the ID of the original pair:
+                    # ID(Y~X) = ID(X~Y)
+                    
             yvar_diffs = int(diff_x.at[g, gl[0]])
             yvar = repeated(pd.DataFrame.diff,
                             yvar_diffs)(x[x[group_var] == g][gl[0]])
@@ -52,7 +62,8 @@ def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag,
                     )
 
             df = pd.DataFrame(
-                    {'group': np.repeat(g, maxlag),
+                    {'ID': np.repeat(i, maxlag),
+                     'group': np.repeat(g, maxlag),
                      'y': np.repeat(gl[0], maxlag),
                      'y_diff': np.repeat(yvar_diffs, maxlag),
                      'x': np.repeat(gl[1], maxlag),
@@ -79,7 +90,12 @@ def calc_granger_causality(x, diff_x, granger_list, group_var, groups, maxlag,
                     min_BIC = min_BIC.assign(min_AIC = False)
                     min_BIC = min_BIC.assign(min_BIC = True)
                     df = pd.concat([min_AIC, min_BIC], axis = 0)
-            results = pd.concat([results, df], axis = 0)
-    return(results.reset_index(drop=True))
+            results = (pd.concat([results, df], axis = 0)
+            .sort_values(by = ['group', 'ID'])
+            .reset_index(drop=True))
+    if filter_p_value is not None:
+        return(results[results.p_value<filter_p_value])
+    else:
+        return(results)
     
 ### End of code

@@ -244,19 +244,7 @@ data_3tech = (data_3tech.groupby(['tech',
                 .sum()
                 .reset_index())
 
-# Idea - doing linear regression and checking whether the time coefficient
-# is statistically significant
-
-# 6.2 Differentiate time series
-
-#data_3tech['diff_so_usage_cnt_1'] = (data_3tech.groupby(['tech']).
-#          so_usage_cnt.diff())
-#data_3tech['diff_so_score_sum_1'] = (data_3tech.groupby(['tech']).
-#          so_score_sum.diff())
-#data_3tech['diff_hn_all_match_score_1'] = (data_3tech.groupby(['tech']).
-#          hn_all_match_score.diff())
-#data_3tech['diff_hn_all_match_cnt_1'] = (data_3tech.groupby(['tech']).
-#          hn_all_match_cnt.diff())
+# 6.2 Nonstationarity tests
 
 adf_tests = (data_3tech.groupby(['tech'])['so_usage_cnt', 'so_score_sum',
              'hn_all_match_cnt', 'hn_all_match_score']
@@ -270,7 +258,8 @@ adf_tests.loc[adf_tests['tech'] == 'd3js']['so_score_sum'] = adfuller(
 # case of ; the rest of the variable
 # have to be differentiated
 
-# Linear moels for each variable
+# Tests of Granger causality for each variable
+
 PVALUE = .05
 VARS = ['so_usage_cnt', 'so_score_sum',
         'hn_all_match_cnt', 'hn_all_match_score']
@@ -278,9 +267,6 @@ VARS = ['so_usage_cnt', 'so_score_sum',
 diff_req = (data_3tech.groupby(['tech'])[VARS]
     .agg([lambda x: diff_nonstationary(x, PVALUE)]))
 diff_req.columns = diff_req.columns.droplevel(1)
-
-
-data_3tech[data_3tech['tech'] == 'javascript'][['hn_all_match_score', 'so_usage_cnt']]
 
 data_3tech_min_date = sel_data_min_date(data_3tech,
                                       'tech',
@@ -291,7 +277,7 @@ data_3tech_min_date = sel_data_min_date(data_3tech,
 GRANGER_LIST = [('hn_all_match_score', 'so_usage_cnt'), 
                  ('hn_all_match_cnt', 'so_usage_cnt'),
                  ('hn_all_match_score', 'so_score_sum'),
-                 ('hn_all_match_score', 'so_score_sum')]
+                 ('hn_all_match_cnt', 'so_score_sum')]
 
 granger_results_js = calc_granger_causality(x = data_3tech_min_date,
                                             diff_x = diff_req,
@@ -300,7 +286,8 @@ granger_results_js = calc_granger_causality(x = data_3tech_min_date,
                       groups = ['javascript'],
                       maxlag = 35,
                       both_sides = True,
-                      only_min_crit = True)
+                      only_min_crit = True,
+                      filter_p_value = PVALUE)
 granger_results_tnsr = calc_granger_causality(x = data_3tech_min_date,
                       diff_x = diff_req,
                       granger_list = GRANGER_LIST,
@@ -308,7 +295,8 @@ granger_results_tnsr = calc_granger_causality(x = data_3tech_min_date,
                       groups = ['tensorflow'],
                       maxlag = 6,
                       both_sides = True,
-                      only_min_crit = True)
+                      only_min_crit = True,
+                      filter_p_value = PVALUE)
 granger_results_d3js = calc_granger_causality(x = data_3tech_min_date,
                       diff_x = diff_req,
                       granger_list = GRANGER_LIST,
@@ -316,4 +304,5 @@ granger_results_d3js = calc_granger_causality(x = data_3tech_min_date,
                       groups = ['d3js'],
                       maxlag = 24,
                       both_sides = True,
-                      only_min_crit = True)
+                      only_min_crit = True,
+                      filter_p_value = PVALUE)
