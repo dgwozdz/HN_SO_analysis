@@ -19,12 +19,12 @@ from statsmodels.tsa.stattools import adfuller, grangercausalitytests
 from sklearn import linear_model
 from scipy import stats
 
+# Loading custom functioons functions 
 
 os.chdir('F:\Damian\github\HN_SO_analysis\HN_SO_analysis\codes')
 from hn_plots import hn_plots, todays_date
 from diff_nonstationary import diff_nonstationary
 from useful import repeated # Useful function from the Web
-
 from grangercausalitytests_mod import grangercausalitytests_mod
 from calc_granger_causality import calc_granger_causality
 from sel_data_min_date import sel_data_min_date
@@ -158,8 +158,10 @@ del kaggle_list, kaggle_data_raw, kaggle_data
 
 data.drop(data[(data['tech'] == 'swift') & (data['date'] < '2014-06-02')].index |
         data[(data['tech'] == 'spark') & (data['date'] < '2014-05-30')].index |
-        data[data['date'] < '2008-09-13'].index, # two days for differences of differences
+        data[data['date'] < '2008-09-13'].index| # two days for differences of differences
         # 2007-02-19 - launch of StackOverflow
+        data[(data['tech'] == 'd3js') & (data['date'] < '2011-06-01')].index,
+        # Exclusion of d3js for which there were no obsrvations
                 inplace = True)
 
 ### 5. Plotting time series
@@ -235,74 +237,115 @@ data.drop(data[(data['tech'] == 'swift') & (data['date'] < '2014-06-02')].index 
 #             var4 = 'so_score_sum',
 #             subfolder = 'plots')
 
-data_3tech = data.loc[data['tech'].isin(['javascript', 'd3js', 'tensorflow'])]
-data_3tech.drop(data_3tech[(data_3tech['tech'] == 'd3js') &
-                           (data_3tech['date'] <  '2011-06-01')].index, 
-    inplace = True)
-data_3tech = (data_3tech.groupby(['tech',
+data_w = (data.groupby(['tech',
+                       pd.Grouper(key = 'date', freq = 'W')])
+                .sum()
+                .reset_index())
+data_m = (data.groupby(['tech',
                        pd.Grouper(key = 'date', freq = 'M')])
                 .sum()
                 .reset_index())
 
 # 6.2 Nonstationarity tests
 
-adf_tests = (data_3tech.groupby(['tech'])['so_usage_cnt', 'so_score_sum',
-             'hn_all_match_cnt', 'hn_all_match_score']
-            .agg([lambda x: adfuller(x, regression = 'ct')[1]]).reset_index())
-adf_tests.loc[adf_tests['tech'] == 'd3js']['so_score_sum'] = adfuller(
-        data_3tech[data_3tech['tech'] == 'd3js']['so_score_sum'],
-        regression = 'c')[1] # for d3js and so_score_sum linear trend
-# seems to be not suitable
-
-# Conclusion: no need to diffentiate d3js for HN and javascript in 
-# case of ; the rest of the variable
-# have to be differentiated
-
-# Tests of Granger causality for each variable
-
-PVALUE = .05
+PVALUE = .05 # significance level on the basis of which nonstationarity
+# is determined
 VARS = ['so_usage_cnt', 'so_score_sum',
-        'hn_all_match_cnt', 'hn_all_match_score']
+        'hn_all_match_cnt', 'hn_all_match_score'] # variables for which
+# nonstationarity is checked
 
-diff_req = (data_3tech.groupby(['tech'])[VARS]
+# daily data
+
+diff_req = (data.groupby(['tech'])[VARS]
     .agg([lambda x: diff_nonstationary(x, PVALUE)]))
 diff_req.columns = diff_req.columns.droplevel(1)
 
-data_3tech_min_date = sel_data_min_date(data_3tech,
+# weekly data
+
+diff_req_w = (data_w.groupby(['tech'])[VARS]
+    .agg([lambda x: diff_nonstationary(x, PVALUE)]))
+diff_req_w.columns = diff_req_w.columns.droplevel(1)
+
+# monthly data
+
+diff_req_m = (data_m.groupby(['tech'])[VARS]
+    .agg([lambda x: diff_nonstationary(x, PVALUE)]))
+diff_req_m.columns = diff_req_m.columns.droplevel(1)
+
+# Selection of observation starting from the first date for which at least one
+# of two variables: hn_all_match_score, so_views was greater than 0 (zero)
+
+# daily data
+
+data_min_date = sel_data_min_date(data,
                                       'tech',
                                       'date',
                                       'hn_all_match_score',
                                       'so_views')
 
+# weekly data
+
+data_w_min_date = sel_data_min_date(data_w,
+                                      'tech',
+                                      'date',
+                                      'hn_all_match_score',
+                                      'so_views')
+
+# monthly data
+
+data_m_min_date = sel_data_min_date(data_m,
+                                      'tech',
+                                      'date',
+                                      'hn_all_match_score',
+                                      'so_views')
+
+# 6.3 Tests of Granger causality for each variable
+
 GRANGER_LIST = [('hn_all_match_score', 'so_usage_cnt'), 
                  ('hn_all_match_cnt', 'so_usage_cnt'),
                  ('hn_all_match_score', 'so_score_sum'),
                  ('hn_all_match_cnt', 'so_score_sum')]
+P_VALUE = .05
 
-granger_results_js = calc_granger_causality(x = data_3tech_min_date,
-                                            diff_x = diff_req,
+granger_results_d = calc_granger_causality(x = data_min_date,
+                                            diff_x = diff_req_w,
                       granger_list = GRANGER_LIST,
                       group_var = 'tech',
-                      groups = ['javascript'],
-                      maxlag = 35,
+                      groups = set(data_min_date.tech),
+                      maxlag = 100,
                       both_sides = True,
                       only_min_crit = True,
-                      filter_p_value = PVALUE)
-granger_results_tnsr = calc_granger_causality(x = data_3tech_min_date,
+                      filter_p_value = P_VALUE)
+
+granger_results_w = calc_granger_causality(x = data_w_min_date,
                       diff_x = diff_req,
                       granger_list = GRANGER_LIST,
                       group_var = 'tech',
-                      groups = ['tensorflow'],
-                      maxlag = 6,
+                      groups = set(data_w_min_date.tech),
+                      maxlag = 52,
                       both_sides = True,
                       only_min_crit = True,
-                      filter_p_value = PVALUE)
-granger_results_d3js = calc_granger_causality(x = data_3tech_min_date,
-                      diff_x = diff_req,
+                      filter_p_value = P_VALUE)
+
+granger_results_m = calc_granger_causality(x = data_m_min_date,
+                      diff_x = diff_req_m,
                       granger_list = GRANGER_LIST,
                       group_var = 'tech',
-                      groups = ['d3js'],
-                      maxlag = 24,
+                      groups = set(data_m_min_date.tech),
+                      maxlag = 36,
                       both_sides = True,
                       only_min_crit = True,
-                      filter_p_value = PVALUE)
+                      filter_p_value = P_VALUE)
+
+granger_results_d.to_pickle('.\\saved_objects\\granger_results_d_20180513_1500')
+granger_results_w.to_pickle('.\\saved_objects\\granger_results_w_20180513_1500')
+granger_results_m.to_pickle('.\\saved_objects\\granger_results_m_20180513_1500')
+
+#y = data_m_min_date[data_m_min_date['tech'] == 'd3js']['hn_all_match_score']
+#x = data_m_min_date[data_m_min_date['tech'] == 'd3js']['so_usage_cnt']
+#
+#test_n = grangercausalitytests_mod(
+#                    (pd.concat([y, x], axis=1).dropna()),
+#                    maxlag = 6, verbose = False
+#                    )
+#len(test_n)

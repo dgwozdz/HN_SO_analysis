@@ -9,16 +9,21 @@ def grangercausalitytests_mod(x, maxlag, addconst=True, verbose=True):
     
     import numpy as np
     from scipy import stats
-    from statsmodels.tsa.tsatools import lagmat, lagmat2ds
-    from statsmodels.tools.tools import add_constant, Bunch
+    from statsmodels.tsa.tsatools import lagmat2ds
+    from statsmodels.tools.tools import add_constant
     from statsmodels.regression.linear_model import OLS
+    from warnings import warn
 
     x = np.asarray(x)
 
     if x.shape[0] <= 3 * maxlag + int(addconst):
-        raise ValueError("Insufficient observations. Maximum allowable "
-                         "lag is {0}".format(int((x.shape[0] - int(addconst)) /
-                                                 3) - 1))
+        warn("Insufficient observations. Maximum allowable lag is {0}."
+             "The maximum lag will be set to "
+             "this number".format(int((x.shape[0] - int(addconst)) / 3) - 1))
+        maxlag = int((x.shape[0] - int(addconst)) /  3) - 1
+#    print(x.shape[0])
+#    print(int((x.shape[0] - int(addconst)) /  3) - 1)
+#    print(maxlag)
 
     resli = {}
 
