@@ -5,7 +5,7 @@ Created on Sat May 12 14:44:39 2018
 
 def sel_data_min_date(data, group_var, date_var, var1, var2): # sel = select
     
-    """Returns a data set, with excluded lack of data. Observations
+    """Returns a data set with excluded lacks of data. Observations
     with zeroes as values before the first observation with nonzero values
     are considered lacks of data"""
     """

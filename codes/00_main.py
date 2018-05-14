@@ -91,7 +91,7 @@ kaggle_list = []
 # if the score of a given topic
 # was smaller than the declared number, it won't be taken into calculation;
 # `None` means lack of such restriction
-cutoffs = [None, 10, 25]
+cutoffs = [None]
 
 
 from sklearn.preprocessing import MultiLabelBinarizer
@@ -101,8 +101,8 @@ for cutoff in cutoffs:
         cutoff_lbl = ''
     else:
         kaggle_data_loop = kaggle_data_raw.loc[kaggle_data_raw['score']>=cutoff]
+        cutoff_lbl = '_'+str(cutoff)
     for i in ['text_match', 'title_match', 'all_match']:
-        
         # Removal of duplicates
         before = kaggle_data_loop[i]
         kaggle_data_loop.loc[:, i] = [list(set(x))
@@ -282,14 +282,21 @@ data_min_date = sel_data_min_date(data,
                                       'date',
                                       'hn_all_match_score',
                                       'so_views')
-
+data_min_date[list(data_min_date.columns.values[2:])] = (
+        data_min_date[list(data_min_date.columns.values[2:])]
+        .apply(pd.to_numeric))
 # weekly data
+
+list(data_w.columns.values)
 
 data_w_min_date = sel_data_min_date(data_w,
                                       'tech',
                                       'date',
                                       'hn_all_match_score',
                                       'so_views')
+data_w_min_date[list(data_w_min_date.columns.values[2:])] = (
+        data_w_min_date[list(data_w_min_date.columns.values[2:])]
+        .apply(pd.to_numeric))
 
 # monthly data
 
@@ -298,6 +305,9 @@ data_m_min_date = sel_data_min_date(data_m,
                                       'date',
                                       'hn_all_match_score',
                                       'so_views')
+data_m_min_date[list(data_m_min_date.columns.values[2:])] = (
+        data_m_min_date[list(data_m_min_date.columns.values[2:])]
+        .apply(pd.to_numeric))
 
 # 6.3 Tests of Granger causality for each variable
 
@@ -337,9 +347,28 @@ granger_results_m = calc_granger_causality(x = data_m_min_date,
                       only_min_crit = True,
                       filter_p_value = P_VALUE)
 
-granger_results_d.to_pickle('.\\saved_objects\\granger_results_d_20180513_1500')
-granger_results_w.to_pickle('.\\saved_objects\\granger_results_w_20180513_1500')
-granger_results_m.to_pickle('.\\saved_objects\\granger_results_m_20180513_1500')
+granger_results_d.to_pickle('.\\saved_objects\\granger_results_d_20180514_2055')
+granger_results_w.to_pickle('.\\saved_objects\\granger_results_w_20180514_2055')
+granger_results_m.to_pickle('.\\saved_objects\\granger_results_m_20180514_2314')
+
+granger_results_d = pd.read_pickle('.\\saved_objects\\granger_results_d_20180514_20')
+granger_results_w = pd.read_pickle('.\\saved_objects\\granger_results_w_20180514_20')
+granger_results_m = pd.read_pickle('.\\saved_objects\\granger_results_m_20180514_20')
+
+hn_plots(data = data_min_date, freq = 'M',
+         output_date = todays_date(),
+             select_tech = ['css', 'html', 'java', 'jquery',
+                            'swift', 'tensorflow'],
+             common_var = 'hn_all_match_cnt',
+             common_var2 = 'hn_all_match_cnt',
+             common_var3 = 'hn_all_match_score',
+             common_var4 = 'hn_all_match_score',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'so_usage_cnt',
+             var4 = 'so_score_sum',
+             subfolder = 'plots')
 
 #y = data_m_min_date[data_m_min_date['tech'] == 'd3js']['hn_all_match_score']
 #x = data_m_min_date[data_m_min_date['tech'] == 'd3js']['so_usage_cnt']
