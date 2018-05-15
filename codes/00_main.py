@@ -287,8 +287,6 @@ data_min_date[list(data_min_date.columns.values[2:])] = (
         .apply(pd.to_numeric))
 # weekly data
 
-list(data_w.columns.values)
-
 data_w_min_date = sel_data_min_date(data_w,
                                       'tech',
                                       'date',
@@ -297,6 +295,9 @@ data_w_min_date = sel_data_min_date(data_w,
 data_w_min_date[list(data_w_min_date.columns.values[2:])] = (
         data_w_min_date[list(data_w_min_date.columns.values[2:])]
         .apply(pd.to_numeric))
+ 
+data_w_min_date.groupby(['tech'])['hn_all_match_score',
+                                      'so_views'].diff().diff().reset_index()
 
 # monthly data
 
@@ -308,6 +309,19 @@ data_m_min_date = sel_data_min_date(data_m,
 data_m_min_date[list(data_m_min_date.columns.values[2:])] = (
         data_m_min_date[list(data_m_min_date.columns.values[2:])]
         .apply(pd.to_numeric))
+
+# differencing once and two times for visualization purposes
+
+cols = data_m_min_date.columns.difference(['tech', 'date']).tolist()
+data_m_min_date_diff = (data_m_min_date.groupby(['tech'])[cols]
+    .diff().add_prefix('diff_').add_suffix('_1'))
+data_m_min_date_diff2 = (data_m_min_date.groupby(['tech'])[cols]
+    .diff().diff().add_prefix('diff_').add_suffix('_2'))
+data_m_min_date = pd.concat([data_m_min_date,
+                             data_m_min_date_diff,
+                             data_m_min_date_diff2],
+    axis = 1, copy = False)
+
 
 # 6.3 Tests of Granger causality for each variable
 
@@ -353,14 +367,15 @@ granger_results_m.to_pickle('.\\saved_objects\\granger_results_m_20180514_2314')
 
 granger_results_d = pd.read_pickle('.\\saved_objects\\granger_results_d_20180514_20')
 granger_results_w = pd.read_pickle('.\\saved_objects\\granger_results_w_20180514_20')
-granger_results_m = pd.read_pickle('.\\saved_objects\\granger_results_m_20180514_20')
+granger_results_m = pd.read_pickle('.\\saved_objects\\granger_results_m_20180514_2314')
 
-hn_plots(data = data_min_date, freq = 'M',
+# Plots for the needs of statistically significant mothly aggregated data
+
+hn_plots(data = data_m_min_date,
          output_date = todays_date(),
-             select_tech = ['css', 'html', 'java', 'jquery',
-                            'swift', 'tensorflow'],
+             select_tech = ['css'],
              common_var = 'hn_all_match_cnt',
-             common_var2 = 'hn_all_match_cnt',
+             common_var2 = 'diff_hn_all_match_cnt_1',
              common_var3 = 'hn_all_match_score',
              common_var4 = 'hn_all_match_score',
              after_date = '2006-01-01',
@@ -368,7 +383,83 @@ hn_plots(data = data_min_date, freq = 'M',
              var2 = 'so_score_sum',
              var3 = 'so_usage_cnt',
              var4 = 'so_score_sum',
-             subfolder = 'plots')
+             subfolder = 'plots',
+             add_freq_label = False)
+
+hn_plots(data = data_m_min_date,
+         output_date = todays_date(),
+             select_tech = ['html'],
+             common_var = 'hn_all_match_cnt',
+             common_var2 = 'diff_hn_all_match_cnt_1',
+             common_var3 = 'diff_hn_all_match_score_1',
+             common_var4 = 'hn_all_match_score',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'so_score_sum',
+             var3 = 'diff_so_usage_cnt_1',
+             var4 = 'so_score_sum',
+             subfolder = 'plots',
+             add_freq_label = False)
+
+hn_plots(data = data_m_min_date,
+         output_date = todays_date(),
+             select_tech = ['java'],
+             common_var = 'hn_all_match_cnt',
+             common_var2 = 'diff_hn_all_match_cnt_1',
+             common_var3 = 'diff_hn_all_match_score_1',
+             common_var4 = 'hn_all_match_score',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'diff_so_score_sum_2',
+             var3 = 'diff_so_usage_cnt_1',
+             var4 = 'so_score_sum',
+             subfolder = 'plots',
+             add_freq_label = False)
+
+hn_plots(data = data_m_min_date,
+         output_date = todays_date(),
+             select_tech = ['jquery'],
+             common_var = 'hn_all_match_cnt',
+             common_var2 = 'diff_hn_all_match_cnt_1',
+             common_var3 = 'diff_hn_all_match_score_1',
+             common_var4 = 'hn_all_match_score',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'diff_so_score_sum_1',
+             var3 = 'diff_so_score_sum_1',
+             var4 = 'so_score_sum',
+             subfolder = 'plots',
+             add_freq_label = False)
+
+hn_plots(data = data_m_min_date,
+         output_date = todays_date(),
+             select_tech = ['swift'],
+             common_var = 'hn_all_match_cnt',
+             common_var2 = 'diff_hn_all_match_cnt_1',
+             common_var3 = 'diff_hn_all_match_score_1',
+             common_var4 = 'hn_all_match_cnt',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt',
+             var2 = 'diff_so_score_sum_1',
+             var3 = 'diff_so_score_sum_1',
+             var4 = 'so_score_sum',
+             subfolder = 'plots',
+             add_freq_label = False)
+
+hn_plots(data = data_m_min_date,
+         output_date = todays_date(),
+             select_tech = ['tensorflow'],
+             common_var = 'diff_hn_all_match_score_1',
+             common_var2 = 'diff_hn_all_match_cnt_1',
+             common_var3 = 'diff_hn_all_match_score_1',
+             common_var4 = 'hn_all_match_cnt',
+             after_date = '2006-01-01',
+             var1 = 'diff_so_usage_cnt_2',
+             var2 = 'diff_so_score_sum_1',
+             var3 = 'diff_so_score_sum_1',
+             var4 = 'so_score_sum',
+             subfolder = 'plots',
+             add_freq_label = False)
 
 #y = data_m_min_date[data_m_min_date['tech'] == 'd3js']['hn_all_match_score']
 #x = data_m_min_date[data_m_min_date['tech'] == 'd3js']['so_usage_cnt']

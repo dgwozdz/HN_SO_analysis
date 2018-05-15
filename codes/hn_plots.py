@@ -43,7 +43,8 @@ def hn_plots(data,
              var2 = 'so_score_sum',
              var3 = 'so_answers',
              var4 = 'so_views',
-             subfolder = None):
+             subfolder = None,
+             add_freq_label = True):
     
     """
     PARAMETERS:
@@ -61,6 +62,8 @@ def hn_plots(data,
         is used)
     9) var1, var2, var3, var4 - second time series used for consecutive
         plots (each has to be specified separately)
+    10) add_freq_label - boolean value indicating whether the information
+        about frequency should be put in titles of plots
     """
     
     if(freq == 'w'):
@@ -77,6 +80,8 @@ def hn_plots(data,
                 .sum()
                 .reset_index())
         freq_label = 'monthly'
+    if add_freq_label == False:
+        freq_label = ''
      
     if common_var2 == None:
         common_var2 = common_var
