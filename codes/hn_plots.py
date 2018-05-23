@@ -44,7 +44,8 @@ def hn_plots(data,
              var3 = 'so_answers',
              var4 = 'so_views',
              subfolder = None,
-             add_freq_label = True):
+             add_freq_label = True,
+             same_oy = False):
     
     """
     PARAMETERS:
@@ -64,6 +65,8 @@ def hn_plots(data,
         plots (each has to be specified separately)
     10) add_freq_label - boolean value indicating whether the information
         about frequency should be put in titles of plots
+    11) same_oy - booleand value indicating whether two lines on a given
+        plot should share the OY axis.
     """
     
     if(freq == 'w'):
@@ -103,13 +106,19 @@ def hn_plots(data,
         fig_daily.subplots_adjust(hspace = 0.3)
         fig_daily.tight_layout()
         ax1 = plt.subplot(221)
-        ax2 = ax1.twinx()
         ax3 = plt.subplot(222)
-        ax4 = ax3.twinx()
         ax5 = plt.subplot(223)
-        ax6 = ax5.twinx()
         ax7 = plt.subplot(224)
-        ax8 = ax7.twinx()
+        if same_oy == True:
+            ax2 = ax1
+            ax4 = ax3
+            ax6 = ax5
+            ax8 = ax7
+        else:
+            ax2 = ax1.twinx()
+            ax4 = ax3.twinx()
+            ax6 = ax5.twinx()
+            ax8 = ax7.twinx()
         ax1.tick_params(axis='x', labelrotation =30)
         ax2.tick_params(axis='x', labelrotation =30)
         ax3.tick_params(axis='x', labelrotation =30)

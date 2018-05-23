@@ -331,6 +331,7 @@ GRANGER_LIST = [('hn_all_match_score', 'so_usage_cnt'),
                  ('hn_all_match_cnt', 'so_score_sum')]
 P_VALUE = .05
 
+
 granger_results_d = calc_granger_causality(x = data_min_date,
                                             diff_x = diff_req_w,
                       granger_list = GRANGER_LIST,
@@ -469,3 +470,28 @@ hn_plots(data = data_m_min_date,
 #                    maxlag = 6, verbose = False
 #                    )
 #len(test_n)
+
+data_min_date[['hn_all_match_score_cum',
+             'hn_all_match_cnt_cum',
+              'so_usage_cnt_cum',
+              'so_score_sum_cum']] = (data_min_date.
+              groupby('tech')['hn_all_match_score',
+             'hn_all_match_cnt',
+              'so_usage_cnt', 'so_score_sum'].cumsum())
+
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  set(data_min_date.tech),
+             common_var = 'hn_all_match_score_cum',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum',
+             var2 = 'so_score_sum_cum',
+             var3 = 'so_usage_cnt_cum',
+             var4 = 'so_score_sum_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True)
