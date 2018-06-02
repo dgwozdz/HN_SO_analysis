@@ -45,7 +45,12 @@ def hn_plots(data,
              var4 = 'so_views',
              subfolder = None,
              add_freq_label = True,
-             same_oy = False):
+             same_oy = False,
+             label1 = None,
+             label2 = None,
+             label3 = None,
+             label4 = None,
+             show_y_lab = True):
     
     """
     PARAMETERS:
@@ -56,7 +61,7 @@ def hn_plots(data,
     5) after_date - date, from which time series should be plotted
     6) output_date - date of plot creation, goes to the name of outputted
         .png file
-    7) common_var - ffirst time series which is used for all four plots
+    7) common_var - first time series which is used for all four plots
         (if not specified otherwise)
     8) common_var2, common_var3, common_var4 - first time series
         for the second, third and fourth plot (if not specified, `common_var`
@@ -67,6 +72,10 @@ def hn_plots(data,
         about frequency should be put in titles of plots
     11) same_oy - booleand value indicating whether two lines on a given
         plot should share the OY axis.
+    12) label1, label2, label3, label4 - titles for consecutive plotsł
+        if not specified, default titles are used
+    13) show_y_lab - boolean value indicating whether labels for the first
+        and second Y axes should be shown
     """
     
     if(freq == 'w'):
@@ -139,10 +148,14 @@ def hn_plots(data,
         ax1.plot(data_plot['date'], data_plot[common_var], 'g-', alpha = alpha)
         ax2.plot(data_plot['date'], data_plot[var1], 'b-', alpha = alpha)
     #    ax1.set_xlabel('Date')
-        ax1.set_ylabel('HN', color = 'g')
-        ax2.set_ylabel('SO', color = 'b')
-        ax2.set_title(var1 + ' vs ' + common_var + ' for ' + i + ' since ' +
+        if show_y_lab == True:
+            ax1.set_ylabel('HN', color = 'g')
+            ax2.set_ylabel('SO', color = 'b')
+        if label1 == None:
+            ax2.set_title(var1 + ' vs ' + common_var + ' for ' + i + ' since ' +
                       after_date + '; ' + freq_label)
+        else:
+            ax2.set_title(label1)
         
         # Second plot: 
         ax3.plot(data_plot['date'], data_plot[common_var2], 'g-', alpha = alpha)
@@ -150,19 +163,27 @@ def hn_plots(data,
     #    ax3.set_xlabel('Date')
     #    ax3.set_ylabel('Score HN', color = 'g')
 #        ax3.tick_params(left='off', labelleft='off')
-        ax3.set_ylabel('HN', color = 'g')
-        ax4.set_ylabel('SO', color = 'b')
-        ax4.set_title(var2 + ' vs ' + common_var2 + ' for ' + i + ' since ' +
+        if show_y_lab == True:
+            ax3.set_ylabel('HN', color = 'g')
+            ax4.set_ylabel('SO', color = 'b')
+        if label2 == None:
+            ax4.set_title(var2 + ' vs ' + common_var2 + ' for ' + i + ' since ' +
                       after_date + '; ' + freq_label)
+        else:
+            ax4.set_title(label2)
     
         # Third plot: 
         ax5.plot(data_plot['date'], data_plot[common_var3], 'g-', alpha = alpha)
         ax6.plot(data_plot['date'], data_plot[var3], 'b-', alpha = alpha)
 #        ax5.set_xlabel('Date')
-        ax5.set_ylabel('HN', color = 'g')
-        ax6.set_ylabel('SO', color = 'b')
-        ax6.set_title(var3 + ' vs ' + common_var3 + ' for ' + i + ' since ' +
+        if show_y_lab == True:
+            ax5.set_ylabel('HN', color = 'g')
+            ax6.set_ylabel('SO', color = 'b')
+        if label3 == None:
+            ax6.set_title(var3 + ' vs ' + common_var3 + ' for ' + i + ' since ' +
                       after_date + '; ' + freq_label)
+        else:
+            ax6.set_title(label3)
         
         # Fourth plot: 
         ax7.plot(data_plot['date'], data_plot[common_var4], 'g-', alpha = alpha)
@@ -170,10 +191,14 @@ def hn_plots(data,
     #    ax7.set_xlabel('Date')
     #    ax7.set_ylabel('Score HN', color = 'g')
 #        ax7.tick_params(left='off', labelleft='off')
-        ax7.set_ylabel('HN', color = 'g')
-        ax8.set_ylabel('SO', color = 'b')
-        ax8.set_title(var4 + ' vs ' + common_var4 + ' for ' + i + ' since ' +
+        if show_y_lab == True:
+            ax7.set_ylabel('HN', color = 'g')
+            ax8.set_ylabel('SO', color = 'b')
+        if label4 == None:
+            ax8.set_title(var4 + ' vs ' + common_var4 + ' for ' + i + ' since ' +
                       after_date + '; ' + freq_label)
+        else:
+            ax8.set_title(label4)
         
 #        fig_daily.autofmt_xdate()
         plt.xticks(rotation=90)

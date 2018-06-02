@@ -495,3 +495,526 @@ hn_plots(data = data_min_date,
              subfolder = 'plots',
              add_freq_label = False,
              same_oy = True)
+
+# suffix '_s' from '_standardised'
+data_min_date[['hn_all_match_score_cum_s',
+                'hn_all_match_cnt_cum_s',
+                'so_usage_cnt_cum_s',
+                'so_score_sum_cum_s']] = (data_min_date.groupby('tech')[
+                        'hn_all_match_score_cum',
+                        'hn_all_match_cnt_cum',
+                        'so_usage_cnt_cum',
+                        'so_score_sum_cum'].apply(
+                lambda x: (x - x.min())/(x.max() - x.min())))
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  set(data_min_date.tech),
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum_s',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum_s',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_score_sum_cum_s',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_score_sum_cum_s',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True)
+
+## Plots for the needs of Markdown for Github
+#############################################
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['c#'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for C#',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for C#',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for C#',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for C#',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['c'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for C',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for C',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for C',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for C',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['c++'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for C++',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for C++',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for C++',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for C++',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['cobol'],
+             common_var = 'hn_all_match_cnt_cum_s',
+             common_var2 = 'hn_all_match_cnt_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Cobol',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Cobol',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['css'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for CSS',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for CSS',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for CSS',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for CSS',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['d3js'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_score_sum_cum_s',
+             var2 = 'so_score_sum_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for D3.js',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for D3.js',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['delphi'],
+             common_var = 'hn_all_match_cnt_cum_s',
+             common_var2 = 'hn_all_match_cnt_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Delphi',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Delphi',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['fortran'],
+             common_var = 'hn_all_match_cnt_cum_s',
+             common_var2 = 'hn_all_match_cnt_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Fortran',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Fortran',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['hadoop'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_score_sum_cum_s',
+             var2 = 'so_score_sum_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of points on SO vs.\n'
+             'standardized cumulative number of points on HN for Hadoop',
+             label2 = 'Cumulative number of points on SO vs.\n'
+             'cumulative number of points on HN for Hadoop',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['html'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_score_sum_cum_s',
+             var2 = 'so_score_sum_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of points on SO vs.\n'
+             'standardized cumulative number of points on HN for HTML',
+             label2 = 'Cumulative number of points on SO vs.\n'
+             'cumulative number of points on HN for HTML',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['java'],
+             common_var = 'hn_all_match_cnt_cum_s',
+             common_var2 = 'hn_all_match_cnt_cum',
+             common_var3 = 'hn_all_match_score_cum_s',
+             common_var4 = 'hn_all_match_score_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_score_sum_cum_s',
+             var4 = 'so_score_sum_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Java',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Java',
+             label3 = 'Standardized cumulative number of points on SO vs.\n'
+             'standardized cumulative number of points on HN for Java',
+             label4 = 'Cumulative number of points on SO vs.\n'
+             'cumulative number of points on HN for Java',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['javascript'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for Javascript',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for Javascript',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Java',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Java',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['pascal'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_score_cum_s',
+             common_var4 = 'hn_all_match_score_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_score_sum_cum_s',
+             var4 = 'so_score_sum_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for Pascal',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for Pascal',
+             label3 = 'Standardized cumulative number of points on SO vs.\n'
+             'standardized cumulative number of points on HN for Pascal',
+             label4 = 'Cumulative number of points on SO vs.\n'
+             'cumulative number of points on HN for Pascal',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['perl'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for Perl',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for Perl',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Perl',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Perl',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['php'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_score_sum_cum_s',
+             var2 = 'so_score_sum_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of points on SO vs.\n'
+             'standardized cumulative number of points on HN for PHP',
+             label2 = 'Cumulative number of points on SO vs.\n'
+             'cumulative number of points on HN for PHP',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['python'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for Python',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for Python',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Python',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Python',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['shell'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for Shell',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for Shell',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Shell',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Shell',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['spark'],
+             common_var = 'hn_all_match_score_cum_s',
+             common_var2 = 'hn_all_match_score_cum',
+             common_var3 = 'hn_all_match_cnt_cum_s',
+             common_var4 = 'hn_all_match_cnt_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for Spark',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for Spark',
+             label3 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Spark',
+             label4 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Spark',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['sql'],
+             common_var = 'hn_all_match_cnt_cum_s',
+             common_var2 = 'hn_all_match_cnt_cum',
+             common_var3 = 'hn_all_match_score_cum_s',
+             common_var4 = 'hn_all_match_score_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_score_sum_cum_s',
+             var4 = 'so_score_sum_cum_s',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of points on HN for SQL',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of points on HN for SQL',
+             label3 = 'Standardized cumulative number of points on SO vs.\n'
+             'standardized cumulative number of points on HN for SQL',
+             label4 = 'Cumulative number of points on SO vs.\n'
+             'cumulative number of points on HN for SQL',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['swift'],
+             common_var = 'hn_all_match_cnt_cum_s',
+             common_var2 = 'hn_all_match_cnt_cum',
+             common_var3 = 'hn_all_match_score_cum_s',
+             common_var4 = 'hn_all_match_score_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Swift',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Swift',
+             label3 = 'Standardized cumulative number of points on SO vs.\n'
+             'standardized cumulative number of points on HN for Swift',
+             label4 = 'Cumulative number of points on SO vs.\n'
+             'cumulative number of points on HN for Swift',
+             show_y_lab = False)
+
+hn_plots(data = data_min_date,
+         output_date = todays_date(),
+             select_tech =  ['tensorflow'],
+             common_var = 'hn_all_match_cnt_cum_s',
+             common_var2 = 'hn_all_match_cnt_cum',
+             common_var3 = 'hn_all_match_score_cum_s',
+             common_var4 = 'hn_all_match_score_cum',
+             after_date = '2006-01-01',
+             var1 = 'so_usage_cnt_cum_s',
+             var2 = 'so_usage_cnt_cum',
+             var3 = 'so_usage_cnt_cum_s',
+             var4 = 'so_usage_cnt_cum',
+             subfolder = 'plots',
+             add_freq_label = False,
+             same_oy = True,
+             label1 = 'Standardized cumulative number of questions on SO vs.\n'
+             'standardized cumulative number of topics on HN for Tensorflow',
+             label2 = 'Cumulative number of questions on SO vs.\n'
+             'cumulative number of topics on HN for Tensorflow',
+             show_y_lab = False)
