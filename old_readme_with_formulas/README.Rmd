@@ -27,19 +27,19 @@ Nevertheless, let's talk about it in different context. I decided to measure the
 
 ![](readme_vis/logos/stack.png)
 
-### Stack Overflow (later referenced as SO) 
+###Stack Overflow (later referenced as SO) 
 
 If you're a programmer or your profession/hobby has anything to do with programming, you're probably familiar with this one. [Stack Overflow](https://stackoverflow.com) (SO) is an established in 2008 portal on which programmers help each other by asking and answering coding questions. If you have a programming problem, there's a pretty good chance that someone else had to deal it previously, asked about it on Stack Overflow and got an answer. The questions and replies/comments are evaluated in a form of points so it is usually instantly obvious which answer was rated the highest (and therefore is considered as the best one by the community) or whether a described problem is reproducible, i.e. you can replicate it with a piece of code prepared by a person asking a question.
 
 ![](readme_vis/logos/hn.png)
 
-### Hacker News (later referenced as HN)
+###Hacker News (later referenced as HN)
 
 [Hacker News](https://news.ycombinator.com/) is an established in 2007 portal on which users submit interesting links/stories. Those stories gather points just like questions on SO (however, users cannot downvote stories until they reach a certain karma treshold). Each post can be commmented on.
 
 ## 2. How to cope with problem [](#){name=suggested-solutions}
 
-### Popularity and influence
+###Popularity and influence
 
 What is a popularity and how to measure it in the context of SO and HN? It could be defined as liking or attraction to a certain person, an idea or, in our case, a technology. In the context of this analysis you can name at least a few metrics by which you could measure whether something is popular or not. Additionally, they should be measured in a certain time unit, e.g. daily. If data that we would like to analyse can be identified by an ordered time index (the unit is irrelevant) that means that we deal with a __time series__.
 
@@ -67,7 +67,7 @@ How to cope with the problem of causality: one phenomenon partially influencing 
 
 The __second approach__ a qualitative one: a __Granger causality__. *Wait a minute,* you may ask, *you were talking about causality and now you're saying that there's a specific type of causality?* Basically saying, yup. Granger causality, proposed in 1969, determines whether one time series is helpful in forecasting another time series. Note that the question: *Does one phenomenon is a cause of another one?* is different from what Granger causality measures: here you only use past values of a given variable and try to use them to forecast the future values of another phenomenon, just like building a forecasting model. Therefore, this type of causality is called a *predictive causality*.
 
-### Data
+###Data
 
 Data from this analysis, comes from two sources: (quite obviously) Stack Overflow and Kaggle (surprise!). [Kaggle](https://www.kaggle.com/) is a website which organizes competitons for data scientists/analysts which goal is to build the best predictive model for a given phenomenom based on shared data set(s). It also provides some data sets which are not strictly for competitions but can be used in EDA (Exploratory Data Analysis). The data utilised in this analysis with regard to Hacker News comes from [the latter](http://kaggle.com/hacker-news/hacker-news). Variables regarding Stack Overflow comes from queries utilized in [Stack Exchange Data Explorer](http://data.stackexchange.com/stackoverflow) which allows anyone interested to write SQL queries for Stack Overflow as well as other Stack databases. The data were gathered from the period __15<sup>th</sup> September 2008 - 31<sup>st</sup> December 2017.__
 
@@ -288,20 +288,25 @@ Granger causality informs whether one variable is useful in forecasting another 
 
 1)	The first one, in which the potential resulting time series is explained by its past values (autoregressors):
 
-![first_regression](readme_vis/formulas/first_regression.png)
+$y_t = c_t + \sum_{i=1}^{p}(\gamma_i y_{t-i}) + e_t$
 
 where:
 
-* $/y_t$ - potential result in period $t$,
+* $y_t$ - potential result in period $t$,
 * $c_t$ - intercept,
 * $p$ - number of autoregressors (past values),
 * $\gamma_i$ - coefficient for $i$-th autoregressor ($i$-th past value) of potential result,
 * $e_t$ - error term.
 
 2)	In the second one the same regressand (potential resulting time series) and its past values (autoregressors) are used, however, the past values (autoregressors) of potential cause are added as well:
+```math
+\sum_{i=1}^{p}
+```
 
 
-![second_regression](readme_vis/formulas/second_regression.png)
+$$`\sum_{i=1}^{p}`$$
+
+$$y_t = c_t + \sum_{i=1}^{p}(\gamma_i y_{t-i}) + \sum_{i=1}^{p}(\beta_i x_{t-i}) + u_t$$
 
 where:
 $x_{t-i}$ - potential cause in period $t-i$,
@@ -310,19 +315,19 @@ $u_t$ - error term.
 
 The null hypothesis is that all the added past values of the potential cause are equal to 0:
 
-![H0](readme_vis/formulas/H0.png)
+$$H_0=\beta_1 = \beta_1 = ... = \beta_p = 0 $$
  
 The computed statistic takes such a form:
 
-![equation](readme_vis/formulas/stat.png)
+$$ S_1 = \frac {\color{purple}{(RSS_0-RSS_1)}/ \color{blue}p}  {\color{green}{RSS_1/(T-2p-1)}}\sim F_{p,T-2p-1}$$
+ 
 
 
 where:
 
 $T$ - number of observations (elements in time series)
-![RSS1](readme_vis/formulas/RSS1.png)
-
-![RSS0](readme_vis/formulas/RSS0.png)
+$$ RSS_1 = \sum_{i=1}^{T}(\hat{u}_t^2)$$
+$$ RSS_0 = \sum_{i=1}^{T}(\hat{e}_t^2)$$
  
 Let's try to interpret it.
 
@@ -331,6 +336,8 @@ Let's try to interpret it.
 3)	If we divide the difference by the number of additional parameters, we obtain the average error reduction per each new parameter in the regression with the potential cause. 
 4)	The second element - <span style="color:green">denominator $RSS_1/(T-2p-1)$</span>  - is the error term of the regression with the potential cause divided by the number of degrees of freedom (number of observations minus the number of estimated parameters). It can be interpreted as an average error per one degree of freedom.
 5)	Let's wrap it up: the nominator is the average error reduction in the regression with the potential cause. The denominator represents the average error per degree of freedom of the regression with the potential cause. The entire statistic can therefore be interpreted as __an average error reduction per degree of freedom of the regression with added autoregressors of the potential cause__.
+
+
 
 Now we know what we want to use, however, we don't know if we can use it. Let me just remind that we're dealing with time series. One of time series properties is that they can be nonstationary i.e. the realizations of the examined process may not come from the same distribution over time. Using nonstationary time series in linear regression may lead to so called spurious regression in which the modelled dependencies between a regressand and regressors are really nonexistent. In order to avoid such a situation, the times series should be transformed to stationary ones *a priori*. It is obtained by differencing.
 
