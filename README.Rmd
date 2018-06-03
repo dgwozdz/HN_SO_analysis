@@ -1,13 +1,18 @@
 ---
 title: "Does popularity of technology on StackOverflow (SO) influence popularity of post about this technology on Hacker News (HN)?"
-author: "dgwozdz & pmigdal"
-date: "3<sup>RD</sup> JUNE 2018"
+author: "dgwozdz & pmigdal<br/>"
+date: "3<sup>rd</sup> JUNE 2018"
 output: rmarkdown::github_document
 ---
 
+<style>
+body {
+text-align: justify}
+</style>
+
 ## Table of Contents
 
-1)	[Intro](#intro)
+1)	[Introduction](#intro)
 2)	[How to cope with problem](#suggested-solutions)
 3)	[Exploratory Data Analysis](#eda)
 4)	[Granger causality](#granger)
@@ -17,7 +22,9 @@ output: rmarkdown::github_document
 
 ***
 
-## 1. Intro [](#){name=}
+
+
+## 1. Introduction <a href="#" name="intro"></a>
 
 *__Causality__ (also referred to as causation, or cause and effect) is what connects one process (the cause) with another process or state (the effect), where the first is partly responsible for the second, and the second is partly dependent on the first. In general, a process has many causes, which are said to be causal factors for it, and all lie in its past.*<sup id="a1">[1](#f1)</sup>
 
@@ -37,7 +44,7 @@ If you're a programmer or your profession/hobby has anything to do with programm
 
 [Hacker News](https://news.ycombinator.com/) is an established in 2007 portal on which users submit interesting links/stories. Those stories gather points just like questions on SO (however, users cannot downvote stories until they reach a certain karma treshold). Each post can be commmented on.
 
-## 2. How to cope with problem [](#){name=suggested-solutions}
+## 2. How to cope with problem  <a href="#" name="suggested-solutions"></a>
 
 ### Popularity and influence
 
@@ -75,7 +82,7 @@ The programming languages or technologies which were examined include: C, C++, C
 
 The data from portals were assigned specific colors: <span style="color:blue">blue for Stack Overflow</span>, <span style="color:green">green for Hacker News</span>. Those colours are consistent with the ones used later on so that it would be easier to identify the source of data (Stack Overflow or Hacker News).
 
-## 3. Exploratory Data Analysis [](#){name=eda}
+## 3. Exploratory Data Analysis  <a href="#" name="eda"></a>
 
 One of the ideas with regard to examining causality included checking cumulative plots. Cumulative plots show aggregated value of a given measure to a given date. Exemplifying, the plot below shows:
 
@@ -282,7 +289,7 @@ There are a couple of problems with above given visual identifications:
 3)	Last but not least, EDA does not answer the question of causality. Even if you agree with my subjective opinions of similarity of those time series, it is not possible to determine whether one is or isn't the cause of another.
 In order to cope with those issues, I used Granger causality.
 
-## 4. Granger causality [](#){name=granger}
+## 4. Granger causality <a href="#" name="granger"></a>
 
 Granger causality informs whether one variable is useful in forecasting another variable. The test takes a form of performing two linear regressions<sup id="a2">[2](#f2)</sup>:
 
@@ -292,11 +299,11 @@ Granger causality informs whether one variable is useful in forecasting another 
 
 where:
 
-* $/y_t$ - potential result in period $t$,
-* $c_t$ - intercept,
-* $p$ - number of autoregressors (past values),
-* $\gamma_i$ - coefficient for $i$-th autoregressor ($i$-th past value) of potential result,
-* $e_t$ - error term.
+* ![y_t](readme_vis/formulas/y_t.png) - potential result in period $t$,
+* ![c_t](readme_vis/formulas/c_t.png) - intercept,
+* ![p](readme_vis/formulas/p.png)  - number of autoregressors (past values),
+* ![gamma_i](readme_vis/formulas/gamma_i.png)  - coefficient for i-th autoregressor (i-th past value) of potential result,
+* ![e_t](readme_vis/formulas/e_t.png) - error term.
 
 2)	In the second one the same regressand (potential resulting time series) and its past values (autoregressors) are used, however, the past values (autoregressors) of potential cause are added as well:
 
@@ -304,9 +311,9 @@ where:
 ![second_regression](readme_vis/formulas/second_regression.png)
 
 where:
-$x_{t-i}$ - potential cause in period $t-i$,
-$\beta_i$ - coefficient for $i$-th autoregressor ($i$-th past value) of potential cause,
-$u_t$ - error term.
+![x_t_i](readme_vis/formulas/x_t_i.png) - potential cause in period $t-i$,
+![beta_i](readme_vis/formulas/beta_i.png) - coefficient for i-th autoregressor (i-th past value) of potential cause,
+![u_t](readme_vis/formulas/u_t.png) - error term.
 
 The null hypothesis is that all the added past values of the potential cause are equal to 0:
 
@@ -319,31 +326,31 @@ The computed statistic takes such a form:
 
 where:
 
-$T$ - number of observations (elements in time series)
+![large_t](readme_vis/formulas/large_t.png) - number of observations (elements in time series)
 ![RSS1](readme_vis/formulas/RSS1.png)
 
 ![RSS0](readme_vis/formulas/RSS0.png)
  
 Let's try to interpret it.
 
-1)	The <span style="color:purple">difference $RSS_0-RSS_1$</span> in the numerator is the difference between error terms of the regression without the potential cause (<span style="color:purple">$RSS_0$</span>) and with the potential cause (<span style="color:purple">$RSS_1$</span>). It can be interpreted as the error reduction resulting from the autoregressors of a potential cause.
-2)	This difference is divided by <span style="color:blue">the number of additional parameters in the regression with the potential cause: $p$</span>. Notice that the number of estimated parameters in the regression $RSS_0$ is almost the same: $p+1$. Additional parameter over p is just the intercept.
+1)	The difference ![diff_purple](readme_vis/formulas/diff_purple.png) in the numerator is the difference between error terms of the regression without the potential cause and with the potential cause. It can be interpreted as the error reduction resulting from the autoregressors of a potential cause.
+2)	This difference is divided by the number of additional parameters in the regression with the potential cause: ![p_blue](readme_vis/formulas/p_blue.png). Notice that the number of estimated parameters in the regression ![RSS_0](readme_vis/formulas/RSS_0.png) is almost the same: ![p_plus1](readme_vis/formulas/p_plus1.png). Additional parameter over ![p](readme_vis/formulas/p.png) is just the intercept.
 3)	If we divide the difference by the number of additional parameters, we obtain the average error reduction per each new parameter in the regression with the potential cause. 
-4)	The second element - <span style="color:green">denominator $RSS_1/(T-2p-1)$</span>  - is the error term of the regression with the potential cause divided by the number of degrees of freedom (number of observations minus the number of estimated parameters). It can be interpreted as an average error per one degree of freedom.
+4)	The second element - denominator ![denominator](readme_vis/formulas/denominator.png)  - is the error term of the regression with the potential cause divided by the number of degrees of freedom (number of observations minus the number of estimated parameters). It can be interpreted as an average error per one degree of freedom.
 5)	Let's wrap it up: the nominator is the average error reduction in the regression with the potential cause. The denominator represents the average error per degree of freedom of the regression with the potential cause. The entire statistic can therefore be interpreted as __an average error reduction per degree of freedom of the regression with added autoregressors of the potential cause__.
 
 Now we know what we want to use, however, we don't know if we can use it. Let me just remind that we're dealing with time series. One of time series properties is that they can be nonstationary i.e. the realizations of the examined process may not come from the same distribution over time. Using nonstationary time series in linear regression may lead to so called spurious regression in which the modelled dependencies between a regressand and regressors are really nonexistent. In order to avoid such a situation, the times series should be transformed to stationary ones *a priori*. It is obtained by differencing.
 
 How to check whether a given time series is (non)stationary? One of possible solutions for this task is employing an Augmented Dickey-Fuller test. Its null hypothesis is that the series is nonstationary. There are two versions of the test utilized in this article:
 
-1)	$H_0$: nonstationary time series, $H_1$: stationary time series,
-2)	$H_0$: non-stationary time series, $H_1$: trend-stationary time series.
+1)	![h_0](readme_vis/formulas/h_0.png): nonstationary time series, ![h_1](readme_vis/formulas/h_1.png): stationary time series,
+2)	![h_0](readme_vis/formulas/h_0.png): non-stationary time series, ![h_1](readme_vis/formulas/h_1.png): trend-stationary time series.
 
-Detection whether a time series includes a trend is performed by regressing it against the time (time series from $1$ to $n$, where $n$ is the number of observations in the examined time series) and checking whether the estimated coefficient by the trend is statistically significant for the determined significance level $\alpha$ (in this case $\alpha = 0.05$). If the coefficient is statistically significant, the ADF test with constant and trend is used, otherwise only with a constant.
+Detection whether a time series includes a trend is performed by regressing it against the time (time series from 1 to n, where n is the number of observations in the examined time series) and checking whether the estimated coefficient by the trend is statistically significant for the determined significance level ![alpha](readme_vis/formulas/alpha.png) (in this case ![alpha](readme_vis/formulas/alpha.png) = 0.05). If the coefficient is statistically significant, the ADF test with constant and trend is used, otherwise only with a constant.
 
 After each time series is transformed (if necessary) to a stationary one, a Granger causality test is performed. Here an important question should be asked: how many autoregressors should be considered? It was pointed out that this number should be dependent on minimum value of information criteria: in case of this article, Akaike and Bayes. It was remarked that the former tends to choose the overfitted while the latter the underfitted model, so neither of them is perfect. Nevertheless, the analysis indicates that they often suggest the same lag. Maximum considered lag was 36 periods (3 years).
 
-The ADF test, differencing and the Granger causality test were performed on data aggregated to monthly frequency in order to reduce the daily noise in number of questions/points for examined variables. In order to check if Hacker News does not influence popularity of technology on Stack Overflow, the opposite hypotheses were also examined. Statistically significant results when H0 is rejected (for significance level $\alpha= 0.05$) are presented in the table below:
+The ADF test, differencing and the Granger causality test were performed on data aggregated to monthly frequency in order to reduce the daily noise in number of questions/points for examined variables. In order to check if Hacker News does not influence popularity of technology on Stack Overflow, the opposite hypotheses were also examined. Statistically significant results when ![h_0](readme_vis/formulas/h_0.png) is rejected (for significance level ![alpha](readme_vis/formulas/alpha.png)= 0.05) are presented in the table below:
 
 | No | Technology | Regressand (Y)            | Regressor (X; potential cause) | AIC    | BIC    | max lag | min AIC | min BIC | p.value | Differentiations of Y | Differentiations of X |
 |----|------------|---------------------------|--------------------------------|--------|--------|---------|---------|---------|---------|-----------------------|-----------------------|
@@ -382,7 +389,7 @@ The table with results of Granger causality test suggests a few things:
 6)	None of the results in the table is corroborated by the previous exploratory visual analysis.
 In case of data aggregated to weekly or daily frequency the number of statistically significant results would be greater, however, it such situations could take place randomly.
 
-## 5. Summary [](#){name=summary}
+## 5. Summary <a href="#" name="summary"></a>
 
 It's high time to ask the most important question: do the results of the quantitative analysis - Granger test - indicate that in case of those technologies and variables the popularity of technology on Stack Overflow causes the popularity of technology on Hacker News?
 
@@ -395,7 +402,7 @@ The question seems to be clear. However, answering it seems to be not an easy jo
 3)	__There are a couple of pairs in which variable from HN was the potential result, for which the null hypothesis of Granger causality test (variable does not Granger-causes another variable) was rejected.__ It shouldn't be taken lightly as some of those variables were differentiated (once or twice) and differentiation removes some information from a given variable.
 4)	Additionally, in case of two technologies (JQuery and Tensorflow) the variables regarding data from SO were pointed out as potential results of variables from Hacker News. __The idea of Hacker News influencing popularity of technology on Stack Overflow__ is not so easy to accept (at least for me) as the opposite one, nevertheless, it __shouldn't be entirely disregarded__. 
 5)	On the other hand, the __visual analysis__ may only point out some sort of relationship. It __means neither causality nor does it indicate which variable is the cause and which an effect__.
-6)	__The Granger causality tests were statistically significant only for a couple of pairs__. In case of such a number of performed tests (216; 27 technologies x 4 pairs x 2 because both directions: HN~SO and SO~HN were examined) it could happen that by coincidence a couple of pairs were statistically significant.
+6)	__The Granger causality tests were statistically significant only for a couple of pairs__. In case of such a number of performed tests (216; 27 technologies x 4 pairs x 2 because both directions: HN ~ SO and SO ~ HN were examined) it could happen that by coincidence a couple of pairs were statistically significant.
 7)	As mentioned earlier, the Granger causality can be identified as a __predictive causality__: it means that a possible variable-cause can be used as a predictor in forecasting the possible variable-effect. Such a statement __does not imply that the regressor useful in forecasting is a real cause of a given process__.
 8)	__Popularity of topics on Hacker News can be determined by lots of factors. Stack Overflow may be only one of them__. When using a framework identifying Granger-causes with more than one regressor the SO-variables may lose its statistical significance in favour of other variables (which, in turn may or may not be the causes of popularity of a given technology on Hacker News).
 9)	I wrote earlier that change of aggregation frequency (to monthly/daily basis) causes more pairs to be statistically significant. Those options were neither presented nor further described due to the high number of statistically significant results as well as a fear that those results may be significant by accident.
@@ -405,7 +412,7 @@ As a side-effect of this side-project (sic!) I find it interesting that there ar
 
 To sum up: does popularity of technology on StackOverflow (SO) influence popularity of post about this technology on Hacker News (HN)? __There seems to be a relationship between those two portals but I could not determine that popularity on Stack Overflow causes popularity on Hacker News.__
 
-## 6. Further research [](#){name=further}
+## 6. Further research <a href="#" name="further"></a>
 
 Further research in this topic may include:
 
@@ -414,10 +421,12 @@ Further research in this topic may include:
 3) Using other statistical methods.
 4) Computing correlations. However, Pearson correlation detects only a linear dependence (and should be computed on stationary series) and only answers a question of dependence, not causality.
 
-## 7. Acknowledgements [](#){name=acknowledgments}
+## 7. Acknowledgements <a href="#" name="acknowledgments"></a>
 
 I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the suggestion of this topic, his research ideas and the overall supervision of this analysis.
 
-<b id="f1">1: </b>source: https://en.wikipedia.org/wiki/Causality, access: 02JUN2018 [???](#a1)
 
-<b id="f2">2: </b>source: https://support.sas.com/rnd/app/ets/examples/granger/index.htm, access: 02JUN2018 [???](#a2)
+
+<b id="f1">1: </b>source: https://en.wikipedia.org/wiki/Causality, access: 02JUN2018 [&larr;](#a1)
+
+<b id="f2">2: </b>source: https://support.sas.com/rnd/app/ets/examples/granger/index.htm, access: 02JUN2018 [&larr;](#a2)

@@ -1,12 +1,17 @@
 Does popularity of technology on StackOverflow (SO) influence popularity
 of post about this technology on Hacker News (HN)?
 ================
-dgwozdz & pmigdal
-3<sup>RD</sup> JUNE 2018
+dgwozdz & pmigdal<br/>
+3<sup>rd</sup> JUNE 2018
+
+<style>
+body {
+text-align: justify}
+</style>
 
 ## Table of Contents
 
-1)  [Intro](#intro)
+1)  [Introduction](#intro)
 2)  [How to cope with problem](#suggested-solutions)
 3)  [Exploratory Data Analysis](#eda)
 4)  [Granger causality](#granger)
@@ -16,7 +21,7 @@ dgwozdz & pmigdal
 
 -----
 
-## 1\. Intro [](#)
+## 1\. Introduction <a href="#" name="intro"></a>
 
 ***Causality** (also referred to as causation, or cause and effect) is
 what connects one process (the cause) with another process or state (the
@@ -72,9 +77,10 @@ a person asking a question.
 portal on which users submit interesting links/stories. Those stories
 gather points just like questions on SO (however, users cannot downvote
 stories until they reach a certain karma treshold). Each post can be
-commmented on.
+commmented
+on.
 
-## 2\. How to cope with problem [](#)
+## 2\. How to cope with problem <a href="#" name="suggested-solutions"></a>
 
 ### Popularity and influence
 
@@ -181,7 +187,7 @@ The data from portals were assigned specific colors:
 are consistent with the ones used later on so that it would be easier to
 identify the source of data (Stack Overflow or Hacker News).
 
-## 3\. Exploratory Data Analysis [](#)
+## 3\. Exploratory Data Analysis <a href="#" name="eda"></a>
 
 One of the ideas with regard to examining causality included checking
 cumulative plots. Cumulative plots show aggregated value of a given
@@ -528,7 +534,7 @@ There are a couple of problems with above given visual identifications:
     the cause of another. In order to cope with those issues, I used
     Granger causality.
 
-## 4\. Granger causality [](#)
+## 4\. Granger causality <a href="#" name="granger"></a>
 
 Granger causality informs whether one variable is useful in forecasting
 another variable. The test takes a form of performing two linear
@@ -541,12 +547,14 @@ regressions<sup id="a2">[2](#f2)</sup>:
 
 where:
 
-  - \(/y_t\) - potential result in period \(t\),
-  - \(c_t\) - intercept,
-  - \(p\) - number of autoregressors (past values),
-  - \(\gamma_i\) - coefficient for \(i\)-th autoregressor (\(i\)-th past
-    value) of potential result,
-  - \(e_t\) - error term.
+  - ![y\_t](readme_vis/formulas/y_t.png) - potential result in period
+    \(t\),
+  - ![c\_t](readme_vis/formulas/c_t.png) - intercept,
+  - ![p](readme_vis/formulas/p.png) - number of autoregressors (past
+    values),
+  - ![gamma\_i](readme_vis/formulas/gamma_i.png) - coefficient for i-th
+    autoregressor (i-th past value) of potential result,
+  - ![e\_t](readme_vis/formulas/e_t.png) - error term.
 
 <!-- end list -->
 
@@ -556,9 +564,10 @@ where:
 
 ![second\_regression](readme_vis/formulas/second_regression.png)
 
-where: \(x_{t-i}\) - potential cause in period \(t-i\), \(\beta_i\) -
-coefficient for \(i\)-th autoregressor (\(i\)-th past value) of
-potential cause, \(u_t\) - error term.
+where: ![x\_t\_i](readme_vis/formulas/x_t_i.png) - potential cause in
+period \(t-i\), ![beta\_i](readme_vis/formulas/beta_i.png) - coefficient
+for i-th autoregressor (i-th past value) of potential cause,
+![u\_t](readme_vis/formulas/u_t.png) - error term.
 
 The null hypothesis is that all the added past values of the potential
 cause are equal to 0:
@@ -571,33 +580,34 @@ The computed statistic takes such a form:
 
 where:
 
-\(T\) - number of observations (elements in time series)
-![RSS1](readme_vis/formulas/RSS1.png)
+![large\_t](readme_vis/formulas/large_t.png) - number of observations
+(elements in time series) ![RSS1](readme_vis/formulas/RSS1.png)
 
 ![RSS0](readme_vis/formulas/RSS0.png)
 
 Let’s try to interpret it.
 
-1)  The <span style="color:purple">difference \(RSS_0-RSS_1\)</span> in
-    the numerator is the difference between error terms of the
-    regression without the potential cause
-    (<span style="color:purple">\(RSS_0\)</span>) and with the potential
-    cause (<span style="color:purple">\(RSS_1\)</span>). It can be
-    interpreted as the error reduction resulting from the autoregressors
-    of a potential cause.
-2)  This difference is divided by <span style="color:blue">the number of
-    additional parameters in the regression with the potential cause:
-    \(p\)</span>. Notice that the number of estimated parameters in the
-    regression \(RSS_0\) is almost the same: \(p+1\). Additional
-    parameter over p is just the intercept.
+1)  The difference ![diff\_purple](readme_vis/formulas/diff_purple.png)
+    in the numerator is the difference between error terms of the
+    regression without the potential cause and with the potential cause.
+    It can be interpreted as the error reduction resulting from the
+    autoregressors of a potential cause.
+2)  This difference is divided by the number of additional parameters in
+    the regression with the potential cause:
+    ![p\_blue](readme_vis/formulas/p_blue.png). Notice that the number
+    of estimated parameters in the regression
+    ![RSS\_0](readme_vis/formulas/RSS_0.png) is almost the same:
+    ![p\_plus1](readme_vis/formulas/p_plus1.png). Additional parameter
+    over ![p](readme_vis/formulas/p.png) is just the intercept.
 3)  If we divide the difference by the number of additional parameters,
     we obtain the average error reduction per each new parameter in the
     regression with the potential cause.
-4)  The second element - <span style="color:green">denominator
-    \(RSS_1/(T-2p-1)\)</span> - is the error term of the regression with
-    the potential cause divided by the number of degrees of freedom
-    (number of observations minus the number of estimated parameters).
-    It can be interpreted as an average error per one degree of freedom.
+4)  The second element - denominator
+    ![denominator](readme_vis/formulas/denominator.png) - is the error
+    term of the regression with the potential cause divided by the
+    number of degrees of freedom (number of observations minus the
+    number of estimated parameters). It can be interpreted as an average
+    error per one degree of freedom.
 5)  Let’s wrap it up: the nominator is the average error reduction in
     the regression with the potential cause. The denominator represents
     the average error per degree of freedom of the regression with the
@@ -621,18 +631,20 @@ possible solutions for this task is employing an Augmented Dickey-Fuller
 test. Its null hypothesis is that the series is nonstationary. There are
 two versions of the test utilized in this article:
 
-1)  \(H_0\): nonstationary time series, \(H_1\): stationary time series,
-2)  \(H_0\): non-stationary time series, \(H_1\): trend-stationary time
-    series.
+1)  ![h\_0](readme_vis/formulas/h_0.png): nonstationary time series,
+    ![h\_1](readme_vis/formulas/h_1.png): stationary time series,
+2)  ![h\_0](readme_vis/formulas/h_0.png): non-stationary time series,
+    ![h\_1](readme_vis/formulas/h_1.png): trend-stationary time series.
 
 Detection whether a time series includes a trend is performed by
-regressing it against the time (time series from \(1\) to \(n\), where
-\(n\) is the number of observations in the examined time series) and
-checking whether the estimated coefficient by the trend is statistically
-significant for the determined significance level \(\alpha\) (in this
-case \(\alpha = 0.05\)). If the coefficient is statistically
-significant, the ADF test with constant and trend is used, otherwise
-only with a constant.
+regressing it against the time (time series from 1 to n, where n is the
+number of observations in the examined time series) and checking whether
+the estimated coefficient by the trend is statistically significant for
+the determined significance level
+![alpha](readme_vis/formulas/alpha.png) (in this case
+![alpha](readme_vis/formulas/alpha.png) = 0.05). If the coefficient is
+statistically significant, the ADF test with constant and trend is used,
+otherwise only with a constant.
 
 After each time series is transformed (if necessary) to a stationary
 one, a Granger causality test is performed. Here an important question
@@ -649,8 +661,10 @@ on data aggregated to monthly frequency in order to reduce the daily
 noise in number of questions/points for examined variables. In order to
 check if Hacker News does not influence popularity of technology on
 Stack Overflow, the opposite hypotheses were also examined.
-Statistically significant results when H0 is rejected (for significance
-level \(\alpha= 0.05\)) are presented in the table
+Statistically significant results when
+![h\_0](readme_vis/formulas/h_0.png) is rejected (for significance level
+![alpha](readme_vis/formulas/alpha.png)= 0.05) are presented in the
+table
 below:
 
 | No | Technology | Regressand (Y)            | Regressor (X; potential cause) | AIC    | BIC    | max lag | min AIC | min BIC | p.value | Differentiations of Y | Differentiations of X |
@@ -717,7 +731,7 @@ The table with results of Granger causality test suggests a few things:
     would be greater, however, it such situations could take place
     randomly.
 
-## 5\. Summary [](#)
+## 5\. Summary <a href="#" name="summary"></a>
 
 It’s high time to ask the most important question: do the results of the
 quantitative analysis - Granger test - indicate that in case of those
@@ -755,8 +769,8 @@ easy job. Nevertheless, let’s try.
     indicate which variable is the cause and which an effect**.
 6)  **The Granger causality tests were statistically significant only
     for a couple of pairs**. In case of such a number of performed tests
-    (216; 27 technologies x 4 pairs x 2 because both directions: HN~SO
-    and SO~HN were examined) it could happen that by coincidence a
+    (216; 27 technologies x 4 pairs x 2 because both directions: HN ~ SO
+    and SO ~ HN were examined) it could happen that by coincidence a
     couple of pairs were statistically significant.
 7)  As mentioned earlier, the Granger causality can be identified as a
     **predictive causality**: it means that a possible variable-cause
@@ -798,7 +812,7 @@ seems to be a relationship between those two portals but I could not
 determine that popularity on Stack Overflow causes popularity on Hacker
 News.**
 
-## 6\. Further research [](#)
+## 6\. Further research <a href="#" name="further"></a>
 
 Further research in this topic may include:
 
@@ -811,15 +825,15 @@ Further research in this topic may include:
     linear dependence (and should be computed on stationary series) and
     only answers a question of dependence, not causality.
 
-## 7\. Acknowledgements [](#)
+## 7\. Acknowledgements <a href="#" name="acknowledgments"></a>
 
 I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the
 suggestion of this topic, his research ideas and the overall supervision
 of this analysis.
 
 <b id="f1">1: </b>source: <https://en.wikipedia.org/wiki/Causality>,
-access: 02JUN2018 [???](#a1)
+access: 02JUN2018 [←](#a1)
 
 <b id="f2">2: </b>source:
 <https://support.sas.com/rnd/app/ets/examples/granger/index.htm>,
-access: 02JUN2018 [???](#a2)
+access: 02JUN2018 [←](#a2)
