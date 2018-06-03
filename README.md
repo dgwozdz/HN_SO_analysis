@@ -88,7 +88,9 @@ One of the ideas with regard to examining causality included checking cumulative
 
 ### 3.0 C\# <a href="#" name="c_sharp"></a>
 
-![](readme_graphics/logos/20180602_c_sharp_SO_usage_cnt_cum_HN_all_match_score_cum.png)
+![](readme_graphics/logos/stack.png)
+
+![](readme_graphics/logos/test.png)
 
 It can be noticed that by the end of 2017 the cumulative number of questions on <span style="color:blue">SO</span> exceeded 50 thousand while in the same time the number of points for topics with C\# on <span style="color:green">HN</span> reached about 30 thousand.
 
