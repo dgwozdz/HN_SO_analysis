@@ -96,7 +96,7 @@ It can be noticed that by the end of 2017 the cumulative number of questions on 
 
 Above described plot for C\# does not seem particularly interesting. It shows (rather obviously) an upward trends for both variables, however, the dynamic for them is different. What is more, it would be nice to see a standardized variables, for example in such a way that they both start at 0 and end at 1. Thanks to such a data transformation technique it is possible to find time series which may be similar in terms of behaviour in time but different when it comes to differences by which they increase (or decrease). The plot for the same phenomena and technology as above but with standardized variables is presented below:
 
-![](vis/p/20180602_c_sharp_stand_SO_usage_cnt_cum_stand_HN_all_match_score_cum.png)
+![](vis/p/20180602_c_sharp_stand_so_usage_cnt_cum_stand_hn_all_match_score_cum.png)
 
 Now it can be noticed that the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of points for topics on <span style="color:green">HN</span> show strong resemblance. Similar resemblance can be seen when comparing standardized plots of cumulative number of questions vs. cumulative number of topics:
 
