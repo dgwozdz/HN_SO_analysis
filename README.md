@@ -85,7 +85,7 @@ b) cumulative number of points gathered by all topic with regard to C# on <span 
 
 ### 3.0 C# [](#){name=c_sharp}
 
-![](readme_graphics\plots\20180602_c_sharp_SO_usage_cnt_cum_HN_all_match_score_cum.png)
+![](./readme_graphics/plots/20180602_c_sharp_SO_usage_cnt_cum_HN_all_match_score_cum.png)
 
 It can be noticed that by the end of 2017 the cumulative number of questions on <span style="color:blue">SO</span> exceeded 50 thousand while in the same time the number of points for topics with C# on <span style="color:green">HN</span> reached about 30 thousand.
 
