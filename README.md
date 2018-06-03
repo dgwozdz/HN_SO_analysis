@@ -25,22 +25,20 @@ Causality is a phenomenon which people intuitively understand but which is tough
 
 Nevertheless, let’s talk about it in different context. I decided to measure the influence of the popularity of a given programming language on Stack Overflow on the popularity of posts with that technology on Hacker News. *Wait,* you may say, *what are you talking about?*
 
-![](vis/logos/stack.png)
+![](readme_vis/logos/stack.png)
 
 ### Stack Overflow (later referenced as SO)
 
 If you’re a programmer or your profession/hobby has anything to do with programming, you’re probably familiar with this one. [Stack Overflow](https://stackoverflow.com) (SO) is an established in 2008 portal on which programmers help each other by asking and answering coding questions. If you have a programming problem, there’s a pretty good chance that someone else had to deal it previously, asked about it on Stack Overflow and got an answer. The questions and replies/comments are evaluated in a form of points so it is usually instantly obvious which answer was rated the highest (and therefore is considered as the best one by the community) or whether a described problem is reproducible, i.e. you can replicate it with a piece of code prepared by a person asking a question.
 
-![](vis/logos/hn.png)
+![](readme_vis/logos/hn.png)
 
 ### Hacker News (later referenced as HN)
 
 [Hacker News](https://news.ycombinator.com/) is an established in 2007 portal on which users submit interesting links/stories. Those stories gather points just like questions on SO (however, users cannot downvote stories until they reach a certain karma treshold). Each post can be commmented on.
 
-2. How to cope with problem
----------------------------
-
-<a href="#" name="suggested-solutions"></a>
+2. How to cope with problem <a href="#" name="suggested-solutions"></a>
+-----------------------------------------------------------------------
 
 ### Popularity and influence
 
@@ -88,21 +86,15 @@ One of the ideas with regard to examining causality included checking cumulative
 
 ### 3.0 C\# <a href="#" name="c_sharp"></a>
 
-![](vis/logos/stack.png)
-
-![](vis/logos/test.png)
-
 It can be noticed that by the end of 2017 the cumulative number of questions on <span style="color:blue">SO</span> exceeded 50 thousand while in the same time the number of points for topics with C\# on <span style="color:green">HN</span> reached about 30 thousand.
 
 Above described plot for C\# does not seem particularly interesting. It shows (rather obviously) an upward trends for both variables, however, the dynamic for them is different. What is more, it would be nice to see a standardized variables, for example in such a way that they both start at 0 and end at 1. Thanks to such a data transformation technique it is possible to find time series which may be similar in terms of behaviour in time but different when it comes to differences by which they increase (or decrease). The plot for the same phenomena and technology as above but with standardized variables is presented below:
 
-![](vis/p/20180602_c_sharp_stand_so_usage_cnt_cum_stand_hn_all_match_score_cum.png)
+![](readme_vis/plots/20180602_c_sharp_stand_so_usage_cnt_cum_stand_hn_all_match_score_cum.png)
 
 Now it can be noticed that the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of points for topics on <span style="color:green">HN</span> show strong resemblance. Similar resemblance can be seen when comparing standardized plots of cumulative number of questions vs. cumulative number of topics:
 
-![](vis/p/c_sharp_so_usage_cnt_cum_hn_all_match_cnt_cum.png)
-
-<img src="vis/p/c_sharp_so_usage_cnt_cum_hn_all_match_cnt_cum.png"/>
+![](readme_vis/plots/20180602_c_sharp_so_usage_cnt_cum_hn_all_match_cnt_cum_double.png)
 
 Let’s see some interesting similarities between statistics on <span style="color:blue">SO</span> and <span style="color:green">HN</span> for different technologies on standardized plots. We will only see the technologies for which I identified somme sort of similarity between data from <span style="color:blue">SO</span> and <span style="color:green">HN</span> or for which I discovered something interesting. Additionally, plots on the left will be the ones for standardised variables while those on the right for variables without transformation (standardisation).
 
@@ -110,17 +102,17 @@ Let’s see some interesting similarities between statistics on <span style="col
 
 Similarly to C\#, there is visible resemblance between cumulative number of questions on <span style="color:blue">SO</span> and cumulative number of points for topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_c_SO_usage_cnt_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_c_so_usage_cnt_cum_hn_all_score_sum_cum_double.png)
 
 as well as in case of cumulative number of questions on <span style="color:blue">SO</span> and cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_c_SO_usage_cnt_cum_HN_all_cnt_cum_double.png)
+![](readme_vis/plots/20180602_c_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
 ### 3.2 C++
 
 Not surprisingly, in case of C++ the similarities existing for C and C\# are repeated.
 
-![](vis/p/20180602_c++_HN_all_match_score_cum_s_HN_all_match_score_cum_HN_all_match_cnt_cum_s_HN_all_match_cnt_cum_d_since2008-09-16.png)
+![](readme_vis/plots/20180602_c++_hn_all_match_score_cum_s_hn_all_match_score_cum_hn_all_match_cnt_cum_s_hn_all_match_cnt_cum_d_since2008-09-16.png)
 
 ### 3.3 Cobol
 
@@ -128,7 +120,7 @@ Yes, Cobol. I wanted to say (write) *good, old Cobol*, however, I find such stat
 
 The plot below shows a high resemblance of cumulative number of questions on <span style="color:blue">SO</span> and cumulative number of topics with regard to this programming language on <span style="color:green">HN</span>.
 
-![](vis/p/20180602_cobol_SO_usage_cnt_cum_HN_all_cnt_cum_double.png)
+![](readme_vis/plots/20180602_cobol_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
 It is worth noticing that in a span of about 9 years less than 300 questions appeared on <span style="color:blue">SO</span>, which shows low or even lack of popularity of this technology nowadays.
 
@@ -136,29 +128,29 @@ It is worth noticing that in a span of about 9 years less than 300 questions app
 
 Similar resemblance is observed between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of points gathered by the topics on <span style="color:green">HN</span>…
 
-![](vis/p/20180602_css_SO_usage_cnt_cum_HN_all_score_cum_double.png)
+![](readme_vis/plots/20180602_css_so_usage_cnt_cum_hn_all_score_cum_double.png)
 
 …and between the cumulative number of questions on <span style="color:blue">SO</span> and cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_css_SO_usage_cnt_cum_HN_all_cnt_cum_double.png)
+![](readme_vis/plots/20180602_css_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
 ### 3.5 D3.js
 
 In case of Javascript visualization library D3.js a resemblance is observed between the cumulative number of points obtained by questions on <span style="color:blue">SO</span> and the cumulative number of points gathered by topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_d3js_SO_usage_cnt_cum_HN_all_score_cum_double.png)
+![](readme_vis/plots/20180602_d3js_so_usage_cnt_cum_hn_all_score_cum_double.png)
 
 ### 3.6 Delphi
 
 For Delphi the cumulative number of questions on <span style="color:blue">SO</span> seems to follow the same trend as the cumulative number of topics on <span style="color:green">Hacker News</span>:
 
-![](vis/p/20180602_delphi_SO_usage_cnt_cum_HN_all_cnt_cum_double.png)
+![](readme_vis/plots/20180602_delphi_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
 ### 3.7 Fortran
 
 When it comes to Fortran, the similarity is observed between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of topics on <span style="color:green">HN</span>.
 
-![](vis/p/20180602_fortran_SO_usage_cnt_cum_HN_all_cnt_cum_double.png)
+![](readme_vis/plots/20180602_fortran_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
 Similarly to Cobol, this programming gathered only 700 question in over 9 years which indicates its unpopularity.
 
@@ -166,13 +158,13 @@ Similarly to Cobol, this programming gathered only 700 question in over 9 years 
 
 In case of Hadoop, the cumulative number of questions on <span style="color:blue">SO</span> seems to be similar to the cumulative number of points on <span style="color:green">HN</span>. What’s interesting here is the change of dynamic in 2013: since the middle of this year the number of question on <span style="color:blue">SO</span> grows faster than the number of points on <span style="color:green">HN</span>.
 
-![](vis/p/20180602_hadoop_SO_score_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_hadoop_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.9 HTML
 
 In case of HTML there was no resemblance between variables. Nevertheless, the interesting fact is that since 2014 the number of point for questions on <span style="color:blue">SO</span> stabilizes and later slightly decreases by about 5%, which is shown on the plot below:
 
-![](vis/p/20180602_html_SO_score_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_html_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
 Such a situation occurred due to greater number of downvotes than upvotes. This may be result of high number of duplicates since 2014 or the questions which were not formulated in a clear way or were not reproducible (and therefore were downvoted).
 
@@ -180,67 +172,67 @@ Such a situation occurred due to greater number of downvotes than upvotes. This 
 
 In case of Java the resemblance is visible between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_java_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_java_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 Like in the case of HTML, here the cumulative number of pointsalso levels off in 2014 to fall slightly by the end of 2015. The significant drop is observed by the end of 2017.
 
-![](vis/p/20180602_java_SO_score_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_java_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.11 Javascript
 
 In case of Javascript the similarity is observed between the cumulative number of questions and cumulative number of topics on <span style="color:green">HN</span>…
 
-![](vis/p/20180602_javascript_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_javascript_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 …as well as between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of points between questions on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_javascript_SO_cnt_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_javascript_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.12 Pascal
 
 In case of Pascal the cumulative number of questions on <span style="color:blue">SO</span> tends to resemble the cumulative number of points for topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_pascal_SO_cnt_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_pascal_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 However, in case of this programming language an analogous to HTML and Java situation is visible: the cumulative number of points achieves its peak between 2013 and 2014. In the later years it plummets to be reduced by half by the end of 2017.
 
-![](vis/p/20180602_pascal_SO_score_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_pascal_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.13 Perl
 
 The cumulative number of questions on <span style="color:blue">SO</span> seems to resemble the cumulative number of points on <span style="color:green">HN</span>…
 
-![](vis/p/20180602_perl_SO_cnt_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_perl_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 …and the cumulative number of topics on <span style="color:green">Hacker News</span> related to Perl.
 
-![](vis/p/20180602_perl_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_perl_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 ### 3.14 PHP
 
 In case of PHP only the drop of the cumulative number of points of questions on <span style="color:blue">SO</span> is visible:
 
-![](vis/p/20180602_php_SO_score_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_php_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.15 Python
 
 In case of Python the visible similarity appears between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of points for topics on <span style="color:green">HN</span>…
 
-![](vis/p/20180602_python_SO_cnt_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_python_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 …as well as for the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_python_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_python_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 ### 3.16 Shell
 
 The visible similarity appears between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of points for topics on <span style="color:green">HN</span>…
 
-![](vis/p/20180602_shell_SO_cnt_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_shell_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 …as well as between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_shell_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_shell_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 ### 3.17 Spark
 
@@ -248,21 +240,21 @@ The same situation: the similarity can be identified between the cumulative numb
 
 1.  the cumulative number of points for topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_spark_SO_cnt_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_spark_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 1.  the cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_spark_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_spark_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 ### 3.18 SQL
 
 In case of this technology, the variables characterized by similar trends are the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_sql_SO_cnt_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_sql_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 In addition to that, this technology is also characterized by the decrease of cumulative number of points since 2014 by about 20 percent.
 
-![](vis/p/20180602_sql_SO_score_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_sql_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.19 Swift
 
@@ -270,17 +262,17 @@ In case of swift there also seems to be a similarity between the cumulative numb
 
 1.  the cumulative number of points on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_swift_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_swift_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 1.  the cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_swift_SO_score_sum_cum_HN_all_score_sum_cum_double.png)
+![](readme_vis/plots/20180602_swift_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.20 Tensorflow
 
 In case of Tensorflow, the highest visible resemblance was identified between the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of topics on <span style="color:green">HN</span>:
 
-![](vis/p/20180602_tensorflow_SO_cnt_sum_cum_HN_all_cnt_sum_cum_double.png)
+![](readme_vis/plots/20180602_tensorflow_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 ------------------------------------------------------------------------
 
@@ -309,6 +301,12 @@ where:
 
 1.  In the second one the same regressand (potential resulting time series) and its past values (autoregressors) are used, however, the past values (autoregressors) of potential cause are added as well:
 
+    ``` math
+    \sum_{i=1}^{p}
+    ```
+
+$$\`\\sum\_{i=1}^{p}\`$$
+
 $$y\_t = c\_t + \\sum\_{i=1}^{p}(\\gamma\_i y\_{t-i}) + \\sum\_{i=1}^{p}(\\beta\_i x\_{t-i}) + u\_t$$
 
 where: *x*<sub>*t* − *i*</sub> - potential cause in period *t* − *i*, *β*<sub>*i*</sub> - coefficient for *i*-th autoregressor (*i*-th past value) of potential cause, *u*<sub>*t*</sub> - error term.
@@ -320,6 +318,8 @@ The null hypothesis is that all the added past values of the potential cause are
 The computed statistic takes such a form:
 
 $$ S\_1 = \\frac {\\color{purple}{(RSS\_0-RSS\_1)}/ \\color{blue}p}  {\\color{green}{RSS\_1/(T-2p-1)}}\\sim F\_{p,T-2p-1}$$
+
+![equation](http://www.sciweavers.org/tex2img.php?eq=%24%24%20S_1%20%3D%20%5Cfrac%20%7B%5Ccolor%7BPurple%7D%7B%28RSS_0-RSS_1%29%7D%2F%20%5Ccolor%7Bblue%7Dp%7D%20%20%7B%5Ccolor%7Bgreen%7D%7BRSS_1%2F%28T-2p-1%29%7D%7D%5Csim%20F_%7Bp%2CT-2p-1%7D%24%24&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
 
 where:
 
@@ -548,6 +548,6 @@ Further research in this topic may include:
 
 I would like to thank [Piotr Migdał](http://p.migdal.pl/) for the suggestion of this topic, his research ideas and the overall supervision of this analysis.
 
-<b id="f1">1: </b>source: <https://en.wikipedia.org/wiki/Causality>, access: 02JUN2018 [???](#a1)
+<b id="f1">1: </b>source: <https://en.wikipedia.org/wiki/Causality>, access: 02JUN2018 [↩](#a1)
 
-<b id="f2">2: </b>source: <https://support.sas.com/rnd/app/ets/examples/granger/index.htm>, access: 02JUN2018 [???](#a2)
+<b id="f2">2: </b>source: <https://support.sas.com/rnd/app/ets/examples/granger/index.htm>, access: 02JUN2018 [↩](#a2)
