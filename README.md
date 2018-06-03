@@ -3,10 +3,6 @@ Does popularity of technology on StackOverflow (SO) influence popularity of post
 dgwozdz & pmigdal
 3<sup>RD</sup> JUNE 2018
 
-<style>
-body {
-text-align: justify}
-</style>
 Table of Contents
 -----------------
 
@@ -18,10 +14,12 @@ Table of Contents
 6.  [Further research](#further)
 7.  [Acknowledgments](#acknowledgments)
 
+------------------------------------------------------------------------
+
 1. Intro <a href="#" name=""></a>
 ---------------------------------
 
-***Causality** (also referred to as causation, or cause and effect) is what connects one process (the cause) with another process or state (the effect), where the first is partly responsible for the second, and the second is partly dependent on the first. In general, a process has many causes, which are said to be causal factors for it, and all lie in its past.*[1]
+***Causality** (also referred to as causation, or cause and effect) is what connects one process (the cause) with another process or state (the effect), where the first is partly responsible for the second, and the second is partly dependent on the first. In general, a process has many causes, which are said to be causal factors for it, and all lie in its past.*<sup id="a1">[1](#f1)</sup>
 
 Causality is a phenomenon which people intuitively understand but which is tough to measure with statistical methods. Let’s say you would like to build a model which explains the behaviour of defaults on mortgages. You may use the following data explaining a lack of repayments: clients’ incomes, GDP, clients’ heights, their genders etc. You employ a regression/decision tree/neural network and it seems that the best predictors are sex and height. Does that mean that those variables influence defaults? It may just be a spurious correlation. Those variables may include other information, not directly implied by themselves (e.g. that there is a gap in salaries between genders). You may have not considered other important variables (e.g. number of kids, length of employment, the history of previous loans if it’s available), so the data you put in your model are statistically significant. Or, because such a situation is also possible, the significant variables do indeed influence defaults but you just don’t understand the dependence of those phenomena. The causality seems to be a tough thing to identify.
 
@@ -39,8 +37,10 @@ If you’re a programmer or your profession/hobby has anything to do with progra
 
 [Hacker News](https://news.ycombinator.com/) is an established in 2007 portal on which users submit interesting links/stories. Those stories gather points just like questions on SO (however, users cannot downvote stories until they reach a certain karma treshold). Each post can be commmented on.
 
-2. How to cope with problem <a href="#" name="suggested-solutions"></a>
------------------------------------------------------------------------
+2. How to cope with problem
+---------------------------
+
+<a href="#" name="suggested-solutions"></a>
 
 ### Popularity and influence
 
@@ -88,7 +88,7 @@ One of the ideas with regard to examining causality included checking cumulative
 
 ### 3.0 C\# <a href="#" name="c_sharp"></a>
 
-![](readme_graphics/plots/20180602_c_sharp_SO_usage_cnt_cum_HN_all_match_score_cum.png)
+![](readme_graphics/logos/20180602_c_sharp_SO_usage_cnt_cum_HN_all_match_score_cum.png)
 
 It can be noticed that by the end of 2017 the cumulative number of questions on <span style="color:blue">SO</span> exceeded 50 thousand while in the same time the number of points for topics with C\# on <span style="color:green">HN</span> reached about 30 thousand.
 
@@ -289,12 +289,13 @@ There are a couple of problems with above given visual identifications:
 4. Granger causality <a href="#" name="granger"></a>
 ----------------------------------------------------
 
-Granger causality informs whether one variable is useful in forecasting another variable. The test takes a form of performing two linear regressions[2]:
+Granger causality informs whether one variable is useful in forecasting another variable. The test takes a form of performing two linear regressions<sup id="a2">[2](#f2)</sup>:
 
 1.  The first one, in which the potential resulting time series is explained by its past values (autoregressors):
 
-$$y\_t = c\_t + \\sum\_{i=1}^{p}(\\gamma\_i y\_{t-i}) + e\_t$$
- where:
+$y\_t = c\_t + \\sum\_{i=1}^{p}(\\gamma\_i y\_{t-i}) + e\_t$
+
+where:
 
 -   *y*<sub>*t*</sub> - potential result in period *t*,
 -   *c*<sub>*t*</sub> - intercept,
@@ -543,6 +544,6 @@ Further research in this topic may include:
 
 I would like to thank [Piotr Migdał](http://p.migdal.pl/) for the suggestion of this topic, his research ideas and the overall supervision of this analysis.
 
-[1] source: <https://en.wikipedia.org/wiki/Causality>, access: 02JUN2018
+<b id="f1">1: </b>source: <https://en.wikipedia.org/wiki/Causality>, access: 02JUN2018 [???](#a1)
 
-[2] source: <https://support.sas.com/rnd/app/ets/examples/granger/index.htm>, access: 02JUN2018
+<b id="f2">2: </b>source: <https://support.sas.com/rnd/app/ets/examples/granger/index.htm>, access: 02JUN2018 [???](#a2)
