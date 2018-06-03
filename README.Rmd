@@ -5,11 +5,6 @@ date: "3<sup>rd</sup> JUNE 2018"
 output: rmarkdown::github_document
 ---
 
-<style>
-body {
-text-align: justify}
-</style>
-
 ## Table of Contents
 
 1)	[Introduction](#intro)
@@ -21,8 +16,6 @@ text-align: justify}
 7)  [Acknowledgments](#acknowledgments)
 
 ***
-
-
 
 ## 1. Introduction <a href="#" name="intro"></a>
 

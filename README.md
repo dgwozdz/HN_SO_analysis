@@ -4,11 +4,6 @@ of post about this technology on Hacker News (HN)?
 dgwozdz & pmigdal<br/>
 3<sup>rd</sup> JUNE 2018
 
-<style>
-body {
-text-align: justify}
-</style>
-
 ## Table of Contents
 
 1)  [Introduction](#intro)
