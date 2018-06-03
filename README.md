@@ -102,6 +102,8 @@ Now it can be noticed that the cumulative number of questions on <span style="co
 
 ![](vis/p/c_sharp_SO_usage_cnt_cum_HN_all_match_cnt_cum.png)
 
+<img src="vis/p/c_sharp_SO_usage_cnt_cum_HN_all_match_cnt_cum.png"/>
+
 Let’s see some interesting similarities between statistics on <span style="color:blue">SO</span> and <span style="color:green">HN</span> for different technologies on standardized plots. We will only see the technologies for which I identified somme sort of similarity between data from <span style="color:blue">SO</span> and <span style="color:green">HN</span> or for which I discovered something interesting. Additionally, plots on the left will be the ones for standardised variables while those on the right for variables without transformation (standardisation).
 
 ### 3.1 C
