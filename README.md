@@ -100,7 +100,7 @@ Above described plot for C\# does not seem particularly interesting. It shows (r
 
 Now it can be noticed that the cumulative number of questions on <span style="color:blue">SO</span> and the cumulative number of points for topics on <span style="color:green">HN</span> show strong resemblance. Similar resemblance can be seen when comparing standardized plots of cumulative number of questions vs. cumulative number of topics:
 
-![](vis/p/20180602_c_sharp_SO_usage_cnt_cum_HN_all_match_cnt_cum_double.png)
+![](vis/p/c_sharp_SO_usage_cnt_cum_HN_all_match_cnt_cum.png)
 
 Let’s see some interesting similarities between statistics on <span style="color:blue">SO</span> and <span style="color:green">HN</span> for different technologies on standardized plots. We will only see the technologies for which I identified somme sort of similarity between data from <span style="color:blue">SO</span> and <span style="color:green">HN</span> or for which I discovered something interesting. Additionally, plots on the left will be the ones for standardised variables while those on the right for variables without transformation (standardisation).
 
