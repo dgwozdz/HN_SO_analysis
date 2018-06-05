@@ -1,8 +1,10 @@
 Does popularity of technology on StackOverflow (SO) influence popularity
-of posts about this technology on Hacker News (HN)?
+of post about this technology on Hacker News (HN)?
 ================
 dgwozdz & pmigdal<br/>
 3<sup>rd</sup> JUNE 2018
+
+Last update: 5<sup>th</sup> JUNE 2018
 
 ## Table of Contents
 
@@ -90,9 +92,9 @@ that we deal with a **time series**.
 
 I suggest starting the analysis with variables such as a number of
 questions (SO) / posts (HN) for a given programming language and points
-(also later referred as scores) gathered by those questions (SO) /
-topics (HN). Those two are probably the most universal ones. Of course,
-you could come up with much more variables, for example:
+gathered by those questions (SO) / topics (HN). Those two are probably
+the most universal ones. Of course, you could come up with much more
+variables, for example:
 
 1)  number of times questions from a certain time span (e.g. from a
     given day) were tagged as a favourite,
@@ -128,9 +130,9 @@ from a certain period? I decided to use a sum as an aggregation
 function, e.g. sum of questions which appeared in a certain day. You
 could come up with, for example, an average. However, the problem with
 such a metric could be small samples on the basis of which it would be
-computed (for example, a mean score gathered by questions on SO from a
-given day when during that 24 hours only one or two posts popped up),
-which would be unrepresentative.
+computed (for example, a mean number of points gathered by questions on
+SO from a given day when during that 24 hours only one or two posts
+popped up), which would be unrepresentative.
 
 How to cope with the problem of causality: one phenomenon partially
 influencing another? The **first approach** could be an EDA -
@@ -177,8 +179,8 @@ Spark, SQL, Swift, Tensorflow, VBA. The choice of technologies was
 arbitrary.
 
 The data from portals were assigned specific colors:
-<span style="color:blue">blue for Stack Overflow</span>,
-<span style="color:green">green for Hacker News</span>. Those colours
+<span style="color:grey">grey for Stack Overflow</span>,
+<span style="color:orange">orange for Hacker News</span>. Those colours
 are consistent with the ones used later on so that it would be easier to
 identify the source of data (Stack Overflow or Hacker News).
 
@@ -186,21 +188,38 @@ identify the source of data (Stack Overflow or Hacker News).
 
 One of the ideas with regard to examining causality included checking
 cumulative plots. Cumulative plots show aggregated value of a given
-measure to a given date. Exemplifying, the plot below shows:
+measure to a given date. For example, if we have data in such a form:
+
+| Date       | Value |
+| ---------- | :---: |
+| 2018-01-01 |   1   |
+| 2018-01-02 |   2   |
+| 2018-01-03 |   3   |
+
+Then the cumulative value would be sum of all the values up to a given
+date:
+
+| Date       | Value | Cumulative value |
+| ---------- | :---: | ---------------: |
+| 2018-01-01 |   1   |                1 |
+| 2018-01-02 |   2   |                3 |
+| 2018-01-03 |   3   |                6 |
+
+Exemplifying, the plot below shows:
 
 1)  cumulative number of questions asked for C\# on
-    <span style="color:blue">Stack Overflow</span> to the date on x axis
-    (<span style="color:blue">blue line</span>),
+    <span style="color:grey">Stack Overflow</span> to the date on x axis
+    (<span style="color:grey">blue line</span>),
 2)  cumulative number of points gathered by all topic with regard to C\#
-    on <span style="color:green">Hacker News</span> to the date on x
-    axis (<span style="color:green">green line</span>).
+    on <span style="color:orange">Hacker News</span> to the date on x
+    axis (<span style="color:orange">green line</span>).
 
 ### 3.0 C\# [](#)
 
 It can be noticed that by the end of 2017 the cumulative number of
-questions on <span style="color:blue">SO</span> exceeded 50 thousand
+questions on <span style="color:grey">SO</span> exceeded 50 thousand
 while in the same time the number of points for topics with C\# on
-<span style="color:green">HN</span> reached about 30 thousand.
+<span style="color:orange">HN</span> reached about 30 thousand.
 
 Above described plot for C\# does not seem particularly interesting. It
 shows (rather obviously) an upward trends for both variables, however,
@@ -216,8 +235,8 @@ below:
 ![](readme_vis/plots/20180602_c_sharp_stand_so_usage_cnt_cum_stand_hn_all_match_score_cum.png)
 
 Now it can be noticed that the cumulative number of questions on
-<span style="color:blue">SO</span> and the cumulative number of points
-for topics on <span style="color:green">HN</span> show strong
+<span style="color:grey">SO</span> and the cumulative number of points
+for topics on <span style="color:orange">HN</span> show strong
 resemblance. Similar resemblance can be seen when comparing standardized
 plots of cumulative number of questions vs. cumulative number of
 topics:
@@ -225,12 +244,12 @@ topics:
 ![](readme_vis/plots/20180602_c_sharp_so_usage_cnt_cum_hn_all_match_cnt_cum_double.png)
 
 Let’s see some interesting similarities between statistics on
-<span style="color:blue">SO</span> and
-<span style="color:green">HN</span> for different technologies on
+<span style="color:grey">SO</span> and
+<span style="color:orange">HN</span> for different technologies on
 standardized plots. We will only see the technologies for which I
 identified somme sort of similarity between data from
-<span style="color:blue">SO</span> and
-<span style="color:green">HN</span> or for which I discovered something
+<span style="color:grey">SO</span> and
+<span style="color:orange">HN</span> or for which I discovered something
 interesting. Additionally, plots on the left will be the ones for
 standardised variables while those on the right for variables without
 transformation (standardisation).
@@ -238,15 +257,15 @@ transformation (standardisation).
 ### 3.1 C
 
 Similarly to C\#, there is visible resemblance between cumulative number
-of questions on <span style="color:blue">SO</span> and cumulative number
+of questions on <span style="color:grey">SO</span> and cumulative number
 of points for topics on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_c_so_usage_cnt_cum_hn_all_score_sum_cum_double.png)
 
 as well as in case of cumulative number of questions on
-<span style="color:blue">SO</span> and cumulative number of topics on
-<span style="color:green">HN</span>:
+<span style="color:grey">SO</span> and cumulative number of topics on
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_c_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
@@ -270,28 +289,28 @@ managers. It was introduced in 1959(\!) and was/is used in variety of
 environments, including banking and insurance.
 
 The plot below shows a high resemblance of cumulative number of
-questions on <span style="color:blue">SO</span> and cumulative number of
+questions on <span style="color:grey">SO</span> and cumulative number of
 topics with regard to this programming language on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_cobol_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
 It is worth noticing that in a span of about 9 years less than 300
-questions appeared on <span style="color:blue">SO</span>, which shows
+questions appeared on <span style="color:grey">SO</span>, which shows
 low or even lack of popularity of this technology nowadays.
 
 ### 3.4 CSS
 
 Similar resemblance is observed between the cumulative number of
-questions on <span style="color:blue">SO</span> and the cumulative
+questions on <span style="color:grey">SO</span> and the cumulative
 number of points gathered by the topics on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_css_so_usage_cnt_cum_hn_all_score_cum_double.png)
 
 .and between the cumulative number of questions on
-<span style="color:blue">SO</span> and cumulative number of topics on
-<span style="color:green">HN</span>:
+<span style="color:grey">SO</span> and cumulative number of topics on
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_css_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
@@ -299,17 +318,17 @@ number of points gathered by the topics on
 
 In case of Javascript visualization library D3.js a resemblance is
 observed between the cumulative number of points obtained by questions
-on <span style="color:blue">SO</span> and the cumulative number of
+on <span style="color:grey">SO</span> and the cumulative number of
 points gathered by topics on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_d3js_so_usage_cnt_cum_hn_all_score_cum_double.png)
 
 ### 3.6 Delphi
 
 For Delphi the cumulative number of questions on
-<span style="color:blue">SO</span> seems to follow the same trend as the
-cumulative number of topics on <span style="color:green">Hacker
+<span style="color:grey">SO</span> seems to follow the same trend as the
+cumulative number of topics on <span style="color:orange">Hacker
 News</span>:
 
 ![](readme_vis/plots/20180602_delphi_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
@@ -317,9 +336,9 @@ News</span>:
 ### 3.7 Fortran
 
 When it comes to Fortran, the similarity is observed between the
-cumulative number of questions on <span style="color:blue">SO</span> and
+cumulative number of questions on <span style="color:grey">SO</span> and
 the cumulative number of topics on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_fortran_so_usage_cnt_cum_hn_all_cnt_cum_double.png)
 
@@ -329,12 +348,12 @@ Similarly to Cobol, this programming gathered only 700 question in over
 ### 3.8 Hadoop
 
 In case of Hadoop, the cumulative number of questions on
-<span style="color:blue">SO</span> seems to be similar to the cumulative
-number of points on <span style="color:green">HN</span>. What’s
+<span style="color:grey">SO</span> seems to be similar to the cumulative
+number of points on <span style="color:orange">HN</span>. What’s
 interesting here is the change of dynamic in 2013: since the middle of
-this year the number of question on <span style="color:blue">SO</span>
+this year the number of question on <span style="color:grey">SO</span>
 grows faster than the number of points on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_hadoop_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
@@ -342,7 +361,7 @@ grows faster than the number of points on
 
 In case of HTML there was no resemblance between variables.
 Nevertheless, the interesting fact is that since 2014 the number of
-point for questions on <span style="color:blue">SO</span> stabilizes and
+point for questions on <span style="color:grey">SO</span> stabilizes and
 later slightly decreases by about 5%, which is shown on the plot
 below:
 
@@ -356,9 +375,9 @@ reproducible (and therefore were downvoted).
 ### 3.10 Java
 
 In case of Java the resemblance is visible between the cumulative number
-of questions on <span style="color:blue">SO</span> and the cumulative
+of questions on <span style="color:grey">SO</span> and the cumulative
 number of topics on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_java_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
@@ -373,23 +392,23 @@ drop is observed by the end of
 
 In case of Javascript the similarity is observed between the cumulative
 number of questions and cumulative number of topics on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_javascript_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 .as well as between the cumulative number of questions on
-<span style="color:blue">SO</span> and the cumulative number of points
+<span style="color:grey">SO</span> and the cumulative number of points
 between questions on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_javascript_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 ### 3.12 Pascal
 
 In case of Pascal the cumulative number of questions on
-<span style="color:blue">SO</span> tends to resemble the cumulative
+<span style="color:grey">SO</span> tends to resemble the cumulative
 number of points for topics on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_pascal_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
@@ -403,14 +422,14 @@ by half by the end of
 
 ### 3.13 Perl
 
-The cumulative number of questions on <span style="color:blue">SO</span>
+The cumulative number of questions on <span style="color:grey">SO</span>
 seems to resemble the cumulative number of points on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_perl_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
-.and the cumulative number of topics on <span style="color:green">Hacker
-News</span> related to
+.and the cumulative number of topics on
+<span style="color:orange">Hacker News</span> related to
 Perl.
 
 ![](readme_vis/plots/20180602_perl_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
@@ -418,7 +437,7 @@ Perl.
 ### 3.14 PHP
 
 In case of PHP only the drop of the cumulative number of points of
-questions on <span style="color:blue">SO</span> is
+questions on <span style="color:grey">SO</span> is
 visible:
 
 ![](readme_vis/plots/20180602_php_so_score_sum_cum_hn_all_score_sum_cum_double.png)
@@ -426,48 +445,48 @@ visible:
 ### 3.15 Python
 
 In case of Python the visible similarity appears between the cumulative
-number of questions on <span style="color:blue">SO</span> and the
+number of questions on <span style="color:grey">SO</span> and the
 cumulative number of points for topics on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_python_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 .as well as for the cumulative number of questions on
-<span style="color:blue">SO</span> and the cumulative number of topics
+<span style="color:grey">SO</span> and the cumulative number of topics
 on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_python_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 ### 3.16 Shell
 
 The visible similarity appears between the cumulative number of
-questions on <span style="color:blue">SO</span> and the cumulative
+questions on <span style="color:grey">SO</span> and the cumulative
 number of points for topics on
-<span style="color:green">HN</span>.
+<span style="color:orange">HN</span>.
 
 ![](readme_vis/plots/20180602_shell_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 .as well as between the cumulative number of questions on
-<span style="color:blue">SO</span> and the cumulative number of topics
+<span style="color:grey">SO</span> and the cumulative number of topics
 on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_shell_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 ### 3.17 Spark
 
 The same situation: the similarity can be identified between the
-cumulative number of questions on <span style="color:blue">SO</span>
+cumulative number of questions on <span style="color:grey">SO</span>
 and:
 
 1)  the cumulative number of points for topics on
-    <span style="color:green">HN</span>:
+    <span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_spark_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
 1)  the cumulative number of topics on
-    <span style="color:green">HN</span>:
+    <span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_spark_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
@@ -475,9 +494,9 @@ and:
 
 In case of this technology, the variables characterized by similar
 trends are the cumulative number of questions on
-<span style="color:blue">SO</span> and the cumulative number of topics
+<span style="color:grey">SO</span> and the cumulative number of topics
 on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_sql_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
@@ -490,16 +509,16 @@ percent.
 ### 3.19 Swift
 
 In case of swift there also seems to be a similarity between the
-cumulative number of questions on <span style="color:blue">SO</span>
+cumulative number of questions on <span style="color:grey">SO</span>
 and:
 
 1)  the cumulative number of points on
-    <span style="color:green">HN</span>:
+    <span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_swift_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
 2)  the cumulative number of topics on
-    <span style="color:green">HN</span>:
+    <span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_swift_so_score_sum_cum_hn_all_score_sum_cum_double.png)
 
@@ -507,9 +526,9 @@ and:
 
 In case of Tensorflow, the highest visible resemblance was identified
 between the cumulative number of questions on
-<span style="color:blue">SO</span> and the cumulative number of topics
+<span style="color:grey">SO</span> and the cumulative number of topics
 on
-<span style="color:green">HN</span>:
+<span style="color:orange">HN</span>:
 
 ![](readme_vis/plots/20180602_tensorflow_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
@@ -798,11 +817,11 @@ easy job. Nevertheless, let’s try.
 As a side-effect of this side-project (sic\!) I find it interesting that
 there are technologies (HTML, Java, SQL, Pascal, PHP) in case of which
 the number of negatively rated questions high (or the number of negative
-scores for some questions) was so high that the cumulative number of
+points for some questions) was so high that the cumulative number of
 points for those technologies dropped (even by a half from its maximum).
 
 To sum up: does popularity of technology on StackOverflow (SO) influence
-popularity of posts about this technology on Hacker News (HN)? **There
+popularity of post about this technology on Hacker News (HN)? **There
 seems to be a relationship between those two portals but I could not
 determine that popularity on Stack Overflow causes popularity on Hacker
 News.**

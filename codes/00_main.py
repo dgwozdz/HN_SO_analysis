@@ -439,7 +439,7 @@ data_min_date[['hn_all_match_score_cum_s',
 
 hn_plots(data = data_min_date,
          output_date = todays_date(),
-             select_tech =  set(data_min_date.tech),
+             select_tech =  ['tensorflow'],#set(data_min_date.tech),
              common_var = 'hn_all_match_score_cum_s',
              common_var2 = 'hn_all_match_score_cum_s',
              common_var3 = 'hn_all_match_cnt_cum_s',
@@ -451,7 +451,9 @@ hn_plots(data = data_min_date,
              var4 = 'so_score_sum_cum_s',
              subfolder = 'plots',
              add_freq_label = False,
-             same_oy = True)
+             same_oy = False,
+             col1 = '#ff4000',
+             col2 = '#bcbbbb')
 
 #######################################################################
 # 7 Plots for the needs of Markdown for Github
@@ -471,7 +473,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True, col1 = '#ff4000', col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for C#',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -496,7 +498,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for C',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -521,7 +523,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for C++',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -546,7 +548,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of topics on HN for Cobol',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -567,7 +569,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for CSS',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -592,7 +594,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for D3.js',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -613,7 +615,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'cumulative number of topics on HN for Delphi',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -634,7 +636,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of topics on HN for Fortran',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -655,7 +657,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of points on SO vs.\n'
 #             'standardized cumulative number of points on HN for Hadoop',
 #             label2 = 'Cumulative number of points on SO vs.\n'
@@ -676,7 +678,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of points on SO vs.\n'
 #             'standardized cumulative number of points on HN for HTML',
 #             label2 = 'Cumulative number of points on SO vs.\n'
@@ -697,7 +699,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_score_sum_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of topics on HN for Java',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -722,7 +724,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for Javascript',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -747,7 +749,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_score_sum_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for Pascal',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -772,7 +774,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for Perl',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -797,7 +799,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of points on SO vs.\n'
 #             'standardized cumulative number of points on HN for PHP',
 #             label2 = 'Cumulative number of points on SO vs.\n'
@@ -818,7 +820,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for Python',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -843,7 +845,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for Shell',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -868,7 +870,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for Spark',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -893,7 +895,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_score_sum_cum_s',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of points on HN for SQL',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -918,7 +920,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of topics on HN for Swift',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
@@ -943,7 +945,7 @@ hn_plots(data = data_min_date,
 #             var4 = 'so_usage_cnt_cum',
 #             subfolder = 'plots',
 #             add_freq_label = False,
-#             same_oy = True,
+#             same_oy = True,col1 = '#ff4000',col2 = '#bcbbbb',
 #             label1 = 'Standardized cumulative number of questions on SO vs.\n'
 #             'standardized cumulative number of topics on HN for Tensorflow',
 #             label2 = 'Cumulative number of questions on SO vs.\n'
