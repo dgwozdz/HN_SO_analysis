@@ -4,7 +4,7 @@ of post about this technology on Hacker News (HN)?
 dgwozdz & pmigdal<br/>
 3<sup>rd</sup> JUNE 2018
 
-Last update: 5<sup>th</sup> JUNE 2018
+Last update: 6<sup>th</sup> JUNE 2018
 
 ## Table of Contents
 
@@ -205,21 +205,24 @@ date:
 | 2018-01-02 |   2   |                3 |
 | 2018-01-03 |   3   |                6 |
 
+### 3.0 C\# [](#)
+
 Exemplifying, the plot below shows:
 
 1)  cumulative number of questions asked for C\# on
     <span style="color:grey">Stack Overflow</span> to the date on x axis
-    (<span style="color:grey">blue line</span>),
+    (<span style="color:grey">grey line</span>),
 2)  cumulative number of points gathered by all topic with regard to C\#
     on <span style="color:orange">Hacker News</span> to the date on x
-    axis (<span style="color:orange">green line</span>).
-
-### 3.0 C\# [](#)
+    axis (<span style="color:orange">orange line</span>).
 
 It can be noticed that by the end of 2017 the cumulative number of
 questions on <span style="color:grey">SO</span> exceeded 50 thousand
 while in the same time the number of points for topics with C\# on
-<span style="color:orange">HN</span> reached about 30 thousand.
+<span style="color:orange">HN</span> reached about 30
+thousand.
+
+![](readme_vis/plots/20180602_c_sharp_so_usage_cnt_cum_hn_all_match_score_cum.png)
 
 Above described plot for C\# does not seem particularly interesting. It
 shows (rather obviously) an upward trends for both variables, however,
