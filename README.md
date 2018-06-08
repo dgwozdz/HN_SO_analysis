@@ -395,11 +395,11 @@ drop is observed by the end of
 
 In case of Javascript the similarity is observed between the cumulative
 number of questions and cumulative number of topics on
-<span style="color:orange">HN</span>.
+<span style="color:orange">HN</span>…
 
 ![](readme_vis/plots/20180602_javascript_so_cnt_sum_cum_hn_all_cnt_sum_cum_double.png)
 
-.as well as between the cumulative number of questions on
+…as well as between the cumulative number of questions on
 <span style="color:grey">SO</span> and the cumulative number of points
 between questions on
 <span style="color:orange">HN</span>:
@@ -427,11 +427,11 @@ by half by the end of
 
 The cumulative number of questions on <span style="color:grey">SO</span>
 seems to resemble the cumulative number of points on
-<span style="color:orange">HN</span>.
+<span style="color:orange">HN</span>…
 
 ![](readme_vis/plots/20180602_perl_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
-.and the cumulative number of topics on
+…and the cumulative number of topics on
 <span style="color:orange">Hacker News</span> related to
 Perl.
 
@@ -450,11 +450,11 @@ visible:
 In case of Python the visible similarity appears between the cumulative
 number of questions on <span style="color:grey">SO</span> and the
 cumulative number of points for topics on
-<span style="color:orange">HN</span>.
+<span style="color:orange">HN</span>…
 
 ![](readme_vis/plots/20180602_python_so_cnt_sum_cum_hn_all_score_sum_cum_double.png)
 
-.as well as for the cumulative number of questions on
+…as well as for the cumulative number of questions on
 <span style="color:grey">SO</span> and the cumulative number of topics
 on
 <span style="color:orange">HN</span>:
@@ -846,7 +846,10 @@ Further research in this topic may include:
 
 I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the
 suggestion of this topic, his research ideas and the overall supervision
-of this analysis.
+of this analysis. Also, many thanks to Jan Bendarz for suggesting a
+method of trend detection and [Andrzej
+Drzystek](https://github.com/adrzystek) for thoughts on an initial
+draft.
 
 <b id="f1">1: </b>source: <https://en.wikipedia.org/wiki/Causality>,
 access: 02JUN2018 [←](#a1)
