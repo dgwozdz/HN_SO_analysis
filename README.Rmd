@@ -1,5 +1,5 @@
 ---
-title: "Does popularity of technology on StackOverflow (SO) influence popularity of post about this technology on Hacker News (HN)?"
+title: "Does popularity of technology on Stack Overflow (SO) influence popularity of post about this technology on Hacker News (HN)?"
 author: "dgwozdz & pmigdal<br/>"
 date: "3<sup>rd</sup> JUNE 2018"
 output: rmarkdown::github_document
@@ -423,7 +423,7 @@ The question seems to be clear. However, answering it seems to be not an easy jo
 
 As a side-effect of this side-project (sic!) I find it interesting that there are technologies (HTML, Java, SQL, Pascal, PHP) in case of which the number of negatively rated questions high (or the number of negative points for some questions) was so high that the cumulative number of points for those technologies dropped (even by a half from its maximum).
 
-To sum up: does popularity of technology on StackOverflow (SO) influence popularity of post about this technology on Hacker News (HN)? __There seems to be a relationship between those two portals but I could not determine that popularity on Stack Overflow causes popularity on Hacker News.__
+To sum up: does popularity of technology on Stack Overflow (SO) influence popularity of post about this technology on Hacker News (HN)? __There seems to be a relationship between those two portals but I could not determine that popularity on Stack Overflow causes popularity on Hacker News.__
 
 ## 6. Further research <a href="#" name="further"></a>
 

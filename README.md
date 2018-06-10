@@ -1,4 +1,4 @@
-Does popularity of technology on StackOverflow (SO) influence popularity
+Does popularity of technology on Stack Overflow (SO) influence popularity
 of post about this technology on Hacker News (HN)?
 ================
 dgwozdz & pmigdal<br/>
@@ -823,7 +823,7 @@ the number of negatively rated questions high (or the number of negative
 points for some questions) was so high that the cumulative number of
 points for those technologies dropped (even by a half from its maximum).
 
-To sum up: does popularity of technology on StackOverflow (SO) influence
+To sum up: does popularity of technology on Stack Overflow (SO) influence
 popularity of post about this technology on Hacker News (HN)? **There
 seems to be a relationship between those two portals but I could not
 determine that popularity on Stack Overflow causes popularity on Hacker
