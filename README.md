@@ -6,7 +6,7 @@ dgwozdz & pmigdal<br/>
 
 Last update: 6<sup>th</sup> JUNE 2018
 
-Hacker News discussion thread: [https://github.com/dgwozdz/HN_SO_analysis]
+Hacker News discussion thread: [https://news.ycombinator.com/item?id=17277550]
 
 ## Table of Contents
 
