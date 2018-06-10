@@ -4,7 +4,7 @@ author: "dgwozdz & pmigdal<br/>"
 date: "3<sup>rd</sup> JUNE 2018"
 output: rmarkdown::github_document
 ---
-Last update: 6<sup>th</sup> JUNE 2018
+Last update: 10<sup>th</sup> JUNE 2018
 
 
 ## Table of Contents
@@ -429,7 +429,7 @@ To sum up: does popularity of technology on Stack Overflow (SO) influence popula
 
 Further research in this topic may include:
 
-1) Investingating other technologies (e.g. if tensorflow was checked, e.g. keras and pytorch could be included.
+1) Investingating other technologies (e.g. if tensorflow was checked, e.g. keras and pytorch could be included).
 2) Using other, named or unnamed above variables (e.g. number of times questions were flagged as favourites in a certain life spans).
 3) Using other statistical methods.
 4) Computing correlations. However, Pearson correlation detects only a linear dependence (and should be computed on stationary series) and only answers a question of dependence, not causality.

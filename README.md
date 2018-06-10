@@ -1,12 +1,10 @@
-Does popularity of technology on Stack Overflow (SO) influence popularity
-of post about this technology on Hacker News (HN)?
+Does popularity of technology on Stack Overflow (SO) influence
+popularity of post about this technology on Hacker News (HN)?
 ================
 dgwozdz & pmigdal<br/>
 3<sup>rd</sup> JUNE 2018
 
-Last update: 6<sup>th</sup> JUNE 2018
-
-Hacker News discussion thread: [https://news.ycombinator.com/item?id=17277550]
+Last update: 10<sup>th</sup> JUNE 2018
 
 ## Table of Contents
 
@@ -825,18 +823,18 @@ the number of negatively rated questions high (or the number of negative
 points for some questions) was so high that the cumulative number of
 points for those technologies dropped (even by a half from its maximum).
 
-To sum up: does popularity of technology on Stack Overflow (SO) influence
-popularity of post about this technology on Hacker News (HN)? **There
-seems to be a relationship between those two portals but I could not
-determine that popularity on Stack Overflow causes popularity on Hacker
-News.**
+To sum up: does popularity of technology on Stack Overflow (SO)
+influence popularity of post about this technology on Hacker News (HN)?
+**There seems to be a relationship between those two portals but I could
+not determine that popularity on Stack Overflow causes popularity on
+Hacker News.**
 
 ## 6\. Further research <a href="#" name="further"></a>
 
 Further research in this topic may include:
 
 1)  Investingating other technologies (e.g. if tensorflow was checked,
-    e.g. keras and pytorch could be included.
+    e.g. keras and pytorch could be included).
 2)  Using other, named or unnamed above variables (e.g. number of times
     questions were flagged as favourites in a certain life spans).
 3)  Using other statistical methods.
