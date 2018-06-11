@@ -1,6 +1,6 @@
 Is there a relationship between popularity of a given technology on
 Stack Overflow (SO) and Hacker News (HN)? And a few words about
-causality?
+causality
 ================
 dgwozdz & pmigdal<br/>
 3<sup>rd</sup> JUNE 2018

@@ -1,5 +1,5 @@
 ---
-title: "Is there a relationship between popularity of a given technology on Stack Overflow (SO) and Hacker News (HN)? And a few words about causality?"
+title: "Is there a relationship between popularity of a given technology on Stack Overflow (SO) and Hacker News (HN)? And a few words about causality"
 author: "dgwozdz & pmigdal<br/>"
 date: "3<sup>rd</sup> JUNE 2018"
 output: rmarkdown::github_document
