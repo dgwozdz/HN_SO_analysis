@@ -1,10 +1,11 @@
-Does popularity of technology on Stack Overflow (SO) influence
-popularity of post about this technology on Hacker News (HN)?
+Is there a relationship between popularity of a given technology on
+Stack Overflow (SO) and Hacker News (HN)? And a few words about
+causality?
 ================
 dgwozdz & pmigdal<br/>
 3<sup>rd</sup> JUNE 2018
 
-Last update: 10<sup>th</sup> JUNE 2018
+Last update: 11<sup>th</sup> JUNE 2018
 
 ## Table of Contents
 
@@ -19,6 +20,40 @@ Last update: 10<sup>th</sup> JUNE 2018
 -----
 
 ## 1\. Introduction <a href="#" name="intro"></a>
+
+[Stack Overflow](https://stackoverflow.com) and [Hacker
+News](https://news.ycombinator.com/) are portals mainly (but not only)
+read and used by programmers and other people who occupy their
+(professional or free) time with writing code.
+
+### Stack Overflow (later referenced as SO)
+
+![](readme_vis/logos/stack.png)
+
+Stack Overflow lets their users easily Stack Overflow (SO), an
+established in 2008 portal on which programmers help each other by
+asking and answering coding questions, lets their users easily find
+questions related to a certain programming language/framework/library
+etc. by tags. The questions and replies/comments are evaluated in a form
+of points so it is usually instantly obvious which answer was rated the
+highest (and therefore is considered as the best one by the community)
+or whether a described problem is reproducible, i.e. you can replicate
+it with a piece of code prepared by a person asking a question.
+
+### Hacker News (later referenced as HN)
+
+![](readme_vis/logos/hn.png)
+
+Hacker News (HN) is an established in 2007 portal on which users submit
+interesting links/stories. Those stories gather points just like
+questions on SO (however, users cannot downvote stories until they reach
+a certain karma treshold). Each post can be commmented on.
+
+## Causality and relationship
+
+Does one site influence the other? They could but the factors behind it
+– the *causes* would rather be external. Let’s see a definition of
+causality:
 
 ***Causality** (also referred to as causation, or cause and effect) is
 what connects one process (the cause) with another process or state (the
@@ -44,51 +79,48 @@ because such a situation is also possible, the significant variables do
 indeed influence defaults but you just don’t understand the dependence
 of those phenomena. The causality seems to be a tough thing to identify.
 
-Nevertheless, let’s talk about it in different context. I decided to
-measure the influence of the popularity of a given programming language
-on Stack Overflow on the popularity of posts with that technology on
-Hacker News. *Wait,* you may say, *what are you talking about?*
+In the context of HO and SN, the factors influencing both sites could
+be, for example, the following:
 
-![](readme_vis/logos/stack.png)
-
-### Stack Overflow (later referenced as SO)
-
-If you’re a programmer or your profession/hobby has anything to do with
-programming, you’re probably familiar with this one. [Stack
-Overflow](https://stackoverflow.com) (SO) is an established in 2008
-portal on which programmers help each other by asking and answering
-coding questions. If you have a programming problem, there’s a pretty
-good chance that someone else had to deal it previously, asked about it
-on Stack Overflow and got an answer. The questions and replies/comments
-are evaluated in a form of points so it is usually instantly obvious
-which answer was rated the highest (and therefore is considered as the
-best one by the community) or whether a described problem is
-reproducible, i.e. you can replicate it with a piece of code prepared by
-a person asking a question.
-
-![](readme_vis/logos/hn.png)
-
-### Hacker News (later referenced as HN)
-
-[Hacker News](https://news.ycombinator.com/) is an established in 2007
-portal on which users submit interesting links/stories. Those stories
-gather points just like questions on SO (however, users cannot downvote
-stories until they reach a certain karma treshold). Each post can be
-commmented
-on.
+1.  Both sites (to some extend) share user base: programmers or people
+    writing code (for whatever reason). Some of these users check Hacker
+    News to be informed about new technologies but they visit SO if they
+    have specific problem.
+2.  The initial popularity of a given topic/programming language on both
+    sites can be driven by a company which produced it, like in case of
+    Swift (which was developed by Apple).
+3.  Some users may be interested specifically in their language(s) of
+    choice and read posts about them on HN.
+4.  Popularity of a given technology on both sites can be driven by
+    other factors:
+    1.  meetups/conferences,
+    2.  the availability of errorless documentation
+    3.  size of current userbase,
+    4.  materials to learn: books, courses, tutorials, blog
+posts.
 
 ## 2\. How to cope with problem <a href="#" name="suggested-solutions"></a>
 
-### Popularity and influence
+### Popularity
 
-What is a popularity and how to measure it in the context of SO and HN?
-It could be defined as liking or attraction to a certain person, an idea
-or, in our case, a technology. In the context of this analysis you can
-name at least a few metrics by which you could measure whether something
-is popular or not. Additionally, they should be measured in a certain
-time unit, e.g. daily. If data that we would like to analyse can be
-identified by an ordered time index (the unit is irrelevant) that means
-that we deal with a **time series**.
+This article examines data from SO and HN trying to answer the question
+whether an intuitive relationship between the two is reflected in
+available data. It is a combination of Exploratory Data Analysis (EDA)
+with some descriptive statistics. It does not try to further investigate
+or quantify the above mentioned factors influencing both Stack Overflow
+and Hacker News.
+
+When dealing with the problem of relationship, an operationalization of
+variables to investigate is needed. Here, the phenomenon which was
+examined was described as “popularity of a given technology”. What is it
+and how to measure it in the context of SO and HN? It could be defined
+as liking or attraction to a certain person, an idea or, in our case, a
+technology. In the context of this analysis you can name at least a few
+metrics by which you could measure whether something is popular or not.
+Additionally, they should be measured in a certain time unit,
+e.g. daily. If data that we would like to analyse can be identified by
+an ordered time index (the unit is irrelevant) that means that we deal
+with a **time series**.
 
 I suggest starting the analysis with variables such as a number of
 questions (SO) / posts (HN) for a given programming language and points
@@ -134,27 +166,33 @@ computed (for example, a mean number of points gathered by questions on
 SO from a given day when during that 24 hours only one or two posts
 popped up), which would be unrepresentative.
 
-How to cope with the problem of causality: one phenomenon partially
-influencing another? The **first approach** could be an EDA -
-**Exploratory Data Analysis**, which basically means producing some
-plots and trying to indicate something from them. The plus of this
-solution is the visual aspect: you can clearly see the trend of (or a
-lack of thereof) of a popularity for a given programming language and
-for most people it is easier to read plots than just bare tables. The
-somewhat hindering side of the method to unravel causality is its
-qualitative character - there is no statistic/test indicating whether
-your conclusions on the basis of plots are correct or not.
+How to cope with the problem of validating a relatiship between two
+phenomena? The **first approach** could be an EDA - **Exploratory Data
+Analysis**, which basically means producing some plots and trying to
+indicate something from them. The plus of this solution is the visual
+aspect: you can clearly see the trend of (or a lack of thereof) of a
+popularity for a given programming language and for most people it is
+easier to read plots than just bare tables. The somewhat hindering side
+of the method to unravel causality is its qualitative character - there
+is no statistic/test indicating whether your conclusions on the basis of
+plots are correct or not.
 
 The **second approach** a qualitative one: a **Granger causality**.
-*Wait a minute,* you may ask, *you were talking about causality and now
-you’re saying that there’s a specific type of causality?* Basically
-saying, yup. Granger causality, proposed in 1969, determines whether one
-time series is helpful in forecasting another time series. Note that the
-question: *Does one phenomenon is a cause of another one?* is different
-from what Granger causality measures: here you only use past values of a
-given variable and try to use them to forecast the future values of
-another phenomenon, just like building a forecasting model. Therefore,
-this type of causality is called a *predictive causality*.
+*Wait a minute,* you may ask, *there’s a specific type of causality?*
+Basically saying, yup. Granger causality, proposed in 1969, determines
+whether one time series is helpful in forecasting another time series.
+Therefore, this type of causality is called a *predictive causality*.
+
+Note that the question: *Does one phenomenon is a cause of another one?*
+is different from what Granger causality measures: here you only use
+past values of a given variable and try to use them to forecast the
+future values of another phenomenon, just like building a forecasting
+model. That means that **Granger causality is not and does not indicate
+causality between two phenomena**. Nonetheless, it may indicate a
+relationship either resulting from the third factor influencing the two
+observed ones or that one variable is really an effect of the other. It
+is nonetheless impossible to identify it on the basis of the Granger
+causality test itself.
 
 ### Data
 
@@ -750,12 +788,9 @@ The table with results of Granger causality test suggests a few things:
 
 ## 5\. Summary <a href="#" name="summary"></a>
 
-It’s high time to ask the most important question: do the results of the
-quantitative analysis - Granger test - indicate that in case of those
-technologies and variables the popularity of technology on Stack
-Overflow causes the popularity of technology on Hacker News?
-
------
+It’s high time to ask the most important question: do the data confirm
+the relationship between the popularity of technology on Stack Overflow
+causes the popularity of technology on Hacker News?
 
 The question seems to be clear. However, answering it seems to be not an
 easy job. Nevertheless, let’s try.
@@ -769,45 +804,35 @@ easy job. Nevertheless, let’s try.
     data on Hacker News and Stack Overflow**, which is indicated by the
     exploratory data analysis. **Significant results of Granger
     causality tests corroborate this statement**.
-3)  **There are a couple of pairs in which variable from HN was the
-    potential result, for which the null hypothesis of Granger causality
-    test (variable does not Granger-causes another variable) was
-    rejected.** It shouldn’t be taken lightly as some of those variables
-    were differentiated (once or twice) and differentiation removes some
-    information from a given variable.
-4)  Additionally, in case of two technologies (JQuery and Tensorflow)
-    the variables regarding data from SO were pointed out as potential
-    results of variables from Hacker News. **The idea of Hacker News
-    influencing popularity of technology on Stack Overflow** is not so
-    easy to accept (at least for me) as the opposite one, nevertheless,
-    it **shouldn’t be entirely disregarded**.
-5)  On the other hand, the **visual analysis** may only point out some
-    sort of relationship. It **means neither causality nor does it
-    indicate which variable is the cause and which an effect**.
-6)  **The Granger causality tests were statistically significant only
+3)  The **visual analysis** may only point out some sort of
+    relationship. It **means neither causality nor does it indicate
+    which variable is the cause and which an effect**.
+4)  **The Granger causality tests were statistically significant only
     for a couple of pairs**. In case of such a number of performed tests
     (216; 27 technologies x 4 pairs x 2 because both directions: HN ~ SO
     and SO ~ HN were examined) it could happen that by coincidence a
     couple of pairs were statistically significant.
-7)  As mentioned earlier, the Granger causality can be identified as a
+5)  As mentioned earlier, the Granger causality can be identified as a
     **predictive causality**: it means that a possible variable-cause
     can be used as a predictor in forecasting the possible
     variable-effect. Such a statement **does not imply that the
     regressor useful in forecasting is a real cause of a given
     process**.
-8)  **Popularity of topics on Hacker News can be determined by lots of
-    factors. Stack Overflow may be only one of them**. When using a
-    framework identifying Granger-causes with more than one regressor
-    the SO-variables may lose its statistical significance in favour of
-    other variables (which, in turn may or may not be the causes of
-    popularity of a given technology on Hacker News).
-9)  I wrote earlier that change of aggregation frequency (to
+6)  **Popularity of technologies on Hacker News/Stack Overflow can be
+    determined by lots of factors. Some (and probably not all) of them
+    were mentioned above**. When using a framework identifying
+    Granger-causes with more than one regressor the SO-variables may
+    lose its statistical significance in favour of other variables
+    (which, in turn may or may not be the causes of popularity of a
+    given technology on Hacker News).
+7)  I wrote earlier that change of aggregation frequency (to
     monthly/daily basis) causes more pairs to be statistically
     significant. Those options were neither presented nor further
     described due to the high number of statistically significant
     results as well as a fear that those results may be significant by
-    accident.
-10) **The number of maximum lags considered lags in Granger causality
+    accident. On the other hand, they would corroborate a hypothesis of
+    a relationship between those two portals.
+8)  **The number of maximum lags considered lags in Granger causality
     test was set to 36 any real indication that this number is
     *right***. It could be higher (in case of technologies which have
     longer history) or lower. If latter, more pairs could be
@@ -823,11 +848,13 @@ the number of negatively rated questions high (or the number of negative
 points for some questions) was so high that the cumulative number of
 points for those technologies dropped (even by a half from its maximum).
 
-To sum up: does popularity of technology on Stack Overflow (SO)
-influence popularity of post about this technology on Hacker News (HN)?
-**There seems to be a relationship between those two portals but I could
-not determine that popularity on Stack Overflow causes popularity on
-Hacker News.**
+To sum up: can popularity of technology on Stack Overflow (SO) be
+related to popularity of post about this technology on Hacker News (HN)?
+**Data seem to reflect some kind of relationship between those two
+portals, although it is worth mentioning that the conducted here
+Exploratory Data Analysis is (to some extent) subjective therefore such
+a conclusion cannot be treated as *set in stone*. This article
+definitively does not exhaust the topic.**
 
 ## 6\. Further research <a href="#" name="further"></a>
 
@@ -839,8 +866,7 @@ Further research in this topic may include:
     questions were flagged as favourites in a certain life spans).
 3)  Using other statistical methods.
 4)  Computing correlations. However, Pearson correlation detects only a
-    linear dependence (and should be computed on stationary series) and
-    only answers a question of dependence, not causality.
+    linear dependence (and should be computed on stationary series).
 
 ## 7\. Acknowledgements <a href="#" name="acknowledgments"></a>
 
@@ -849,7 +875,12 @@ suggestion of this topic, his research ideas and the overall supervision
 of this analysis. Also, many thanks to Jan Bendarz for suggesting a
 method of trend detection and [Andrzej
 Drzystek](https://github.com/adrzystek) for thoughts on an initial
-draft.
+draft. Thanks as well to all people who improved the text by catching
+typos or a lacking plot. Last but not least, a big **Thank you\!** for
+all commenters in the
+[topic](https://news.ycombinator.com/item?id=17277550) with regard to
+this analysis on Hacker News and really anyone who showed interest in
+this article.
 
 <b id="f1">1: </b>source: <https://en.wikipedia.org/wiki/Causality>,
 access: 02JUN2018 [←](#a1)

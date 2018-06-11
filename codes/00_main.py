@@ -730,9 +730,9 @@ hn_plots(data = data_min_date,
 #             label2 = 'Cumulative number of questions on SO vs.\n'
 #             'cumulative number of points on HN for Javascript',
 #             label3 = 'Standardized cumulative number of questions on SO vs.\n'
-#             'standardized cumulative number of topics on HN for Java',
+#             'standardized cumulative number of topics on HN for Javascript',
 #             label4 = 'Cumulative number of questions on SO vs.\n'
-#             'cumulative number of topics on HN for Java',
+#             'cumulative number of topics on HN for Javascript',
 #             show_y_lab = False)
 #
 #hn_plots(data = data_min_date,
