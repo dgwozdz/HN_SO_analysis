@@ -79,7 +79,7 @@ because such a situation is also possible, the significant variables do
 indeed influence defaults but you just don’t understand the dependence
 of those phenomena. The causality seems to be a tough thing to identify.
 
-In the context of HO and SN, the factors influencing both sites could
+In the context of SO and HN, the factors influencing both sites could
 be, for example, the following:
 
 1.  Both sites (to some extend) share user base: programmers or people
