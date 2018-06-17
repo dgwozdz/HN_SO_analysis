@@ -2,7 +2,7 @@ Is there a relationship between popularity of a given technology on
 Stack Overflow (SO) and Hacker News (HN)? And a few words about
 causality
 ================
-dgwozdz & pmigdal<br/>
+dgwozdz<br/>
 3<sup>rd</sup> JUNE 2018
 
 Last update: 11<sup>th</sup> JUNE 2018
@@ -79,7 +79,7 @@ because such a situation is also possible, the significant variables do
 indeed influence defaults but you just don’t understand the dependence
 of those phenomena. The causality seems to be a tough thing to identify.
 
-In the context of SO and HN, the factors influencing both sites could
+In the context of HO and SN, the factors influencing both sites could
 be, for example, the following:
 
 1.  Both sites (to some extend) share user base: programmers or people
@@ -871,9 +871,9 @@ Further research in this topic may include:
 ## 7\. Acknowledgements <a href="#" name="acknowledgments"></a>
 
 I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the
-suggestion of this topic, his research ideas and the overall supervision
-of this analysis. Also, many thanks to Jan Bendarz for suggesting a
-method of trend detection and [Andrzej
+suggestion of this topic, his mentoring, research ideas and the overall
+supervision of this analysis. Also, many thanks to Jan Bendarz for
+suggesting a method of trend detection and [Andrzej
 Drzystek](https://github.com/adrzystek) for thoughts on an initial
 draft. Thanks as well to all people who improved the text by catching
 typos or a lacking plot. Last but not least, a big **Thank you\!** for

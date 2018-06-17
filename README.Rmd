@@ -1,6 +1,6 @@
 ---
 title: "Is there a relationship between popularity of a given technology on Stack Overflow (SO) and Hacker News (HN)? And a few words about causality"
-author: "dgwozdz & pmigdal<br/>"
+author: "dgwozdz<br/>"
 date: "3<sup>rd</sup> JUNE 2018"
 output: rmarkdown::github_document
 ---
@@ -452,7 +452,7 @@ Further research in this topic may include:
 
 ## 7. Acknowledgements <a href="#" name="acknowledgments"></a>
 
-I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the suggestion of this topic, his research ideas and the overall supervision of this analysis. Also, many thanks to Jan Bendarz for suggesting a method of trend detection and [Andrzej Drzystek](https://github.com/adrzystek) for thoughts on an initial draft. Thanks as well to all people who improved the text by catching typos or a lacking plot. Last but not least, a big  __Thank you!__ for all commenters in the [topic](https://news.ycombinator.com/item?id=17277550) with regard to this analysis on Hacker News and really anyone who showed interest in this article.
+I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the suggestion of this topic, his mentoring, research ideas and the overall supervision of this analysis. Also, many thanks to Jan Bendarz for suggesting a method of trend detection and [Andrzej Drzystek](https://github.com/adrzystek) for thoughts on an initial draft. Thanks as well to all people who improved the text by catching typos or a lacking plot. Last but not least, a big  __Thank you!__ for all commenters in the [topic](https://news.ycombinator.com/item?id=17277550) with regard to this analysis on Hacker News and really anyone who showed interest in this article.
 
 <b id="f1">1: </b>source: https://en.wikipedia.org/wiki/Causality, access: 02JUN2018 [&larr;](#a1)
 
