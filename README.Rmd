@@ -4,7 +4,7 @@ author: "dgwozdz<br/>"
 date: "3<sup>rd</sup> JUNE 2018"
 output: rmarkdown::github_document
 ---
-Last update: 11<sup>th</sup> JUNE 2018
+Last update: 08<sup>th</sup> JULY 2018
 
 
 ## Table of Contents
@@ -23,13 +23,13 @@ Last update: 11<sup>th</sup> JUNE 2018
 
 [Stack Overflow](https://stackoverflow.com) and [Hacker News](https://news.ycombinator.com/) are portals mainly (but not only) read and used by programmers and other people who occupy their (professional or free) time with writing code.
 
-### Stack Overflow (later referenced as SO)
+### Stack Overflow (hereafter referenced as SO)
 
 ![](readme_vis/logos/stack.png)
 
 Stack Overflow lets their users easily Stack Overflow (SO), an established in 2008 portal on which programmers help each other by asking and answering coding questions, lets their users easily find questions related to a certain programming language/framework/library etc. by tags. The questions and replies/comments are evaluated in a form of points so it is usually instantly obvious which answer was rated the highest (and therefore is considered as the best one by the community) or whether a described problem is reproducible, i.e. you can replicate it with a piece of code prepared by a person asking a question.
 
-### Hacker News (later referenced as HN)
+### Hacker News (hereafter referenced as HN)
 
 ![](readme_vis/logos/hn.png)
 
@@ -54,23 +54,23 @@ In the context of HO and SN, the factors influencing both sites could be, for ex
     c.	size of current userbase,
     d.	materials to learn: books, courses, tutorials, blog posts.
 
-## 2. How to cope with problem  <a href="#" name="suggested-solutions"></a>
+## 2. How tackle the problem  <a href="#" name="suggested-solutions"></a>
 
 ### Popularity
 
 This article examines data from SO and HN trying to answer the question whether an intuitive relationship between the two is reflected in available data. It is a combination of Exploratory Data Analysis (EDA) with some descriptive statistics. It 
 does not try to further investigate or quantify the above mentioned factors influencing both Stack Overflow and Hacker News. 
 
-When dealing with the problem of relationship, an operationalization of variables to investigate is needed. Here, the phenomenon which was examined was described as “popularity of a given technology”. What is it and how to measure it in the context of SO and HN? It could be defined as liking or attraction to a certain person, an idea or, in our case, a technology. In the context of this analysis you can name at least a few metrics by which you could measure whether something is popular or not. Additionally, they should be measured in a certain time unit, e.g. daily. If data that we would like to analyse can be identified by an ordered time index (the unit is irrelevant) that means that we deal with a __time series__.
+When dealing with the problem of relationship, an operationalization of variables to investigate is needed. Here, the phenomenon which was examined was described as “popularity of a given technology”. What is it and how to measure it in the context of SO and HN? __Popularity__ could be defined as liking or attraction to a certain person, an idea or, in our case, a technology. In the context of this analysis (SO and HN), you can name at least a few metrics by which you could measure whether something is popular or not. Additionally, they should be measured in a certain time unit, e.g. daily. If data that we would like to analyse can be identified by an ordered time index (the unit is irrelevant) that means that we deal with a __time series__.
 
-I suggest starting the analysis with variables such as a number of questions (SO) / posts (HN) for a given programming language and points gathered by those questions (SO) / topics (HN). Those two are probably the most universal ones. Of course, you could come up with much more variables, for example:
+I suggest starting the analysis with available empirical variables such as a number of questions (SO) / posts (HN) for a given programming language and points gathered by those questions (SO) / topics (HN). Those two are probably the most universal ones. Of course, you could come up with much more variables, for example:
 
 a)	number of times questions from a certain time span (e.g. from a given day) were tagged as a favourite,
 b)	number of comments for questions from a certain life span,
 c)	number of views of questions from a certain life span,
 d)	number of replies for questions from a certain life span.
 
-However, there is a small problem with variable c): the number of views seems to be irreproducible. SO shows only the number of views a given question gathered by today's date, so obtaining this variable from different time points (e.g. from 1<sup>st</sup> June 2018 and 2<sup>nd</sup> June 2018) results in different values.
+However, there is a small problem with the available variable c): the number of views seems to be irreproducible. SO shows only the number of views a given question gathered by today's date, so obtaining this variable from different time points (e.g. from 1<sup>st</sup> June 2018 and 2<sup>nd</sup> June 2018) results in different values. DUe to this fact, the variable, althought interesting, migth lead to irreproducible results.
 
 When it comes to obtaining data from Satck Oveflow, it was easy to identyify which question is assigned to which technology. Every question has its tags. The process of data preprocessing was a bit tougher in case of Hacker News. The definition of a topic related to a certain technology is a topic, in which the name of this technology appears either in a title or in the text (comments were not taken into consideration).
 
@@ -452,7 +452,7 @@ Further research in this topic may include:
 
 ## 7. Acknowledgements <a href="#" name="acknowledgments"></a>
 
-I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the suggestion of this topic, his mentoring, research ideas and the overall supervision of this analysis. Also, many thanks to Jan Bendarz for suggesting a method of trend detection and [Andrzej Drzystek](https://github.com/adrzystek) for thoughts on an initial draft. Thanks as well to all people who improved the text by catching typos or a lacking plot. Last but not least, a big  __Thank you!__ for all commenters in the [topic](https://news.ycombinator.com/item?id=17277550) with regard to this analysis on Hacker News and really anyone who showed interest in this article.
+I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the suggestion of this topic, his mentoring, research ideas and the overall supervision of this analysis. Also, many thanks to Jan Bendarz for suggesting a method of trend detection, [Andrzej Drzystek](https://github.com/adrzystek) for thoughts on an initial draft and Maciej Pomyka³a for his valuable remarks. Thanks as well to all people who improved the text by catching typos or a lacking plot. Last but not least, a big  __Thank you!__ for all commenters in the [topic](https://news.ycombinator.com/item?id=17277550) with regard to this analysis on Hacker News and really anyone who showed interest in this article.
 
 <b id="f1">1: </b>source: https://en.wikipedia.org/wiki/Causality, access: 02JUN2018 [&larr;](#a1)
 

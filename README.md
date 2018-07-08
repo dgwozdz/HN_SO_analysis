@@ -5,7 +5,7 @@ causality
 dgwozdz<br/>
 3<sup>rd</sup> JUNE 2018
 
-Last update: 11<sup>th</sup> JUNE 2018
+Last update: 08<sup>th</sup> JULY 2018
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ News](https://news.ycombinator.com/) are portals mainly (but not only)
 read and used by programmers and other people who occupy their
 (professional or free) time with writing code.
 
-### Stack Overflow (later referenced as SO)
+### Stack Overflow (hereafter referenced as SO)
 
 ![](readme_vis/logos/stack.png)
 
@@ -40,7 +40,7 @@ highest (and therefore is considered as the best one by the community)
 or whether a described problem is reproducible, i.e. you can replicate
 it with a piece of code prepared by a person asking a question.
 
-### Hacker News (later referenced as HN)
+### Hacker News (hereafter referenced as HN)
 
 ![](readme_vis/logos/hn.png)
 
@@ -99,7 +99,7 @@ be, for example, the following:
     4.  materials to learn: books, courses, tutorials, blog
 posts.
 
-## 2\. How to cope with problem <a href="#" name="suggested-solutions"></a>
+## 2\. How tackle the problem <a href="#" name="suggested-solutions"></a>
 
 ### Popularity
 
@@ -113,20 +113,20 @@ and Hacker News.
 When dealing with the problem of relationship, an operationalization of
 variables to investigate is needed. Here, the phenomenon which was
 examined was described as “popularity of a given technology”. What is it
-and how to measure it in the context of SO and HN? It could be defined
-as liking or attraction to a certain person, an idea or, in our case, a
-technology. In the context of this analysis you can name at least a few
-metrics by which you could measure whether something is popular or not.
-Additionally, they should be measured in a certain time unit,
-e.g. daily. If data that we would like to analyse can be identified by
-an ordered time index (the unit is irrelevant) that means that we deal
-with a **time series**.
+and how to measure it in the context of SO and HN? **Popularity** could
+be defined as liking or attraction to a certain person, an idea or, in
+our case, a technology. In the context of this analysis (SO and HN), you
+can name at least a few metrics by which you could measure whether
+something is popular or not. Additionally, they should be measured in a
+certain time unit, e.g. daily. If data that we would like to analyse can
+be identified by an ordered time index (the unit is irrelevant) that
+means that we deal with a **time series**.
 
-I suggest starting the analysis with variables such as a number of
-questions (SO) / posts (HN) for a given programming language and points
-gathered by those questions (SO) / topics (HN). Those two are probably
-the most universal ones. Of course, you could come up with much more
-variables, for example:
+I suggest starting the analysis with available empirical variables such
+as a number of questions (SO) / posts (HN) for a given programming
+language and points gathered by those questions (SO) / topics (HN).
+Those two are probably the most universal ones. Of course, you could
+come up with much more variables, for example:
 
 1)  number of times questions from a certain time span (e.g. from a
     given day) were tagged as a favourite,
@@ -134,11 +134,13 @@ variables, for example:
 3)  number of views of questions from a certain life span,
 4)  number of replies for questions from a certain life span.
 
-However, there is a small problem with variable c): the number of views
-seems to be irreproducible. SO shows only the number of views a given
-question gathered by today’s date, so obtaining this variable from
-different time points (e.g. from 1<sup>st</sup> June 2018 and
-2<sup>nd</sup> June 2018) results in different values.
+However, there is a small problem with the available variable c): the
+number of views seems to be irreproducible. SO shows only the number of
+views a given question gathered by today’s date, so obtaining this
+variable from different time points (e.g. from 1<sup>st</sup> June 2018
+and 2<sup>nd</sup> June 2018) results in different values. DUe to this
+fact, the variable, althought interesting, migth lead to irreproducible
+results.
 
 When it comes to obtaining data from Satck Oveflow, it was easy to
 identyify which question is assigned to which technology. Every question
@@ -873,11 +875,11 @@ Further research in this topic may include:
 I would like to thank [Piotr Migdal](http://p.migdal.pl/) for the
 suggestion of this topic, his mentoring, research ideas and the overall
 supervision of this analysis. Also, many thanks to Jan Bendarz for
-suggesting a method of trend detection and [Andrzej
-Drzystek](https://github.com/adrzystek) for thoughts on an initial
-draft. Thanks as well to all people who improved the text by catching
-typos or a lacking plot. Last but not least, a big **Thank you\!** for
-all commenters in the
+suggesting a method of trend detection, [Andrzej
+Drzystek](https://github.com/adrzystek) for thoughts on an initial draft
+and Maciej Pomykała for his valuable remarks. Thanks as well to all
+people who improved the text by catching typos or a lacking plot. Last
+but not least, a big **Thank you\!** for all commenters in the
 [topic](https://news.ycombinator.com/item?id=17277550) with regard to
 this analysis on Hacker News and really anyone who showed interest in
 this article.
